@@ -1,0 +1,11 @@
+@entrypoint=http://localhost:7777/api/v1
+
+###
+GET {{entrypoint}}/plates
+
+###
+GET {{entrypoint}}/plates/2
+
+
+###
+GET {{entrypoint}}/delivery

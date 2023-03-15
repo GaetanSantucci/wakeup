@@ -1,0 +1,43 @@
+@use './vars';
+
+.carousel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-slider {
+  display: flex;
+  overflow: hidden;
+}
+
+.carousel-slider-wrapper {
+  display: flex;
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  padding: 20px;
+}
+
+.carousel__card {
+  background-color: #2e2e2e56;
+  padding: 1rem;
+  height: 320px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  &__price {
+    font-family: var(--fontTitle);
+    font-size: 1.6rem;
+  }
+  & h3 {
+    font-size: 1.4rem;
+  }
+  & h3,
+  p {
+    color: white;
+    text-shadow: 0 1px 1px #313131;
+  }
+}

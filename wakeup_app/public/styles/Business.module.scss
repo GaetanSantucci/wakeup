@@ -1,0 +1,108 @@
+@use './mixins';
+@use './vars';
+
+.business {
+  &__title {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  &__container {
+    width: 80%;
+
+    &__details {
+      display: flex;
+      width: 100%;
+      align-items: flex-start;
+      justify-content: space-evenly;
+
+      &__background {
+        width: 50%;
+        min-height: 660px;
+        background-image: url('/images/business_portrait.webp');
+        background-attachment: fixed;
+        background-position: bottom 30%;
+        background-repeat: no-repeat;
+        background-size: 65%;
+      }
+
+      &__card {
+        width: 50%;
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        letter-spacing: 1px;
+        text-align: start;
+
+        & li {
+          list-style-type: '- ';
+        }
+
+        &__price {
+          font-family: var(--fontTitle);
+          font-size: 1.6rem;
+        }
+
+        & > * {
+          margin: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .business {
+    &__title {
+      font-size: calc(1.4rem + 0.6vw);
+      text-align: center;
+      margin: 2rem 0 3rem 0;
+    }
+    &__container {
+      width: 100%;
+      margin-top: 0;
+
+      &__details {
+        flex-direction: column;
+        align-items: center;
+        &__background {
+          width: 100%;
+          background-attachment: scroll;
+          background-position: center;
+          background-size: 100%;
+          min-height: 440px;
+        }
+        &__card {
+          width: 95%;
+          padding: 0 0.5rem;
+          align-items: center;
+          & h3 {
+            margin: 2rem 0;
+            font-size: calc(1.3rem + 0.6vw);
+          }
+          & p {
+            text-align: justify;
+            font-size: 0.9rem;
+            margin: 0 0 1rem 0;
+          }
+          &__price {
+            font-size: 1.1rem !important;
+            color: vars.$colorTitleLightTheme;
+          }
+          & ul {
+            padding-left: 0;
+            font-size: 0.9rem;
+          }
+        }
+      }
+      a {
+        width: 100% !important;
+      }
+      .btn_business {
+        @include mixins.button(100%);
+      }
+    }
+  }
+}

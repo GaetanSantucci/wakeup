@@ -1,0 +1,21 @@
+// Light Theme Color
+$colorTitleLightTheme: #000000;
+$colorParagraphLightTheme: #353535;
+
+$backgroundPrimaryLightTheme: #ffffff;
+
+$colorButtonLightTheme: #ffffff;
+$backgroundButtonLightTheme: #000000;
+
+// Dark Theme Color
+
+// Font
+@font-face {
+  font-family: 'avenir';
+  src: url('../fonts/Avenir-regular.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'playfair';
+  src: url('../fonts/PlayfairDisplay-VariableFont_wght.ttf') format('opentype');
+}

@@ -1,0 +1,54 @@
+@use './vars';
+
+@mixin flex($direction, $align: center, $justify: center) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+@mixin button($size: '200px') {
+  width: $size;
+  position: relative;
+  z-index: 1;
+  border: none;
+  text-decoration: none;
+  background-color: vars.$backgroundButtonLightTheme;
+  font-family: var(--fontText);
+  color: vars.$colorButtonLightTheme;
+  padding: 0.8rem 3rem;
+  text-align: center;
+  display: inline-block;
+  letter-spacing: 1px;
+  will-change: transform;
+  outline: none;
+  cursor: pointer;
+
+  &:after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 100%;
+    top: 0;
+    // left: 0;
+    right: 0;
+    z-index: -1;
+    // background-color: blue;
+    box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+      7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+    transition: all 0.3s ease;
+  }
+
+  // &:hover {
+  //   color: #fff;
+  // }
+
+  &:hover:after {
+    left: 0;
+    right: auto;
+    width: 100%;
+  }
+  &:active {
+    top: 2px;
+  }
+}

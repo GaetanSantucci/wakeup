@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "ES6",
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "target": "es6",
+    "strict": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node", "express", "pg", "debug"]
+  },
+  "exclude": ["node_modules", "_tests_", "jest.config.js"],
+  "lib": ["es2015"],
+  "compileOnSave": true
+}

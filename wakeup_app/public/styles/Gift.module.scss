@@ -1,0 +1,87 @@
+@use './vars';
+@use './mixins';
+
+.gift__container {
+  width: 80%;
+  margin-top: 2rem;
+
+  &__details {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+
+    &__background {
+      width: 50%;
+      min-height: 660px;
+      background-image: url('/images/carte_cadeau_portrait.webp');
+      background-attachment: fixed;
+      background-position: right;
+      background-repeat: no-repeat;
+      background-size: 65%;
+    }
+    &__card {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 0 2rem;
+      text-align: start;
+      letter-spacing: 1px;
+
+      & > * {
+        margin: 0.5rem;
+      }
+    }
+  }
+
+  &__article {
+    display: flex;
+    width: 100%;
+    font-family: var(--fontText);
+    position: relative;
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .gift__container {
+    width: 100%;
+    &__details {
+      flex-direction: column;
+      align-items: center;
+      &__background {
+        width: 100%;
+        background-attachment: scroll;
+        background-position: center;
+        background-size: 100%;
+        min-height: 440px;
+      }
+      &__card {
+        width: 95%;
+        padding: 0 0.5rem;
+        align-items: center;
+        & h3 {
+          margin: 2rem 0;
+          font-size: calc(1.3rem + 0.6vw);
+        }
+        & p,
+        ul {
+          text-align: justify;
+          font-size: 0.9rem;
+        }
+        & p {
+          margin: 0 0 1rem 0;
+        }
+      }
+    }
+    a {
+      width: 100% !important;
+    }
+    .btn_gift {
+      @include mixins.button(100%);
+    }
+  }
+}

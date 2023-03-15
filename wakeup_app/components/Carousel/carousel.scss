@@ -1,0 +1,189 @@
+.carousel,
+.carousel-addon {
+  position: relative;
+  width: 100%; /* Set the width to 100% */
+  overflow: hidden;
+}
+
+.carousel-inner,
+.carousel-addon-inner {
+  position: relative;
+  display: flex;
+  transition: opacity 0.5s ease-in-out;
+  width: 640px;
+}
+
+.carousel-addon-inner {
+  height: auto;
+}
+
+.carousel-inner img,
+.carousel-addon-inner img {
+  width: 100%; /* Set the width of the images to 100% */
+}
+
+.carousel-controls,
+.carousel-addon-controls {
+  position: absolute;
+  top: 50%; /* Adjust the top value to position the buttons */
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.carousel-control,
+.carousel-addon-control {
+  position: absolute;
+  top: 0; /* Adjust the top and bottom values to position the buttons */
+  bottom: 0;
+  z-index: 1;
+
+  & svg {
+    margin-left: 0;
+    transition: none;
+    fill: #313131;
+  }
+}
+
+.carousel-control-prev,
+.carousel-addon-control-prev {
+  left: 0;
+  padding-left: 20px;
+}
+
+.carousel-control-next,
+.carousel-addon-control-next {
+  right: 0;
+  padding-right: 20px;
+}
+
+.carousel-inner,
+.carousel-addon-inner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-item,
+.carousel-addon-item {
+  position: relative;
+  display: none;
+  align-items: center;
+  width: 100%;
+  margin-left: 0; /* add this line to fix offset on left side */
+}
+
+.carousel-item.active,
+.carousel-addon-item.active,
+.carousel-item-addon-next,
+.carousel-item-addon-prev,
+.carousel-item-next,
+.carousel-item-prev {
+  position: relative;
+  display: block;
+}
+
+.carousel-item img,
+.carousel-addon-item img {
+  width: 100%;
+  height: auto;
+}
+
+.carousel-controls,
+.carousel-addon-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carousel-control,
+.carousel-addon-control {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  color: #fff;
+  font-size: 2rem;
+  opacity: 0.5;
+  // transition: opacity 0.15s ease;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+}
+
+.carousel-control:hover,
+.carousel-addon-control {
+  opacity: 0.9;
+}
+
+.carousel-control-prev,
+.carousel-addon-control-prev {
+  left: 0;
+}
+
+.carousel-control-next,
+.carousel-addon-control-next {
+  right: 0;
+}
+
+// AddonCarousel
+.carousel-addon {
+  &-item {
+    position: relative;
+
+    &-description {
+      width: 75%;
+      // height: 90%;
+      position: absolute;
+      top: 5%;
+      bottom: 5%;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: space-between;
+      background-color: #35353579;
+      padding: 1.5rem 0.2rem;
+
+      & h3,
+      p {
+        color: #ffffff;
+        text-shadow: 0 1px 1px #313131;
+      }
+
+      & h3 {
+        font-size: 1.5rem;
+      }
+
+      & p {
+        font-size: 1.1rem;
+      }
+
+      & span {
+        color: #ffffff !important;
+        text-shadow: 0 1px 1px #313131;
+        font-size: 1.5rem;
+      }
+    }
+  }
+  &-control {
+    & svg {
+      margin-left: 0;
+      transition: none;
+    }
+  }
+}
+
+.carousel-addon-item.active {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .carousel-inner {
+    height: auto;
+  }
+}

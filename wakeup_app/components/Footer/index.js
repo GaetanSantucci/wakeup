@@ -23,7 +23,7 @@ const Footer = () => {
         <ul className={styles.footer__container__item__link}>
           <li><Link href='/livraison'>Livraison</Link></li>
           <li><Link href='/images/cgu_wakeup.pdf' target='blank'>CGU</Link> / <Link href='/images/cgv_wakeup.pdf' target='blank'>CGV</Link></li>
-          <li><Link href='/images/JEU_CONCOURS_PAQUES_2023.pdf' target='blank'>Conditions jeu concours</Link></li>
+          <li><Link href='/images/jeuconcourspaques.pdf' target='blank'>Conditions jeu concours</Link></li>
         </ul>
       </div>
       <p>© 2023 WAKE UP, tous droits réservés</p>

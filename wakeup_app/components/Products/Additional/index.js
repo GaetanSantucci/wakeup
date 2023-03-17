@@ -38,19 +38,18 @@ const Additionnal = ({ products }) => {
         <h3>Personnalisez vos plateaux</h3>
 
         <div className={styles.additionnal__container__options__input}>
-          <label htmlFor='flower'>Formule ruban lin</label><span>3,90 €</span>
-          {/* <input type='checkbox' /> */}
+          <div className={styles.additionnal__container__options__input__title}>
+            <label htmlFor='flower'>Formule ruban lin</label><span>3,90 €</span>
+            {/* <input type='checkbox' /> */}
+          </div>
           <p>Un joli noeud en lin pour un des plus bel effet sur notre plateau</p>
         </div>
         <div className={styles.additionnal__container__options__input}>
-          <label htmlFor='flower'>Formule décoration florale</label><span>6,90 €</span>
-          {/* <input type='checkbox' /> */}
+          <div className={styles.additionnal__container__options__input__title}>
+            <label htmlFor='flower'>Formule décoration florale</label><span>6,90 €</span>
+            {/* <input type='checkbox' /> */}
+          </div>
           <p>Une touche de fraicheur avec de l&apos;eucalyptus accroché par de la ficelle naturelle</p>
-        </div>
-        <div className={styles.additionnal__container__options__input}>
-          <label htmlFor='flower'>Formule fleurs</label><span>14,90 €</span>
-          {/* <input type='checkbox' /> */}
-          <p>Votre plateau avec son noeud accompagné  d&apos;une rose et de gypsophiles, parfait pour lui montrer votre amour</p>
         </div>
       </div>
     </div>

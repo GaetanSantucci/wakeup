@@ -7,7 +7,7 @@ import { toggleModale } from '@/store/reducers/settings';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import easter from '/public/images/modale.jpg';
+import easter from '/public/images/modale-paques.webp';
 
 const EventModale = () => {
 
@@ -23,19 +23,20 @@ const EventModale = () => {
       {isOpen && (
         <div className='backdrop__container'>
           <div className='modale__container'>
-            <div className='modale__container__close' onClick={closeModale}>
-              <CancelSharpIcon />
-            </div>
             <div className='modale__container__item'>
               <Image src={easter} width={550} height={750} alt='Plateau de Pâques' />
               <div className='modale__container__item__details' >
-                <h2>Remportez une pépite en or d&apos;une valeur de 425€</h2>
-                <p>Jeu concours :</p>
-                <h2>&laquo; GOLDEN EGG &raquo;</h2>
-                <p>Pour toute commande effectuée sur notre nouveau plateau de Pâques</p>
-                <p>Description bla bla bla et rebla</p>
-                <span onClick={closeModale}><Link href='/plateau'>En savoir plus</Link></span>
-                <Link href='/images/JEU_CONCOURS_PAQUES_2023.pdf' target='blank' onClick={closeModale}><code>voir les conditions générales du jeu concours</code></Link>
+                <div className='modale__container__close' onClick={closeModale}>
+                  <CancelSharpIcon />
+                </div>
+                <h2>Tentez de remporter une pépite d&apos;or d&apos;une valeur de 425€</h2>
+                <p>Participez à notre jeu concours</p>
+                <h3>&laquo; GOLDEN EGG &raquo;</h3>
+                <p>Tout plateau de Pâques livré entre le 1er et le 30 avril 2023</p>
+                <p className='modale__container__item__details__equal'>=</p>
+                <p>Une chance d&apos;être tiré au sort pour remporter une pépite d&apos;or de 3,17gr</p>
+                <span onClick={closeModale}><Link href='/plateau/paques/10'>En savoir plus</Link></span>
+                <Link href='/images/jeuconcourspaques.pdf' target='blank' onClick={closeModale}><code>Voir les conditions générales du jeu concours</code></Link>
               </div>
             </div>
           </div>

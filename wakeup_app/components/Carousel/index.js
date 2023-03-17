@@ -38,7 +38,7 @@ const HomepageCarousel = ({ items }) => {
             key={i}
             className={`carousel-item ${i === currentIndex ? 'active' : ''}`}
           >
-            <Image src={item} alt="carousel de photo de brunch" width={640} height={455} />
+            <Image src={item} alt="carousel de photo de brunch" width={640} height={455} priority />
           </div>
         ))}
       </div>
@@ -88,7 +88,7 @@ const AddonCarousel = ({ products }) => {
           const price = item.price.toString().replace('.', ',');
           return (
             <div key={i} className={`carousel-addon-item ${i === currentIndex ? 'active' : ''}`}>
-              <Image src={item.image} alt={item.name} width={250} height={230} />
+              <Image src={item.image} alt={item.name} width={250} height={230} priority />
               <div className='carousel-addon-item-description'>
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>

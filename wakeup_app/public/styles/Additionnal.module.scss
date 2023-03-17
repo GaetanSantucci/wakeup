@@ -35,6 +35,11 @@
     &__input {
       border: 1px solid #f3f3f3;
       padding: 0.5rem;
+      &__title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
       & > * {
         margin: 0.5rem;
       }

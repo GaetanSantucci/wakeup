@@ -9,16 +9,34 @@ import { getProductById } from '/libs/getProductList';
 import { Suspense } from 'react';
 import Spinner from '@/components/Spinner';
 
-export default async function Product({ id }) {
+
+export default async function Product({ id, targetTime, currentTime }) {
 
   let plate = []
   const fetchProduct = await getProductById(id);
   plate.push(fetchProduct);
 
 
+
   return (
     <>
       <div className={styles.productId__container}>
+        {plate.length > 0 && plate[0].slug === 'paques' && (
+          <>
+            <div className={styles.productId__container__easter}>
+              <h3>- WAKE UP X MATHIEU ARTHAUD CHOCOLATIER -</h3>
+              <p>Laissez vous tenter par ses notes fruitées et chocolatées</p>
+              <p>Ce plateau sera parfait pour les petits et grands enfants, idéal pour passer un joli moment en famille ou entre amis</p>
+              <p>Il se compose d&apos;un oeuf suprise à casser ainsi qu&apos;un assortiment de chocolat signé <Link href='https://www.arthaud-chocolatier.fr/' target='blank'>Mathieu Arthaud</Link></p>
+              <p>Vous trouverez aussi nos produits phares fait-maison ainsi que nos nouvelles mini gaufres liégeoises qui se marieront parfaitement avec le chocolat. Vous pouvez accompagner ce plateau de thé Dammann &ldquo; Easter Tea &rdquo; aux saveurs vanille et chocolat</p>
+            </div>
+            <div className={styles.productId__container__information}>
+              <h3>&laquo; GOLDEN EGG &raquo;</h3>
+              <p>Pour participer au jeu concours, rien de plus simple, pour chaque plateau de Pâques, livré entre le 1er et le 30 avril</p><p>Vous recevrez dans chaque plateau un jeton comportant un numéro</p><p>ce jeton vous inscrit directement pour le tirage au sort qui sera effectué le 30 avril avec comme récompense une pépite d&apos;or de 3,17 grammes d&apos;une valeur de 425€</p>
+              <p className={styles.productId__container__information__reservation}>Pré-reservation par mail du 20 au 26 mars en cliquant <Link href='/contact' >ici</Link></p>
+            </div>
+          </>
+        )}
         {
           plate.map(elem => {
             const price = elem.price.toString().replace('.', ',');

@@ -102,6 +102,63 @@
     width: 80%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    &__easter {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      & > * {
+        margin: 0.4rem 0;
+      }
+      & a {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: transparent;
+        background: linear-gradient(
+          90deg,
+          rgba(186, 148, 62, 1) 0%,
+          rgba(236, 172, 32, 1) 20%,
+          rgba(186, 148, 62, 1) 39%,
+          rgba(249, 244, 180, 1) 50%,
+          rgba(186, 148, 62, 1) 60%,
+          rgba(236, 172, 32, 1) 80%,
+          rgba(186, 148, 62, 1) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 5s infinite;
+        background-size: 200%;
+        background-position: left;
+      }
+    }
+
+    &__information {
+      padding: 1rem;
+      background: linear-gradient(
+        90deg,
+        rgba(186, 148, 62, 1) 0%,
+        rgba(236, 172, 32, 1) 20%,
+        rgba(186, 148, 62, 1) 39%,
+        rgba(249, 244, 180, 1) 50%,
+        rgba(186, 148, 62, 1) 60%,
+        rgba(236, 172, 32, 1) 80%,
+        rgba(186, 148, 62, 1) 100%
+      );
+      box-shadow: 1px 5px 5px #353535be;
+      & > * {
+        margin: 0.4rem 0;
+        text-align: start;
+        color: #353535;
+      }
+
+      & a {
+        text-decoration: underline;
+      }
+    }
 
     & > * {
       margin: 1rem;
@@ -301,5 +358,11 @@
         }
       }
     }
+  }
+}
+
+@keyframes shine {
+  50% {
+    background-position: right;
   }
 }

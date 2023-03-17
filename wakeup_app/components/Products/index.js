@@ -12,7 +12,7 @@ export default async function Products() {
   return (
     <>
       <h2 className={styles.product__title}>DES PLATEAUX GOURMANDS ET ÉLÉGANTS</h2>
-      <p className={styles.product__text}>Nous vous proposons des plateaux gourmands, élégants et raffinés. Du petit-déjeuner, au brunch et même au plateau apéritif nous proposons une selection de plateaux avec des produits de qualité.</p>
+      <p className={styles.product__text}>Nous vous proposons des plateaux gourmands, élégants et raffinés. Du petit-déjeuner, au brunch et jusqu&apos;à l&apos;apéritifs, nous proposons une selection de plateaux avec des produits de qualité.</p>
       <p className={styles.product__text}>Nous avons à cœur de travailler avec des artisans locaux et nous concoctons également la plupart de nos produits car ici nous prônons le fait-maison !
       </p>
       <p className={styles.product__text}>Découvrez nos plateaux et laissez vous tenter !</p>

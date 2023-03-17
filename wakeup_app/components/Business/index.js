@@ -1,5 +1,7 @@
 import styles from '/public/styles/Business.module.scss'
 import Link from 'next/link';
+import Image from 'next/image';
+import businessImage from '/public/images/business_portrait.webp';
 
 
 const Business = () => {
@@ -8,7 +10,9 @@ const Business = () => {
       <div className={styles.business__container}>
         <h2 className={styles.business__title}>Nos prestations</h2>
         <div className={styles.business__container__details}>
-          <div className={styles.business__container__details__background} />
+          <div className={styles.business__container__details__background} >
+            <Image src={businessImage} alt='photo presentation plateau entreprise' width={500} heigth={700} />
+          </div>
           <div className={styles.business__container__details__card}>
             <h3>Pour votre entreprise</h3>
             <p>Une réunion de plus de 100 personnes ou en petit comité, nous saurons nous adapter à vos besoins.</p>

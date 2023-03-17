@@ -18,12 +18,6 @@
 
       &__background {
         width: 50%;
-        min-height: 660px;
-        background-image: url('/images/business_portrait.webp');
-        background-attachment: fixed;
-        background-position: bottom 30%;
-        background-repeat: no-repeat;
-        background-size: 65%;
       }
 
       &__card {
@@ -42,11 +36,11 @@
 
         &__price {
           font-family: var(--fontTitle);
-          font-size: 1.6rem;
+          font-size: 1.4rem;
         }
 
         & > * {
-          margin: 0.5rem;
+          margin: 0.5rem 0;
         }
       }
     }
@@ -69,10 +63,10 @@
         align-items: center;
         &__background {
           width: 100%;
-          background-attachment: scroll;
-          background-position: center;
-          background-size: 100%;
-          min-height: 440px;
+          & img {
+            width: 100%;
+            height: auto;
+          }
         }
         &__card {
           width: 95%;
@@ -88,7 +82,7 @@
             margin: 0 0 1rem 0;
           }
           &__price {
-            font-size: 1.1rem !important;
+            font-size: 1rem !important;
             color: vars.$colorTitleLightTheme;
           }
           & ul {

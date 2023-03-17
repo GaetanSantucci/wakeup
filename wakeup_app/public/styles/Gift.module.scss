@@ -3,7 +3,7 @@
 
 .gift__container {
   width: 80%;
-  margin-top: 2rem;
+  margin-top: 3rem;
 
   &__details {
     display: flex;
@@ -14,12 +14,7 @@
 
     &__background {
       width: 50%;
-      min-height: 660px;
-      background-image: url('/images/carte_cadeau_portrait.webp');
-      background-attachment: fixed;
-      background-position: right;
-      background-repeat: no-repeat;
-      background-size: 65%;
+      // min-height: 660px;
     }
     &__card {
       width: 50%;
@@ -49,15 +44,16 @@
 @media (max-width: 768px) {
   .gift__container {
     width: 100%;
+    margin-top: 2rem;
     &__details {
       flex-direction: column;
       align-items: center;
       &__background {
         width: 100%;
-        background-attachment: scroll;
-        background-position: center;
-        background-size: 100%;
-        min-height: 440px;
+        & img {
+          width: 100%;
+          height: auto;
+        }
       }
       &__card {
         width: 95%;

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 
 const navTitle = [{
@@ -25,6 +26,8 @@ const navTitle = [{
 
 const Navbar = () => {
 
+  const isOpen = useSelector((state) => state.settings.isOpen)
+  console.log('isOpen: ', isOpen);
   const router = usePathname();
   const [isMenuActive, setIsMenuActive] = useState(false)
   const [stickyClass, setStickyClass] = useState(null);
@@ -35,11 +38,13 @@ const Navbar = () => {
 
   useEffect(() => {
 
-    const onScroll = () => {
-      const scrollPosition = window.scrollY;
-      scrollPosition > 180 ? setStickyClass(`${styles.stickyNav}`) : setStickyClass(null);
+    if (!isOpen) {
+      const onScroll = () => {
+        const scrollPosition = window.scrollY;
+        scrollPosition > 180 ? setStickyClass(`${styles.stickyNav}`) : setStickyClass(null);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
   });
 
   // reset isMenuActive on page load

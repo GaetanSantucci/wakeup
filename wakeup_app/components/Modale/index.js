@@ -13,7 +13,6 @@ const EventModale = () => {
 
   const dispatch = useDispatch();
   const isOpen = useSelector((state) => state.settings.isOpen)
-  console.log('isOpen: ', isOpen);
   const closeModale = () => {
     dispatch(toggleModale());
   }

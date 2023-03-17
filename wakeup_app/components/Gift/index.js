@@ -1,5 +1,7 @@
 import styles from '/public/styles/Gift.module.scss';
 import Link from 'next/link';
+import Image from 'next/image';
+import carteCadeauImage from '/public/images/carte_cadeau.webp';
 
 const Gift = () => {
   return (
@@ -7,7 +9,9 @@ const Gift = () => {
 
     <div className={styles.gift__container}>
       <div className={styles.gift__container__details}>
-        <div className={styles.gift__container__details__background} />
+        <div className={styles.gift__container__details__background} >
+          <Image src={carteCadeauImage} alt='photo carte cadeau avec enveloppe et cachet de cire' width={500} heigth={700} />
+        </div>
         <div className={styles.gift__container__details__card}>
           <h3 id='carte_cadeau'>carte cadeau</h3>
           <p>Surprenez vos proches et offrez leur un petit déjeuner gourmand livré à domicile ! </p>

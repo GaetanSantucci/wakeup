@@ -27,6 +27,7 @@ const Footer = () => {
         </ul>
       </div>
       <p>© 2023 WAKE UP, tous droits réservés</p>
+      <div className={styles.footer__container__creator}>Site réalisé par <Link href='mailto:contact@virtualgs.fr' target='blank'>VirtualGS</Link></div>
     </footer>
   )
 }

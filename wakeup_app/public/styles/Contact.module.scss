@@ -68,6 +68,19 @@
       transition: transform 0.2s ease-in-out;
     }
   }
+
+  &__success {
+    width: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: 1px solid #41b741;
+    background-color: #aae2aa;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+  }
 }
 
 .note {
@@ -94,13 +107,15 @@
 }
 
 @media (max-width: 768px) {
-  .contact__title {
-    font-size: calc(1.4rem + 0.6vw);
-  }
-  .row {
-    .col {
-      &.x_50 {
-        width: 100%;
+  .contact {
+    &__title {
+      font-size: calc(1.4rem + 0.6vw);
+    }
+    .row {
+      .col {
+        &.x_50 {
+          width: 100%;
+        }
       }
     }
   }

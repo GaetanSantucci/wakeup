@@ -24,7 +24,6 @@ export default async function Product({ id, targetTime, currentTime }) {
         {plate.length > 0 && plate[0].slug === 'paques' && (
           <>
             <div className={styles.productId__container__easter}>
-              <h3>WAKE UP X MATHIEU ARTHAUD CHOCOLATIER</h3>
               <p>Laissez vous tenter par notre nouvelle création aux notes fruitées et chocolatées.</p>
               <p>Ce plateau sera parfait pour les petits et grands enfants, idéal pour passer un joli moment en famille ou entre amis.</p>
               <p>Il se compose d&apos;un oeuf suprise à casser ainsi qu&apos;un assortiment de chocolats signé <Link href='https://www.arthaud-chocolatier.fr/' target='blank'>Mathieu Arthaud.</Link></p>

@@ -69,8 +69,7 @@
   .homepage__header__container {
     margin-top: 0;
     &__presentation {
-      width: 95%;
-      padding: 0.5rem;
+      width: 90%;
       font-size: 1rem;
     }
   }
@@ -103,11 +102,10 @@
 
     &__presentation {
       text-align: justify;
-      padding: 0.5rem;
       margin-top: 1rem;
-
+      padding: 0;
       & p {
-        margin: 1.2rem;
+        margin: 1.2rem 0;
       }
     }
 

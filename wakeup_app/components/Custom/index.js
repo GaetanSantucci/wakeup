@@ -16,7 +16,7 @@ const Custom = () => {
           <p>Offrez un plateau avec une attention, des fleurs, un petit mot...</p>
           <p>Nous vous proposons différentes personnalisations pour vos plateaux mais n&apos;hésitez pas à nous faire part de vos demandes spéciales sur notre page contact</p>
           <p>Nos formules :</p>
-          <p className={styles.custom__container__details__card__price}>Jolie ruban en lin avec noeud: <span>3,90 €</span></p>
+          <p className={styles.custom__container__details__card__price}>Jolie ruban en lin avec noeud : <span>3,90 €</span></p>
           <p className={styles.custom__container__details__card__price}>Décoration florale avec eucalyptus : <span>6,90 €</span></p>
 
           <Link href={`/contact`} >

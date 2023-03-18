@@ -7,7 +7,7 @@ import { toggleModale } from '@/store/reducers/settings';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import easter from '/public/images/modale-paques.webp';
+import easter from '/public/images/surprise.webp';
 
 const EventModale = () => {
 

@@ -39,6 +39,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: baseline;
       }
       & > * {
         margin: 0.5rem;
@@ -93,12 +94,13 @@
 
 @media (max-width: 768px) {
   .additionnal__container {
+    width: 90%;
     flex-direction: column;
-    margin-top: 0;
     align-items: center;
+    margin-top: 0;
 
     &__options {
-      width: 105%;
+      width: 100%;
       margin-top: 2rem;
       & h3 {
         font-size: 1.2rem;

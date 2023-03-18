@@ -10,12 +10,10 @@ export default function BusinessPage() {
 
   return (
     <>
-      
       <ScrollToTop />
       <Business />
       <Gift />
       <Custom />
-      <ButtonToScrollTop />
     </>
   )
 }

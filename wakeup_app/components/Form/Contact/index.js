@@ -15,20 +15,20 @@ export default function Contact() {
 
   const Modal = () => {
     return (
-      <div>Email envoyé avec succès !</div>
+      <div className={styles.contact_form__success}>Email envoyé avec succès !</div>
     )
   }
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  // const handleScroll = () => {
-  //   if (modal) {
-  //     setModal(false);
-  //   }
-  // };
+  const handleScroll = () => {
+    if (modal) {
+      setModal(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -66,9 +66,9 @@ export default function Contact() {
       setPhone('')
       setMessage('')
 
-      // setTimeout(() => {
-      //   setModal(false);
-      // }, 2500);
+      setTimeout(() => {
+        setModal(false);
+      }, 2500);
     }
   }
 

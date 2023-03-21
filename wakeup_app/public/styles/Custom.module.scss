@@ -3,7 +3,7 @@
 
 .custom__container {
   width: 80%;
-  margin-top: 2rem;
+  margin-top: 3rem;
 
   &__details {
     display: flex;
@@ -23,6 +23,7 @@
       justify-content: space-between;
       padding: 0 2rem;
       text-align: start;
+      line-height: 1.2;
       letter-spacing: 1px;
 
       &__price {

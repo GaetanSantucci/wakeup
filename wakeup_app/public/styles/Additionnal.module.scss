@@ -39,6 +39,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: baseline;
       }
       & > * {
         margin: 0.5rem;
@@ -96,9 +97,10 @@
     flex-direction: column;
     margin-top: 0;
     align-items: center;
+    width: 80%;
 
     &__options {
-      width: 105%;
+      width: 100%;
       margin-top: 2rem;
       & h3 {
         font-size: 1.2rem;

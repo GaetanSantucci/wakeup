@@ -42,14 +42,14 @@ const Additionnal = ({ products }) => {
             <label htmlFor='flower'>Formule ruban lin</label><span>3,90 €</span>
             {/* <input type='checkbox' /> */}
           </div>
-          <p>Un joli noeud en lin pour un des plus bel effet sur notre plateau</p>
+          <p>Un joli noeud en lin, parfait pour une occasion spéciale</p>
         </div>
         <div className={styles.additionnal__container__options__input}>
           <div className={styles.additionnal__container__options__input__title}>
             <label htmlFor='flower'>Formule décoration florale</label><span>6,90 €</span>
             {/* <input type='checkbox' /> */}
           </div>
-          <p>Une touche de fraicheur avec de l&apos;eucalyptus accroché par de la ficelle naturelle</p>
+          <p>Sobre et raffiné, l&apos;eucalyptus donnera un effet somptueux à votre plateau</p>
         </div>
       </div>
     </div>

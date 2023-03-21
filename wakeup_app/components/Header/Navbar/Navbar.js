@@ -27,7 +27,6 @@ const navTitle = [{
 const Navbar = () => {
 
   const isOpen = useSelector((state) => state.settings.isOpen)
-  console.log('isOpen: ', isOpen);
   const router = usePathname();
   const [isMenuActive, setIsMenuActive] = useState(false)
   const [stickyClass, setStickyClass] = useState(null);
@@ -42,8 +41,16 @@ const Navbar = () => {
       const onScroll = () => {
         const scrollPosition = window.scrollY;
         scrollPosition > 180 ? setStickyClass(`${styles.stickyNav}`) : setStickyClass(null);
+
+        if (isMenuActive) {
+          setIsMenuActive(false);
+        }
       }
       window.addEventListener('scroll', onScroll, { passive: true });
+      return () => {
+        // remove the event listener when the component unmounts
+        window.removeEventListener("scroll", onScroll);
+      };
     }
   });
 

@@ -74,6 +74,15 @@
       cursor: text;
       transition: transform 0.2s ease-in-out;
     }
+
+    &__success {
+      position: fixed;
+      top: 50%;
+      border: 1px solid #41b741;
+      background-color: #aae2aad6;
+      padding: 1rem;
+      border-radius: 5px;
+    }
   }
 }
 

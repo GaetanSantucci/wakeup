@@ -1,6 +1,6 @@
 'use client';
 // Components
-import { Articles, EventModale, InstaLink, Reviews, ScrollToTop, Spinner } from '../components';
+import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from '../components';
 
 //Styles
 import styles from '/public/styles/Homepage.module.scss';
@@ -10,17 +10,17 @@ import rightImage from '/public/images/right-full.webp';
 import Image from 'next/image';
 
 import { Suspense } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 export default function Home() {
 
-  const isOpen = useSelector((state) => state.settings.isOpen)
+  // const isOpen = useSelector((state) => state.settings.isOpen)
 
   return (
     <>
       <ScrollToTop />
       <EventModale />
-      { !isOpen ? <InstaLink /> : null }
+      {/* { !isOpen ? <InstaLink /> : null } */}
       <div className={styles.homepage__header__container}>
         <div className={styles.homepage__header__container__image}>
           <Image src={leftImage} alt='Plateau Dolce Vita'/>

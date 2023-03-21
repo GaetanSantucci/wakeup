@@ -15,7 +15,7 @@ export default function Contact() {
 
   const Modal = () => {
     return (
-      <div className={styles.contact__success}>Email envoyé avec succès !</div>
+      <div>Email envoyé avec succès !</div>
     )
   }
 
@@ -102,7 +102,7 @@ export default function Contact() {
         </div>
         <div className={`${styles.form_field} ${styles.col} ${styles.x_50}`}>
           <input id='phone' className={phone.length > 0 ? `${styles.not_empty} ${styles.input_text} ${styles.js_input}` : `${styles.input_text} ${styles.js_input}`}
-            type='number'
+            type='tel'
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required />
@@ -118,11 +118,11 @@ export default function Contact() {
             required />
           {/* <label className={styles.label} htmlFor='message'>Message</label> */}
         </div>
-        {modal && <Modal />}
         <div className={`${styles.form_field} ${styles.col} ${styles.x_100}`}>
           <button className={styles.button} type='submit'>Envoyer</button>
         </div>
       </form>
+      {modal ? <Modal /> : null}
     </>
   )
 }

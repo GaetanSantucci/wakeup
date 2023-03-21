@@ -14,6 +14,7 @@ export default function BusinessPage() {
       <Business />
       <Gift />
       <Custom />
+      <ButtonToScrollTop />
     </>
   )
 }

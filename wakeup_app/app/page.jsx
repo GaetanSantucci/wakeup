@@ -1,6 +1,6 @@
 'use client';
 // Components
-import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from '../components';
+import { Articles, EventModale, InstaLink, Reviews, ScrollToTop, Spinner } from '../components';
 
 //Styles
 import styles from '/public/styles/Homepage.module.scss';
@@ -12,12 +12,6 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 
-// import dynamic from 'next/dynamic';
-// const DynamicComponentWithNoSSR = dynamic(
-//   () => import('../components/Reviews'),
-//   { ssr: false }
-// )
-
 export default function Home() {
 
   const isOpen = useSelector((state) => state.settings.isOpen)
@@ -26,6 +20,7 @@ export default function Home() {
     <>
       <ScrollToTop />
       <EventModale />
+      { !isOpen ? <InstaLink /> : null }
       <div className={styles.homepage__header__container}>
         <div className={styles.homepage__header__container__image}>
           <Image src={leftImage} alt='Plateau Dolce Vita'/>

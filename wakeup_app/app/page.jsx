@@ -1,5 +1,4 @@
 'use client';
-
 // Components
 import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from '../components';
 
@@ -12,6 +11,12 @@ import Image from 'next/image';
 
 import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
+
+// import dynamic from 'next/dynamic';
+// const DynamicComponentWithNoSSR = dynamic(
+//   () => import('../components/Reviews'),
+//   { ssr: false }
+// )
 
 export default function Home() {
 

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '/public/styles/Contact.module.scss';
 
 
@@ -18,6 +18,17 @@ export default function Contact() {
       <div className={styles.contact__success}>Email envoyé avec succès !</div>
     )
   }
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
+
+  // const handleScroll = () => {
+  //   if (modal) {
+  //     setModal(false);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -54,6 +65,10 @@ export default function Contact() {
       setEmail('')
       setPhone('')
       setMessage('')
+
+      // setTimeout(() => {
+      //   setModal(false);
+      // }, 2500);
     }
   }
 
@@ -95,13 +110,13 @@ export default function Contact() {
         </div>
 
         <div className={`${styles.form_field} ${styles.col} ${styles.x_100} ${styles.align_center}`}>
-          <input id='message' className={message.length > 0 ? `${styles.not_empty} ${styles.input_text} ${styles.js_input}` : `${styles.input_text} ${styles.js_input}`}
-            type='textarea'
+          <textarea id='message' className={message.length > 0 ? `${styles.not_empty} ${styles.input_text} ${styles.js_input}` : `${styles.input_text} ${styles.js_input}`}
             value={message}
-            title='Le message doit être composé de lettres, chiffres et les caractères suivants !,.%()'
+            placeholder='Saisissez votre message'
             onChange={(e) => setMessage(e.target.value)}
+            pattern='^[a-zA-Z0-9 !,.%()]+$'
             required />
-          <label className={styles.label} htmlFor='message'>Message</label>
+          {/* <label className={styles.label} htmlFor='message'>Message</label> */}
         </div>
         {modal && <Modal />}
         <div className={`${styles.form_field} ${styles.col} ${styles.x_100}`}>

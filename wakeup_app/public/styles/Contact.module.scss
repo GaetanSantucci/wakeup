@@ -55,6 +55,13 @@
       }
     }
 
+    & textarea {
+      min-height: 100px;
+      height: auto;
+      background-color: #e0e0e0e5 !important;
+      padding: 0.4rem;
+    }
+
     .label {
       position: absolute;
       left: 20px;

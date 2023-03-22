@@ -49,7 +49,7 @@ const Additionnal = ({ products }) => {
             <label htmlFor='flower'>Formule décoration florale</label><span>6,90 €</span>
             {/* <input type='checkbox' /> */}
           </div>
-          <p>Sobre et raffiné, l&apos;eucalyptus donnera un effet somptueux à votre plateau</p>
+          <p>Sobre et raffiné, l&apos;eucalyptus donnera un effet naturel à votre plateau</p>
         </div>
       </div>
     </div>

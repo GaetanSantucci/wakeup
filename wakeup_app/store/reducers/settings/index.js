@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isOpen: true
+  modaleIsOpen: true,
+  menuIsOpen: false,
+  cartIsOpen: false,
+  scrollYPosition: null,
 }
 
 const settingsSlice = createSlice({
@@ -11,11 +14,32 @@ const settingsSlice = createSlice({
     toggleModale: (state) => {
       return {
         ...state,
-        isOpen: !state.isOpen
+        modaleIsOpen: !state.modaleIsOpen
+      }
+    },
+
+    handleChangeMenu: (state) => {
+      return {
+        ...state,
+        menuIsOpen: !state.menuIsOpen
+      }
+    },
+
+    toggleCartModale: (state) => {
+      return {
+        ...state,
+        cartIsOpen: !state.cartIsOpen
+      }
+    },
+
+    changeScrollYPosition: (state, action) => {
+      return {
+        ...state,
+        scrollYPosition: action.payload
       }
     }
   }
 });
 
-export const { toggleModale } = settingsSlice.actions;
+export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition } = settingsSlice.actions;
 export default settingsSlice.reducer;

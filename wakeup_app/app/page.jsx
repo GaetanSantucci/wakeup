@@ -10,17 +10,14 @@ import rightImage from '/public/images/right-full.webp';
 import Image from 'next/image';
 
 import { Suspense } from 'react';
-// import { useSelector } from 'react-redux';
 
 export default function Home() {
 
-  // const isOpen = useSelector((state) => state.settings.isOpen)
 
   return (
     <>
       <ScrollToTop />
       <EventModale />
-      {/* { !isOpen ? <InstaLink /> : null } */}
       <div className={styles.homepage__header__container}>
         <div className={styles.homepage__header__container__image}>
           <Image src={leftImage} alt='Plateau Dolce Vita'/>

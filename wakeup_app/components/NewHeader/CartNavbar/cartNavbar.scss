@@ -1,0 +1,14 @@
+.shop_item {
+  display: flex;
+  align-items: center;
+  &_icon {
+    font-size: 1.8rem;
+    stroke: none;
+    text-align: end;
+    cursor: pointer;
+
+    &:nth-child(1) {
+      font-size: 2rem;
+    }
+  }
+}

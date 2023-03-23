@@ -26,7 +26,9 @@ const navTitle = [{
 
 const Navbar = () => {
 
-  const isOpen = useSelector((state) => state.settings.isOpen)
+  const isOpen = useSelector((state) => state.settings.modaleIsOpen)
+  const menuIsOpen = useSelector((state) => state.settings.menuIsOpen)
+  console.log('menuIsOpen: ', menuIsOpen);
   const router = usePathname();
   const [isMenuActive, setIsMenuActive] = useState(false)
   const [stickyClass, setStickyClass] = useState(null);
@@ -42,9 +44,9 @@ const Navbar = () => {
         const scrollPosition = window.scrollY;
         scrollPosition > 180 ? setStickyClass(`${styles.stickyNav}`) : setStickyClass(null);
 
-        if (isMenuActive) {
-          setIsMenuActive(false);
-        }
+        // if (isMenuActive) {
+        //   setIsMenuActive(false);
+        // }
       }
       window.addEventListener('scroll', onScroll, { passive: true });
       return () => {
@@ -54,10 +56,10 @@ const Navbar = () => {
     }
   });
 
-  // reset isMenuActive on page load
-  useEffect(() => {
-    setIsMenuActive(false);
-  }, [router]);
+  // // reset isMenuActive on page load
+  // useEffect(() => {
+  //   setIsMenuActive(false);
+  // }, [router]);
 
   return (
     <div className={styles.header__container}>

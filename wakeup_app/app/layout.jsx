@@ -7,6 +7,8 @@ import { Header, Footer, ScrollToTop, ButtonToScrollTop } from '/components';
 
 // import my redux
 import { Providers } from './provider'
+import NewHeader from '@/components/NewHeader';
+import { CartModale } from '@/components/Modale';
 
 export default function RootLayout({ children }) {
   return (
@@ -15,7 +17,9 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <ScrollToTop />
-          <Header />
+          <NewHeader />
+          <CartModale />
+          {/* <Header /> */}
             <main className={styles.main}>
               {children}
             </main>

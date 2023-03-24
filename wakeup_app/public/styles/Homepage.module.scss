@@ -27,9 +27,9 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
   transition: all 0.4s;
   font-family: var(--fontText);
   // margin-top: 1rem;

@@ -1,14 +1,14 @@
 //~ Import modules
-import settingsReducer from './settings';
+import settingsReducer from './Settings';
 // import productReducer from './Product';
-// import userReducer from './User';
+import userReducer from './User';
 // import apiProduct from '../api/product.js';
 // import reviewsReducer from './Reviews';
 
 const reducers = {
-  settings: settingsReducer
+  settings: settingsReducer,
+  user: userReducer
   // product: productReducer,
-  // user: userReducer,
   // apiProduct
 };
 

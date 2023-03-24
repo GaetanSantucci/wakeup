@@ -3,7 +3,7 @@ import './modale.scss';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleModale, toggleCartModale } from '@/store/reducers/settings';
+import { toggleModale, toggleCartModale } from '@/store/reducers/Settings';
 
 import Image from 'next/image';
 import Link from 'next/link';

@@ -28,7 +28,7 @@ const Navbar = () => {
 
   const isOpen = useSelector((state) => state.settings.modaleIsOpen)
   const menuIsOpen = useSelector((state) => state.settings.menuIsOpen)
-  console.log('menuIsOpen: ', menuIsOpen);
+
   const router = usePathname();
   const [isMenuActive, setIsMenuActive] = useState(false)
   const [stickyClass, setStickyClass] = useState(null);

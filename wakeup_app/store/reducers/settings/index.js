@@ -5,6 +5,7 @@ const initialState = {
   menuIsOpen: false,
   cartIsOpen: false,
   scrollYPosition: null,
+  userRegister: false,
 }
 
 const settingsSlice = createSlice({
@@ -37,9 +38,16 @@ const settingsSlice = createSlice({
         ...state,
         scrollYPosition: action.payload
       }
+    },
+
+    openRegisterForm: (state) => {
+      return {
+        ...state,
+        userRegister: !state.userRegister
+      }
     }
   }
 });
 
-export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition } = settingsSlice.actions;
+export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm } = settingsSlice.actions;
 export default settingsSlice.reducer;

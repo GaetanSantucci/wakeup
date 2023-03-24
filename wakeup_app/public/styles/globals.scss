@@ -55,6 +55,10 @@ body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
   font-family: var(--fontText) !important;
   font-size: 1rem !important;
   color: vars.$colorParagraphLightTheme;

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeScrollYPosition } from '@/store/reducers/settings';
+import { changeScrollYPosition } from '@/store/reducers/Settings';
 
 const navTitle = [{
   slug: '/',

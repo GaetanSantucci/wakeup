@@ -1,4 +1,4 @@
 import Contact from './Contact';
-import UserForm from './User';
+import { UserLogin } from './User';
 
-export { Contact, UserForm };
+export { Contact, UserLogin };

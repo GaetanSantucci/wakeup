@@ -1,0 +1,38 @@
+// .user_form {
+//   width: 40%;
+//   min-width: 300px;
+//   max-width: 600px;
+//   margin: 2rem;
+//   padding: 1rem 0;
+//   background: #fafafa;
+//   box-shadow: 20px 20px 60px #d5d5d5, -20px -20px 60px #ffffff;
+
+//   & input {
+//     outline: none;
+//     background-color: #d5d5d5;
+
+//     &::placeholder {
+//       color: red;
+//       font-style: italic;
+//     }
+
+//     &:focus {
+//       border: 2px solid blue;
+//     }
+
+//     &:active {
+//       background-color: lightblue;
+//       border: 2px solid darkblue;
+//     }
+
+//     & button {
+//       background-color: cadetblue;
+//       &::after {
+//         display: none;
+//       }
+//     }
+//   }
+// }
+
+// @media (max-width: 768px) {
+// }

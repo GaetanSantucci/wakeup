@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: {
-    email: 'alexia',
+    email: '',
+    password: '',
     lastname: '',
     firstname: '',
     address: {
@@ -11,7 +12,9 @@ const initialState = {
       zipcode: '',
     },
     isAdmin: false,
-  }
+  },
+  isSuccess: '',
+  isError: ''
 }
 
 const userSlice = createSlice({
@@ -19,13 +22,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     inputValue: (state, action) => {
-      console.log('state: ', state.user.email);
-      // const value = action.payload.value;
-
-      // console.log('value dans le reducer: ', value);
-      // const input = action.payload.inputType;
-      // console.log('input dans le reducer: ', input);
-      state
       return {
         ...state,
         user: {
@@ -33,9 +29,22 @@ const userSlice = createSlice({
           [action.payload.inputType]: action.payload.value
         }
       }
+    },
+    setSuccessMessage: (state, action) => {
+      return {
+        ...state,
+        isSuccess: action.payload
+      }
+    },
+
+    setErrorMessage: (state, action) => {
+      return {
+        ...state,
+        isError: action.payload
+      }
     }
   }
 });
 
-export const { inputValue } = userSlice.actions;
+export const { inputValue, setSuccessMessage, setErrorMessage } = userSlice.actions;
 export default userSlice.reducer;

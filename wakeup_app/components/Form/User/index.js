@@ -13,6 +13,7 @@ const UserLogin = () => {
   const user = useSelector((state) => state.user)
   console.log('user: ', user);
   const isRegister = useSelector((state) => state.settings.userRegister)
+  const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers'
 
   const handleUserRegister = () => {
     dispatch(openRegisterForm())
@@ -20,14 +21,40 @@ const UserLogin = () => {
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
-    console.log('event.target: ', event.target);
-
     dispatch(inputValue({ inputType: id, value }));
   };
 
-  const submitConnection = () => {
+  // const loginUser = () => {
 
+  // }
+
+  const createUser = async (event) => {
+    event.preventDefault();
+
+    const { password, confirmPassword } = user.user
+    console.log('confirmPassword: ', confirmPassword);
+    console.log('password: ', password);
+
+    if (password !== confirmPassword) {
+      dispatch(setErrorMessage('Les mots de passe ne correspondent pas.'))
+    }
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: user.email, password: user.password })
+    }
+    try {
+      const response = await fetch(`${APIEndpoint}/signup`, requestOptions);
+      if (!response.ok) dispatch(setErrorMessage('Une erreur est survenue lors de la création du compte, veuillez ressayer'))
+      dispatch(setSuccessMessage('Votre compte a bien été créé !'))
+      const data = await response.json();
+      console.log('data: ', data);
+    } catch (err) {
+      dispatch(setErrorMessage('Une erreur est survenue lors de la création du compte, veuillez ressayer'))
+      console.log('error: ', err);
+    }
   }
+
 
   const userFields = isRegister ? [
     {
@@ -67,8 +94,19 @@ const UserLogin = () => {
       />
       <div className='user_form_validate'>
         {
-          isRegister ? <><p>Déjà membre, se <span onClick={handleUserRegister}>connecter</span></p><button type='submit'>Valider</button></> :
-            <><p>Pas encore inscrit, cliquez <span onClick={handleUserRegister}>ici</span></p><button type='submit'>S&apos;inscrire</button></>
+          isRegister ? <><p>Déjà membre, se <span onClick={handleUserRegister}>connecter</span></p>
+            <button
+              // onClick={loginUser}
+              type='submit'>
+              S&apos;inscrire
+            </button></>
+            :
+            <><p>Pas encore inscrit, cliquez <span onClick={handleUserRegister}>ici</span></p>
+              <button
+                type='submit'
+                onClick={createUser}>
+                Valider
+              </button></>
         }
       </div>
     </form>

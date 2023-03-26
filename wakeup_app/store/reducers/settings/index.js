@@ -5,7 +5,9 @@ const initialState = {
   menuIsOpen: false,
   cartIsOpen: false,
   scrollYPosition: null,
-  userRegister: false,
+  isRegister: false,
+  showPassword: false,
+  showPasswordConfirm: false,
 }
 
 const settingsSlice = createSlice({
@@ -43,11 +45,24 @@ const settingsSlice = createSlice({
     openRegisterForm: (state) => {
       return {
         ...state,
-        userRegister: !state.userRegister
+        isRegister: !state.isRegister
+      }
+    },
+
+    toggleShowPassword: (state) => {
+      return {
+        ...state,
+        showPassword: !state.showPassword
+      }
+    },
+    toggleShowPasswordConfirm: (state) => {
+      return {
+        ...state,
+        showPasswordConfirm: !state.showPasswordConfirm
       }
     }
   }
 });
 
-export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm } = settingsSlice.actions;
+export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm } = settingsSlice.actions;
 export default settingsSlice.reducer;

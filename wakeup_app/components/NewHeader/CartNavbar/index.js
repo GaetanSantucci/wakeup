@@ -1,7 +1,7 @@
 'use client';
 import './cartNavbar.scss';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +19,7 @@ const CartNavbar = () => {
   return (
     <div className='shop_item'>
       <Link href='/user'>
-        <Person2OutlinedIcon className='shop_item_icon' />
+        <AccountCircleIcon className='shop_item_icon' />
       </Link>
       <ShoppingBagOutlinedIcon className='shop_item_icon' onClick={handleOpenCart} />
     </div>

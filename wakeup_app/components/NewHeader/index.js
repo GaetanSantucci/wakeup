@@ -34,7 +34,7 @@ const NewHeader = () => {
   return (
     <header className='header'>
       <Link legacyBehavior href='/'>
-        <Image src={logo} alt='logo Wake up' className='logo' />
+        <Image src={logo} alt='logo Wake up' className='logo' priority />
       </Link>
       <div className={`navbar_shop ${stickyClass}`}>
         <NewNavbar />

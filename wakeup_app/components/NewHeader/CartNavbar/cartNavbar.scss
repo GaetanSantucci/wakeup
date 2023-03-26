@@ -4,11 +4,16 @@
   &_icon {
     font-size: 1.8rem;
     stroke: none;
+    fill: #353535;
     text-align: end;
     cursor: pointer;
 
-    &:nth-child(1) {
-      font-size: 2rem;
+    &:nth-child(2) {
+      margin-bottom: 5px;
+    }
+
+    &:hover {
+      fill: #000000;
     }
   }
 }

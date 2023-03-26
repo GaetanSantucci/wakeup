@@ -1,7 +1,6 @@
 import './input.scss'
 
 const Input = ({ id, type, label, value, onChangeValue }) => {
-  console.log('value: ', value);
 
   return (
     <input

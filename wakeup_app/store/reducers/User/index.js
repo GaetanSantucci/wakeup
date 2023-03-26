@@ -4,6 +4,7 @@ const initialState = {
   user: {
     email: '',
     password: '',
+    confirmPwd: '',
     lastname: '',
     firstname: '',
     address: {
@@ -38,13 +39,26 @@ const userSlice = createSlice({
     },
 
     setErrorMessage: (state, action) => {
+      console.log('action: ', action.payload);
       return {
         ...state,
         isError: action.payload
+      }
+    },
+
+    resetUser: (state) => {
+      return {
+        ...state,
+        user: {
+          ...state,
+          email: '',
+          password: '',
+          confirmPwd: ''
+        }
       }
     }
   }
 });
 
-export const { inputValue, setSuccessMessage, setErrorMessage } = userSlice.actions;
+export const { inputValue, setSuccessMessage, setErrorMessage, resetUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -6,6 +6,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm } from '@/store/reducers/Settings';
 import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/store/reducers/User';
@@ -15,6 +16,7 @@ import Cookies from 'js-cookie';
 
 const UserLogin = () => {
   const dispatch = useDispatch();
+  const { push } = useRouter();
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
   const { isRegister, showPassword, showPasswordConfirm } = useSelector((state) => state.settings);
@@ -93,7 +95,7 @@ const UserLogin = () => {
 
         // set refresh token cookie
         Cookies.set('refreshToken', refreshToken);
-
+        push('/contact')
       }
     } catch (err) {
       console.log('error: ', err);

@@ -25,9 +25,10 @@ const UserLogin = () => {
   const { isRegister, showPassword, showPasswordConfirm, isPasswordInputFocused } = useSelector((state) => state.settings);
   console.log('isPasswordInputFocused: ', isPasswordInputFocused);
 
-  // const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
-  const APIEndpoint = 'http://localhost:5555/api/v1/customers';
+  const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
+  // const APIEndpoint = 'http://localhost:5555/api/v1/customers';
 
+  // Remove alert pop message 
   useEffect(() => {
     setTimeout(() => {
       dispatch(setErrorMessage(''))
@@ -72,7 +73,6 @@ const UserLogin = () => {
         return dispatch(setErrorMessage(errorMessage));
       }
 
-
       const data = await response.json();
       const { accessToken, refreshToken, id } = data;
 
@@ -87,11 +87,12 @@ const UserLogin = () => {
         const user = await userResponse.json();
 
         // set user cookie
-        Cookies.set('user', JSON.stringify(user));
+        Cookies.set('userData', JSON.stringify(user));
 
         // set refresh token cookie
         Cookies.set('refreshToken', refreshToken);
-        push('/contact')
+        push(`/user/profile/${id}`)
+        console.log('push(`/user/profile`): ', push(`/user/profile`));
       }
     } catch (err) {
       console.log('error: ', err);
@@ -142,15 +143,18 @@ const UserLogin = () => {
       dispatch(setSuccessMessage(data))
       dispatch(resetUser());
     } catch (err) {
+      dispatch(err.message)
       console.log('error: ', err);
     }
   }
 
+  // function for UX 
   const handleShowPwd = () => dispatch(toggleShowPassword());
   const handleShowPwdConfirm = () => dispatch(toggleShowPasswordConfirm());
-  const handleUserRegister = () => dispatch(openRegisterForm())
+  const handleUserRegister = () => { dispatch(openRegisterForm()); dispatch(resetUser()); dispatch(handleInputFocused(false)) }
   const handleFocusInput = () => dispatch(handleInputFocused(true));
 
+  // Dynamic method for store input by type
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     dispatch(inputValue({ inputType: id, value }));
@@ -158,59 +162,47 @@ const UserLogin = () => {
 
 
 
-  //todo ===========================================
+  // Logic for display and customize the constraints for password with indicator text and color
 
   // Check for capital letter
   const capitalRegex = /[A-Z]/;
   const hasCapital = (capitalRegex.test(user.password));
-  console.log('hasCapital: ', hasCapital);
 
   // Check for lowercase letter
   const lowercaseRegex = /[a-z]/;
   const hasLowercase = (lowercaseRegex.test(user.password));
-  console.log('hasLowercase: ', hasLowercase);
 
   // Check for number
   const numberRegex = /[0-9]/;
   const hasNumber = (numberRegex.test(user.password));
-  console.log('hasNumber: ', hasNumber);
 
+  // Check for length
   const isMinLength = (user.password.length >= 8)
-  console.log('isMinLength: ', isMinLength);
 
 
   const getPasswordColor = () => {
-    if (password === '') {
-      return '';
-    }
-    let numFulfilledConstraints = 0;
+    const constraints = [
+      hasCapital,
+      hasLowercase,
+      hasNumber,
+      isMinLength,
+    ];
+
+    const numFulfilledConstraints = constraints.filter(Boolean).length;
     console.log('numFulfilledConstraints: ', numFulfilledConstraints);
 
-    if (hasCapital) {
-      numFulfilledConstraints++;
-    }
-
-    if (hasLowercase) {
-      numFulfilledConstraints++;
-    }
-
-    if (hasNumber) {
-      numFulfilledConstraints++;
-    }
-
-    if (isMinLength) {
-      numFulfilledConstraints++;
-    }
-
-    if (numFulfilledConstraints === 4) {
+    if (password === '') {
+      return '';
+    } else if (numFulfilledConstraints === 4) {
       return '#48bf48';
     } else if (numFulfilledConstraints >= 2) {
       return '#ff8c1a';
     } else if (numFulfilledConstraints === 1) {
       return '#ff0000';
     } else {
-      return '#353535'
+      return '#353535';
     }
+
   };
 
   const getPasswordStrengthBarWidth = () => {
@@ -226,9 +218,6 @@ const UserLogin = () => {
       return '0'
     }
   };
-
-  //todo ===========================================
-
 
   return (
     <form className='user_form'>
@@ -306,4 +295,4 @@ const UserLogin = () => {
   )
 }
 
-export { UserLogin };
+export default UserLogin;

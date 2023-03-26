@@ -1,0 +1,30 @@
+.container {
+  margin-top: 2rem;
+  width: 50%;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-rows: 1.3fr 0.7fr;
+  gap: 20px 20px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    'profile_card profile_card'
+    'last_booking orders';
+}
+
+.profile_card {
+  grid-area: profile_card;
+}
+
+.orders {
+  grid-area: orders;
+}
+
+.last_booking {
+  grid-area: last_booking;
+}
+
+.card_subtitle {
+  font-size: 1.2rem;
+  text-align: left;
+  margin-bottom: 0.6rem;
+}

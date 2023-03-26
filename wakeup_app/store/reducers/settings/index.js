@@ -64,7 +64,6 @@ const settingsSlice = createSlice({
     },
 
     handleInputFocused: (state, action) => {
-      console.log('action: ', action);
       return {
         ...state,
         isPasswordInputFocused: action.payload

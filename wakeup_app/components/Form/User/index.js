@@ -8,41 +8,38 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm } from '@/store/reducers/Settings';
+
+import { openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused } from '@/store/reducers/Settings';
 import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/store/reducers/User';
+
 
 import Cookies from 'js-cookie';
 
 
 const UserLogin = () => {
+
   const dispatch = useDispatch();
   const { push } = useRouter();
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
-  const { isRegister, showPassword, showPasswordConfirm } = useSelector((state) => state.settings);
-  console.log('isRegister: ', isRegister);
+  const { isRegister, showPassword, showPasswordConfirm, isPasswordInputFocused } = useSelector((state) => state.settings);
+  console.log('isPasswordInputFocused: ', isPasswordInputFocused);
 
-  const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
+  // const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
+  const APIEndpoint = 'http://localhost:5555/api/v1/customers';
 
   useEffect(() => {
     setTimeout(() => {
       dispatch(setErrorMessage(''))
       dispatch(setSuccessMessage(''))
     }, 4000)
-  }, [isError, isSuccess])
+  }, [dispatch, isError, isSuccess])
 
-  const handleUserRegister = () => {
-    dispatch(openRegisterForm())
-  }
 
-  const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    dispatch(inputValue({ inputType: id, value }));
-  };
 
   const loginUser = async (event) => {
-    event.preventDefault();
 
+    event.preventDefault();
 
     const inputs = [
       { name: 'email', value: user.email, errorMessage: 'Merci de saisir un email' },
@@ -76,7 +73,6 @@ const UserLogin = () => {
       }
 
 
-
       const data = await response.json();
       const { accessToken, refreshToken, id } = data;
 
@@ -103,6 +99,7 @@ const UserLogin = () => {
   }
 
   const createUser = async (event) => {
+
     event.preventDefault();
 
     const inputs = [
@@ -151,6 +148,87 @@ const UserLogin = () => {
 
   const handleShowPwd = () => dispatch(toggleShowPassword());
   const handleShowPwdConfirm = () => dispatch(toggleShowPasswordConfirm());
+  const handleUserRegister = () => dispatch(openRegisterForm())
+  const handleFocusInput = () => dispatch(handleInputFocused(true));
+
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    dispatch(inputValue({ inputType: id, value }));
+  };
+
+
+
+  //todo ===========================================
+
+  // Check for capital letter
+  const capitalRegex = /[A-Z]/;
+  const hasCapital = (capitalRegex.test(user.password));
+  console.log('hasCapital: ', hasCapital);
+
+  // Check for lowercase letter
+  const lowercaseRegex = /[a-z]/;
+  const hasLowercase = (lowercaseRegex.test(user.password));
+  console.log('hasLowercase: ', hasLowercase);
+
+  // Check for number
+  const numberRegex = /[0-9]/;
+  const hasNumber = (numberRegex.test(user.password));
+  console.log('hasNumber: ', hasNumber);
+
+  const isMinLength = (user.password.length >= 8)
+  console.log('isMinLength: ', isMinLength);
+
+
+  const getPasswordColor = () => {
+    if (password === '') {
+      return '';
+    }
+    let numFulfilledConstraints = 0;
+    console.log('numFulfilledConstraints: ', numFulfilledConstraints);
+
+    if (hasCapital) {
+      numFulfilledConstraints++;
+    }
+
+    if (hasLowercase) {
+      numFulfilledConstraints++;
+    }
+
+    if (hasNumber) {
+      numFulfilledConstraints++;
+    }
+
+    if (isMinLength) {
+      numFulfilledConstraints++;
+    }
+
+    if (numFulfilledConstraints === 4) {
+      return '#48bf48';
+    } else if (numFulfilledConstraints >= 2) {
+      return '#ff8c1a';
+    } else if (numFulfilledConstraints === 1) {
+      return '#ff0000';
+    } else {
+      return '#353535'
+    }
+  };
+
+  const getPasswordStrengthBarWidth = () => {
+    const passwordColor = getPasswordColor();
+
+    if (passwordColor === '#48bf48') {
+      return '100%';
+    } else if (passwordColor === '#ff8c1a') {
+      return '50%';
+    } else if (passwordColor === '#ff0000') {
+      return '20%';
+    } else {
+      return '0'
+    }
+  };
+
+  //todo ===========================================
+
 
   return (
     <form className='user_form'>
@@ -172,6 +250,8 @@ const UserLogin = () => {
             placeholder='Mot de passe'
             value={user.password}
             onChange={handleInputChange}
+            onFocus={handleFocusInput}
+            title='Le mot de passe doit contenir au moins 8 caractères dont 1 chiffre, 1 lettre minuscule et 1 lettre majuscule.'
             required
           />
           {showPassword ? <VisibilityOffIcon onClick={handleShowPwd} /> : <VisibilityIcon onClick={handleShowPwd} />}
@@ -191,7 +271,18 @@ const UserLogin = () => {
       </div>
 
 
-      {isError != '' ? <p className='user_form_error'>{isError}</p> : null}
+      {isPasswordInputFocused && isRegister && <div className='password_strength'>
+        <label>Doit contenir :</label>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: '5px' }}>
+          <div className={hasCapital ? 'password_check' : null}>1 majuscule</div>
+          <div className={hasLowercase ? 'password_check' : null}>1 minuscule</div>
+          <div className={hasNumber ? 'password_check' : null}>1 chiffre</div>
+          <div className={isMinLength ? 'password_check' : null}>Minimum 8 caractères</div>
+        </div>
+        <div style={{ backgroundColor: getPasswordColor(), marginTop: '5px', height: '4px', width: getPasswordStrengthBarWidth(), borderRadius: '10px' }} />
+      </div>
+      }
+      {isError && <p className='user_form_error'>{isError}</p>}
       {isSuccess && <p className='user_form_success'>{isSuccess}</p>}
 
       <div className='user_form_validate'>

@@ -8,6 +8,7 @@ const initialState = {
   isRegister: false,
   showPassword: false,
   showPasswordConfirm: false,
+  isPasswordInputFocused: false,
 }
 
 const settingsSlice = createSlice({
@@ -60,9 +61,17 @@ const settingsSlice = createSlice({
         ...state,
         showPasswordConfirm: !state.showPasswordConfirm
       }
+    },
+
+    handleInputFocused: (state, action) => {
+      console.log('action: ', action);
+      return {
+        ...state,
+        isPasswordInputFocused: action.payload
+      }
     }
   }
 });
 
-export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm } = settingsSlice.actions;
+export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused } = settingsSlice.actions;
 export default settingsSlice.reducer;

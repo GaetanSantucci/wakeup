@@ -121,10 +121,14 @@
       fill: grey;
     }
   }
-
-  // & input {
-  //   width: 100%;
-  // }
+}
+.password_strength {
+  width: 70%;
+  font-size: 0.8rem;
+  line-height: 1.1;
+}
+.password_check {
+  color: #48bf48;
 }
 @media (max-width: 768px) {
 }

@@ -7,8 +7,8 @@ import { toggleModale, toggleCartModale } from '@/store/reducers/Settings';
 
 import Image from 'next/image';
 import Link from 'next/link';
-// import easter from '/public/images/modale-paques.webp';
-import surprise from '/public/images/surprise.webp';
+import easter from '/public/images/modale-paques.webp';
+// import surprise from '/public/images/surprise.webp';
 
 const EventModale = () => {
 
@@ -24,7 +24,7 @@ const EventModale = () => {
         <div className='backdrop__container'>
           <div className='modale__container'>
             <div className='modale__container__item'>
-              <Image src={surprise} width={550} height={750} alt='Plateau de Pâques' />
+              <Image src={easter} width={550} height={750} alt='Plateau de Pâques' />
               <div className='modale__container__item__details' >
                 <div className='modale_close' onClick={closeModale}>
                   <CancelSharpIcon />

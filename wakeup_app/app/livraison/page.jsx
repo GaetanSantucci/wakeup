@@ -1,4 +1,4 @@
-import { ScrollToTop, Maps  } from '@/components';
+import { ScrollToTop, Maps  } from '@/src/components';
 
 export default function ClientFetching() {
 

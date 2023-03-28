@@ -1,6 +1,6 @@
 'use client';
 
-import { Business,ButtonToScrollTop,Custom, Gift, ScrollToTop } from '@/components';
+import { Business,ButtonToScrollTop,Custom, Gift, ScrollToTop } from '@/src/components';
 
 import { usePathname } from 'next/navigation';
 

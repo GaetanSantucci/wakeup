@@ -1,4 +1,4 @@
-import { ScrollToTop, UserLogin } from '@/components';
+import { ScrollToTop, UserLogin } from '@/src/components';
 
 export default function userConnection() {
 

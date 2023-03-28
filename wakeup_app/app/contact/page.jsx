@@ -1,5 +1,5 @@
 import { Contact } from '@/components/Form';
-import { ScrollToTop } from '@/components';
+import { ScrollToTop } from '@/src/components';
 
 export default function contact() {
   return (

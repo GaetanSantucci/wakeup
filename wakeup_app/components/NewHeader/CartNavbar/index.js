@@ -18,7 +18,7 @@ const CartNavbar = () => {
 
   return (
     <div className='shop_item'>
-      <Link href='/user'>
+      <Link href='/login'>
         <AccountCircleIcon className='shop_item_icon' />
       </Link>
       <ShoppingBagOutlinedIcon className='shop_item_icon' onClick={handleOpenCart} />

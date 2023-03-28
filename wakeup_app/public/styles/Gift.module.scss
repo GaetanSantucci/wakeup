@@ -14,7 +14,9 @@
 
     &__background {
       width: 50%;
-      // min-height: 660px;
+      & img {
+        height: auto;
+      }
     }
     &__card {
       width: 50%;

@@ -3,12 +3,10 @@ import '/public/styles/globals.scss';
 
 import styles from '/public/styles/Homepage.module.scss';
 
-import { Header, Footer, ScrollToTop, ButtonToScrollTop } from '/components';
+import { NewHeader, CartModale, Footer, ScrollToTop, ButtonToScrollTop } from 'src/components';
 
 // import my redux
 import { Providers } from './provider'
-import NewHeader from '@/components/NewHeader';
-import { CartModale } from '@/components/Modale';
 
 export default function RootLayout({ children }) {
   return (

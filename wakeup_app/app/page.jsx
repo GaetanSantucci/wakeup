@@ -1,6 +1,6 @@
 'use client';
 // Components
-import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from '../components';
+import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from 'src/components';
 
 //Styles
 import styles from '/public/styles/Homepage.module.scss';

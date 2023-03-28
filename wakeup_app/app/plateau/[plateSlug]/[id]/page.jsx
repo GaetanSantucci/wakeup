@@ -1,4 +1,4 @@
-import { Product, ScrollToTop, Spinner } from '@/components';
+import { Product, ScrollToTop, Spinner } from '@/src/components';
 import { Suspense } from 'react';
 
 export default async function Post({ params }) {

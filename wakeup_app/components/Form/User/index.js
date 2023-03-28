@@ -15,6 +15,8 @@ import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/sto
 
 import Cookies from 'js-cookie';
 
+import { PasswordChecker } from '@/src/utils/passwordChecker';
+
 
 const UserLogin = () => {
 
@@ -42,6 +44,7 @@ const UserLogin = () => {
 
     event.preventDefault();
 
+    //todo refacto outside loginUser
     const inputs = [
       { name: 'email', value: user.email, errorMessage: 'Merci de saisir un email' },
       { name: 'password', value: user.password, errorMessage: 'Merci de saisir un mot de passe' }
@@ -75,6 +78,7 @@ const UserLogin = () => {
 
       const data = await response.json();
       const { accessToken, refreshToken, id } = data;
+      console.log('id: ', id);
 
       if (response.ok) {
         const requestUserProfile = {
@@ -85,6 +89,7 @@ const UserLogin = () => {
         }
         const userResponse = await fetch(`${APIEndpoint}/profile/${id}`, requestUserProfile);
         const user = await userResponse.json();
+        console.log('user: ', user);
 
         // set user cookie
         Cookies.set('userData', JSON.stringify(user));
@@ -92,7 +97,6 @@ const UserLogin = () => {
         // set refresh token cookie
         Cookies.set('refreshToken', refreshToken);
         push(`/user/profile/${id}`)
-        console.log('push(`/user/profile`): ', push(`/user/profile`));
       }
     } catch (err) {
       console.log('error: ', err);
@@ -102,6 +106,8 @@ const UserLogin = () => {
   const createUser = async (event) => {
 
     event.preventDefault();
+
+    //todo refacto outside createUser method
 
     const inputs = [
       { name: 'email', value: user.email, errorMessage: 'Merci de saisir un email' },
@@ -160,64 +166,10 @@ const UserLogin = () => {
     dispatch(inputValue({ inputType: id, value }));
   };
 
-
-
   // Logic for display and customize the constraints for password with indicator text and color
-
-  // Check for capital letter
-  const capitalRegex = /[A-Z]/;
-  const hasCapital = (capitalRegex.test(user.password));
-
-  // Check for lowercase letter
-  const lowercaseRegex = /[a-z]/;
-  const hasLowercase = (lowercaseRegex.test(user.password));
-
-  // Check for number
-  const numberRegex = /[0-9]/;
-  const hasNumber = (numberRegex.test(user.password));
-
-  // Check for length
-  const isMinLength = (user.password.length >= 8)
-
-
-  const getPasswordColor = () => {
-    const constraints = [
-      hasCapital,
-      hasLowercase,
-      hasNumber,
-      isMinLength,
-    ];
-
-    const numFulfilledConstraints = constraints.filter(Boolean).length;
-    console.log('numFulfilledConstraints: ', numFulfilledConstraints);
-
-    if (password === '') {
-      return '';
-    } else if (numFulfilledConstraints === 4) {
-      return '#48bf48';
-    } else if (numFulfilledConstraints >= 2) {
-      return '#ff8c1a';
-    } else if (numFulfilledConstraints === 1) {
-      return '#ff0000';
-    } else {
-      return '#353535';
-    }
-
-  };
-
-  const getPasswordStrengthBarWidth = () => {
-    const passwordColor = getPasswordColor();
-
-    if (passwordColor === '#48bf48') {
-      return '100%';
-    } else if (passwordColor === '#ff8c1a') {
-      return '50%';
-    } else if (passwordColor === '#ff0000') {
-      return '20%';
-    } else {
-      return '0'
-    }
-  };
+  const pwdChecker = new PasswordChecker(user.password)
+  const passwordColor = pwdChecker.getPasswordColor();
+  const passwordStrengthBar = pwdChecker.getPasswordStrengthBarWidth();
 
   return (
     <form className='user_form'>
@@ -263,12 +215,12 @@ const UserLogin = () => {
       {isPasswordInputFocused && isRegister && <div className='password_strength'>
         <label>Doit contenir :</label>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: '5px' }}>
-          <div className={hasCapital ? 'password_check' : null}>1 majuscule</div>
-          <div className={hasLowercase ? 'password_check' : null}>1 minuscule</div>
-          <div className={hasNumber ? 'password_check' : null}>1 chiffre</div>
-          <div className={isMinLength ? 'password_check' : null}>Minimum 8 caractères</div>
+          <div className={pwdChecker.hasCapital() ? 'password_check' : null}>1 majuscule</div>
+          <div className={pwdChecker.hasLowercase() ? 'password_check' : null}>1 minuscule</div>
+          <div className={pwdChecker.hasNumber() ? 'password_check' : null}>1 chiffre</div>
+          <div className={pwdChecker.isMinLength(1) ? 'password_check' : null}>Minimum 8 caractères</div>
         </div>
-        <div style={{ backgroundColor: getPasswordColor(), marginTop: '5px', height: '4px', width: getPasswordStrengthBarWidth(), borderRadius: '10px' }} />
+        <div style={{ backgroundColor: passwordColor, marginTop: '5px', height: '4px', width: passwordStrengthBar, borderRadius: '10px' }} />
       </div>
       }
       {isError && <p className='user_form_error'>{isError}</p>}

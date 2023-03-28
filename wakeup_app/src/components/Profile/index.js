@@ -1,7 +1,6 @@
 'use client';
 import './profile.scss'
 
-import Spinner from '../Spinner';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 

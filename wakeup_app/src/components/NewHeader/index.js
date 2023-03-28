@@ -1,13 +1,16 @@
 'use client';
+import './header.scss'
+
 import Link from 'next/link';
 import Image from 'next/image';
+
 import logo from '/public/logo/logowakeuppng.png';
+
 import NewNavbar from './Navbar';
 import CartNavbar from './CartNavbar';
-import './header.scss'
-import { useDispatch, useSelector } from 'react-redux';
+
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { changeScrollYPosition } from '@/store/reducers/Settings';
 
 
 const NewHeader = () => {

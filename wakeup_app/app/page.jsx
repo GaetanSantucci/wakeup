@@ -1,12 +1,12 @@
 'use client';
-// Components
-import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from 'src/components';
-
-//Styles
 import styles from '/public/styles/Homepage.module.scss';
+
+// Components
+import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from '@/src/components';
 
 import leftImage from '/public/images/left-full.webp';
 import rightImage from '/public/images/right-full.webp';
+
 import Image from 'next/image';
 
 import { Suspense } from 'react';

@@ -5,7 +5,6 @@ import { CartModale, EventModale } from './Modale';
 import Custom from './Custom';
 import Gift from './Gift';
 import NewHeader from './NewHeader';
-import Header from './Header';
 import { UserLogin, Contact } from './Form';
 import Maps from './Maps';
 import Product from './Products/Product';
@@ -17,4 +16,4 @@ import { ButtonToScrollTop, ScrollUp, ScrollToTop } from './ScrollUp';
 import Footer from './Footer';
 import UserProfile from './Profile';
 
-export { Additionnal, Articles, Business, ButtonToScrollTop, CartModale, Custom, EventModale, Gift, Header, NewHeader, UserLogin, Contact, Maps, Products, Product, Reviews, ScrollUp, ScrollToTop, Spinner, UserProfile, Footer };
+export { Additionnal, Articles, Business, ButtonToScrollTop, CartModale, Custom, EventModale, Gift, NewHeader, UserLogin, Contact, Maps, Products, Product, Reviews, ScrollUp, ScrollToTop, Spinner, UserProfile, Footer };

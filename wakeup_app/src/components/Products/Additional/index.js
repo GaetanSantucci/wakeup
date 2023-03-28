@@ -4,8 +4,7 @@ import styles from '/public/styles/Additionnal.module.scss';
 import Image from 'next/image';
 import { useMedia } from 'react-use';
 
-// import BootstrapCarousel from '@/components/Caroussel';
-import { AddonCarousel } from '@/components/Carousel';
+import { AddonCarousel } from '@/src/components/Carousel';
 
 const Additionnal = ({ products }) => {
   const isSmallScreen = useMedia('(max-width: 768px)', false);

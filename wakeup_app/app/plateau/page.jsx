@@ -1,4 +1,4 @@
-import { InstaLink, Products, ScrollToTop, Spinner } from '@/src/components';
+import { Products, ScrollToTop, Spinner } from '@/src/components';
 import { Suspense } from 'react';
 
 export default function plates() {

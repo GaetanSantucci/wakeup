@@ -4,10 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import Additionnal from '../Additional';
+import Spinner from '@/src/components/Spinner';
 
 import { getProductById } from '/src/libs/getProductList';
 import { Suspense } from 'react';
-import Spinner from '@/components/Spinner';
 
 
 export default async function Product({ id, targetTime, currentTime }) {

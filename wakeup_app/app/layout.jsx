@@ -3,7 +3,7 @@ import '/public/styles/globals.scss';
 
 import styles from '/public/styles/Homepage.module.scss';
 
-import { NewHeader, CartModale, Footer, ScrollToTop, ButtonToScrollTop } from 'src/components';
+import { NewHeader, CartModale, Footer, ScrollToTop, ButtonToScrollTop } from '@/src/components';
 
 // import my redux
 import { Providers } from './provider'

@@ -40,6 +40,8 @@ const getAllCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function
 //? ----------------------------------------------------------- CREATE USER
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, /* lastname, firstname  */ } = req.body;
+    logger('password: ', password);
+    logger('email: ', email);
     try {
         const isExist = yield User.findUserIdentity(email);
         if (isExist)

@@ -24,6 +24,8 @@ const getAllCustomers = async (req: Request, res: Response) => {
 //? ----------------------------------------------------------- CREATE USER
 const signUp = async (req: Request, res: Response) => {
   const { email, password, /* lastname, firstname  */ } = req.body
+  logger('password: ', password);
+  logger('email: ', email);
   try {
     const isExist = await User.findUserIdentity(email)
 

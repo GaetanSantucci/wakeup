@@ -32,7 +32,6 @@ const emailReceived = (data: ContactForm) => {
     from: `Wake up Clermont-Fd ${process.env.NODEMAILER_ACCOUNT}`, // sender address
     to: 'contact@wakeupbox.fr', // list of receivers
     subject: `Message de ${data.firstname} ${data.lastname}`, // Subject line
-    // text: `Hello world? ${data.lastname}`, // plain text body
     html: `<body style="display: flex; flex-direction: column; font-family: roboto;">
     <br><div style="color: black; background-color: #e7e7e7; padding: 3rem; display: flex; flex-direction: column;">
     <h3>Vous avez un message de ${data.firstname} ${data.lastname}</h3>
@@ -40,10 +39,10 @@ const emailReceived = (data: ContactForm) => {
     <p>Email : ${data.email}</p>
     <p>Message : ${data.message}</p>
     <button type="button" value="Repondre" style="background-color: #0069d9; padding: 1.4rem;"><a href="mailto:${data.email}" style="color: white; padding: 1rem; text-align: center; text-decoration: none;" target="blank">Répondre</a></button>
-    </div></body>`
+    </div></body>`,
+    replyTo: `${data.email}`
   }
 }
 
-// <a href='mailto:${data.email}><button type="button">Repondre</button></a>
 
 export { mailSignUp, connectEmail, emailReceived }

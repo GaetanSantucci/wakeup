@@ -10,14 +10,12 @@ const UserProfile = () => {
   const { push } = useRouter();
 
   // Read the "userData" cookie value
-  const userData = Cookies.get('userData');
+  const userData = Cookies.get('currentUser');
 
   const user = userData ? JSON.parse(userData) : null;
-  console.log('user: ', user);
 
   if (!user) {
-    <Spinner />
-    push('/user')
+    push('/login')
     return null;
   }
 
@@ -31,12 +29,12 @@ const UserProfile = () => {
       <div className="container">
         <div className="profile_card">
           <p>Email : <span>{user?.email}</span></p>
-          <p>Nom : <span>{/* {user?.email} */}Santucci</span></p>
-          <p>Prénom : <span>{/* {user?.email} */}Gaetan</span></p>
-          <p>Adresse : <span>{/* {user?.email} */}6 rue de la forge</span></p>
-          {/* <p>Complément d&apos;adress: <span>{user?.email}</span></p> */}
-          <p>Code postal <span>{/* {user?.email} */}63360</span></p>
-          <p>Ville : <span>{/* {user?.email} */}Lussat</span></p>
+          <p>Nom : <span>{user?.id}</span></p>
+          <p>Prénom : <span>{user?.email}</span></p>
+          <p>Adresse : <span>{user?.email}</span></p>
+          <p>Complément d&apos;adress: <span>{user?.email}</span></p>
+          <p>Code postal <span>{user?.email}</span></p>
+          <p>Ville : <span>{user?.email}</span></p>
           <div><ManageAccountsIcon /></div>
         </div>
         <div className="last_booking">
@@ -55,7 +53,6 @@ const UserProfile = () => {
           <p></p>
         </div>
       </div>
-      {/* </div> */}
     </>
   )
 }

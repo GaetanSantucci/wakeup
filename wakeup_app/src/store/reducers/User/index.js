@@ -39,7 +39,6 @@ const userSlice = createSlice({
     },
 
     setErrorMessage: (state, action) => {
-      console.log('action: ', action.payload);
       return {
         ...state,
         isError: action.payload

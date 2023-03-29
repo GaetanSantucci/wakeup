@@ -13,13 +13,13 @@ import { openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handle
 import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/src/store/reducers/User';
 
 import { PasswordChecker } from '@/src/utils/passwordChecker';
-import Cookies from 'js-cookie';
-
+import { useLogin } from '@/src/hook/useLogin';
 
 const UserLogin = () => {
 
+  const { login } = useLogin();
   const dispatch = useDispatch();
-  const { push } = useRouter();
+  const router = useRouter();
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
   const { isRegister, showPassword, showPasswordConfirm, isPasswordInputFocused } = useSelector((state) => state.settings);
@@ -35,64 +35,22 @@ const UserLogin = () => {
     }, 4000)
   }, [dispatch, isError, isSuccess])
 
-
+  // const auth = new AuthService();
 
   const loginUser = async (event) => {
 
     event.preventDefault();
 
-    //todo refacto outside loginUser
-    const inputs = [
-      { name: 'email', value: user.email, errorMessage: 'Merci de saisir un email' },
-      { name: 'password', value: user.password, errorMessage: 'Merci de saisir un mot de passe' }
-    ];
-
-    for (const input of inputs) {
-      if (!input.value) {
-        return dispatch(setErrorMessage(input.errorMessage));
+    if (!user.email || !user.password) {
+      dispatch(setErrorMessage('Merci de saisir votre email et votre mot de passe'))
+    } else {
+      try {
+        const { id } = await login(user.email, user.password);
+        console.log('id: ', id);
+        router.push(`/user/profile/${id}`)
+      } catch (err) {
+        console.log(err)
       }
-    }
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password
-      }),
-    }
-
-    try {
-      const response = await fetch(`${APIEndpoint}/signin`, requestOptions)
-
-      if (!response.ok) {
-        const data = await response.json();
-        const errorMessage = data.message || 'Une erreur est survenue lors de la création du compte, veuillez ressayer';
-        return dispatch(setErrorMessage(errorMessage));
-      }
-
-      const data = await response.json();
-      const { accessToken, refreshToken, id } = data;
-
-      if (response.ok) {
-        const requestUserProfile = {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          }
-        }
-        const userResponse = await fetch(`${APIEndpoint}/profile/${id}`, requestUserProfile);
-        const user = await userResponse.json();
-
-        // set user cookie
-        Cookies.set('userData', JSON.stringify(user));
-
-        // set refresh token cookie
-        Cookies.set('refreshToken', refreshToken);
-        push(`/user/profile/${id}`)
-      }
-    } catch (err) {
-      dispatch(err.message)
     }
   }
 

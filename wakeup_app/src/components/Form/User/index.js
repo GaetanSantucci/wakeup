@@ -24,8 +24,8 @@ const UserLogin = () => {
   const { user, isError, isSuccess } = useSelector((state) => state.user);
   const { isRegister, showPassword, showPasswordConfirm, isPasswordInputFocused } = useSelector((state) => state.settings);
 
-  const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
-  // const APIEndpoint = 'http://localhost:5555/api/v1/customers';
+  // const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
+  const APIEndpoint = 'http://localhost:5555/api/v1/customers';
 
   // Remove alert pop message 
   useEffect(() => {

@@ -44,7 +44,8 @@ export default function Contact() {
 
     const JSONdata = JSON.stringify(data)
 
-    const endpoint = 'https://wakeupbox.fr/api/v1/contact'
+    // const endpoint = 'https://wakeupbox.fr/api/v1/contact'
+    const endpoint = 'http://localhost:5555/api/v1/contact'
 
     const options = {
       method: 'POST',

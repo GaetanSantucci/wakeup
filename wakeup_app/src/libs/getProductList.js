@@ -1,5 +1,5 @@
-// const endpoint = 'http://localhost:5555/api/v1'
-const endpoint = 'https://wakeupbox.fr/api/v1'
+const endpoint = 'http://localhost:5555/api/v1'
+// const endpoint = 'https://wakeupbox.fr/api/v1'
 
 export const getProductsData = async () => {
 

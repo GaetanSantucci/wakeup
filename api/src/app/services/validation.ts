@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { ErrorApi } from '../services/errorHandler.js';
+
 //~ Import Ajv
 import Ajv from "ajv"
 const ajv = new Ajv();
@@ -14,7 +16,7 @@ function validate(schemaCustom: object) {
     if (validate(req.body)) {
       next();
     } else {
-      throw new Error('Data not valid')
+      throw new ErrorApi('Email ou mot de passe non valide', req, res, 400)
     }
   }
 }

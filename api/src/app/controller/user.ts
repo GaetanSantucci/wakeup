@@ -23,7 +23,7 @@ const getAllCustomers = async (req: Request, res: Response) => {
 
 //? ----------------------------------------------------------- CREATE USER
 const signUp = async (req: Request, res: Response) => {
-  const { email, password, lastname, firstname } = req.body
+  const { email, password, /* lastname, firstname  */ } = req.body
   try {
     const isExist = await User.findUserIdentity(email)
 
@@ -31,8 +31,8 @@ const signUp = async (req: Request, res: Response) => {
 
     req.body.password = await bcrypt.hash(password, 10);
 
-    if (!lastname) throw new ErrorApi(`Lastname required`, req, res, 400);
-    if (!firstname) throw new ErrorApi(`Firstname required`, req, res, 400);
+    // if (!lastname) throw new ErrorApi(`Lastname required`, req, res, 400);
+    // if (!firstname) throw new ErrorApi(`Firstname required`, req, res, 400);
 
     const createUser = await User.create(req.body)
     if (createUser) return res.status(201).json(`User has signed up !`)

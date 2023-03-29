@@ -39,16 +39,14 @@ const getAllCustomers = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 //? ----------------------------------------------------------- CREATE USER
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, lastname, firstname } = req.body;
+    const { email, password, /* lastname, firstname  */ } = req.body;
     try {
         const isExist = yield User.findUserIdentity(email);
         if (isExist)
             throw new ErrorApi(`User with email ${isExist.email} already exists`, req, res, 401);
         req.body.password = yield bcrypt.hash(password, 10);
-        if (!lastname)
-            throw new ErrorApi(`Lastname required`, req, res, 400);
-        if (!firstname)
-            throw new ErrorApi(`Firstname required`, req, res, 400);
+        // if (!lastname) throw new ErrorApi(`Lastname required`, req, res, 400);
+        // if (!firstname) throw new ErrorApi(`Firstname required`, req, res, 400);
         const createUser = yield User.create(req.body);
         if (createUser)
             return res.status(201).json(`User has signed up !`);

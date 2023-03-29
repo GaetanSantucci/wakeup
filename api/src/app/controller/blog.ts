@@ -11,7 +11,6 @@ const getAllBlogs = async (req: Request, res: Response) => {
   try {
 
     const blogsList = await Blog.findAll();
-    console.log('blogsList: ', blogsList);
 
     if (!blogsList) throw new ErrorApi('Impossible d\'obtenir les blogs', req, res, 400);
 

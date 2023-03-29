@@ -62,12 +62,12 @@ CREATE TABLE IF NOT EXISTS public.customer (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   email EMAIL NOT NULL,
   password PASSWORD NOT NULL,
-  lastname VARCHAR(100) NOT NULL,
-  firstname VARCHAR(100) NOT NULL,
-  address JSON NOT NULL,
-  phone VARCHAR(20) NOT NULL,
-  role VARCHAR(50) NOT NULL,
-  newsletter_optin BOOLEAN NOT NULL DEFAULT false,
+  lastname VARCHAR(100) NULL,
+  firstname VARCHAR(100) NULL,
+  address JSON NULL,
+  phone VARCHAR(20) NULL,
+  role VARCHAR(50) NULL,
+  newsletter_optin BOOLEAN NULL DEFAULT false,
   created_at timestamptz NOT NULL DEFAULT NOW(),
   update_at timestamptz NULL
 );

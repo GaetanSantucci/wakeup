@@ -1,3 +1,4 @@
+import { ErrorApi } from '../services/errorHandler.js';
 //~ Import Ajv
 import Ajv from "ajv";
 const ajv = new Ajv();
@@ -11,7 +12,7 @@ function validate(schemaCustom) {
             next();
         }
         else {
-            throw new Error('Data not valid');
+            throw new ErrorApi('Email ou mot de passe non valide', req, res, 400);
         }
     };
 }

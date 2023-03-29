@@ -15,7 +15,6 @@ const logger = debug('Controller');
 const getAllBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const blogsList = yield Blog.findAll();
-        console.log('blogsList: ', blogsList);
         if (!blogsList)
             throw new ErrorApi('Impossible d\'obtenir les blogs', req, res, 400);
         return res.status(200).json(blogsList);

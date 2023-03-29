@@ -14,18 +14,20 @@ import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/src
 
 import { PasswordChecker } from '@/src/utils/passwordChecker';
 import { useLogin } from '@/src/hook/useLogin';
+import { useCreate } from '@/src/hook/useCreate';
 
 const UserLogin = () => {
 
-  const { login } = useLogin();
   const dispatch = useDispatch();
   const router = useRouter();
 
+  // Hook to log and register user
+  const { login } = useLogin();
+  const { create } = useCreate();
+
+
   const { user, isError, isSuccess } = useSelector((state) => state.user);
   const { isRegister, showPassword, showPasswordConfirm, isPasswordInputFocused } = useSelector((state) => state.settings);
-
-  // const APIEndpoint = 'https://wakeupbox.fr/api/v1/customers';
-  const APIEndpoint = 'http://localhost:5555/api/v1/customers';
 
   // Remove alert pop message 
   useEffect(() => {
@@ -58,50 +60,25 @@ const UserLogin = () => {
 
     event.preventDefault();
 
-    //todo refacto outside createUser method
-
-    const inputs = [
-      { name: 'email', value: user.email, errorMessage: 'Merci de saisir un email' },
-      { name: 'password', value: user.password, errorMessage: 'Merci de saisir un mot de passe' },
-      { name: 'confirmPwd', value: user.confirmPwd, errorMessage: 'Merci de saisir la confirmation du mot de passe' }];
-
-    for (const input of inputs) {
-      if (!input.value) {
-        return dispatch(setErrorMessage(input.errorMessage));
-      }
-    }
-
-    if (user.password !== user.confirmPwd) return dispatch(setErrorMessage('Les mots de passe ne correspondent pas.'))
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password
-      }),
-    }
+    console.log('user.email: ', user.email);
+    if (!user.email || !user.password || !user.confirmPwd) return dispatch(setErrorMessage('Merci de saisir votre email et votre mot de passe'))
+    if (user.password !== user.confirmPwd) return dispatch(setErrorMessage('Les mots de passe ne correspondent pas.'));
 
     try {
-      const response = await fetch(`${APIEndpoint}/signup`, requestOptions)
+      const newUser = await create(user.email, user.password)
 
-      if (!response.ok) {
-        const data = await response.json();
-        const errorMessage = data.message || 'Une erreur est survenue lors de la création du compte, veuillez ressayer';
-        return dispatch(setErrorMessage(errorMessage));
-      }
+      if (newUser !== 'User has signed up !') return dispatch(setErrorMessage(newUser))
 
-      if (isError) dispatch(setErrorMessage(''))
+      dispatch(setSuccessMessage("Votre compte a bien été crée !"))
       dispatch(openRegisterForm());
-
-      const data = await response.json();
-      dispatch(setSuccessMessage(data))
-      dispatch(resetUser());
+      dispatch(toggleShowPassword())
 
     } catch (err) {
-      dispatch(err.message)
+      dis
+      console.log(err)
     }
   }
+
 
   // function for UX 
   const handleShowPwd = () => dispatch(toggleShowPassword());

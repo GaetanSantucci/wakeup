@@ -2,7 +2,6 @@
 const nextConfig = {
   experimental: {
     appDir: true,
-    newNextLinkBehavior: false,
   },
   images: {
     domains: ['153.92.223.190'],

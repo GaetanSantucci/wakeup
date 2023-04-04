@@ -8,7 +8,8 @@ const initialState = {
     lastname: '',
     firstname: '',
     address: {
-      label: '',
+      label: 'nul a chier',
+      complement: '',
       city: '',
       zipcode: '',
     },
@@ -27,7 +28,11 @@ const userSlice = createSlice({
         ...state,
         user: {
           ...state.user,
-          [action.payload.inputType]: action.payload.value
+          [action.payload.inputType]: action.payload.value,
+          address: {
+            ...state.user.address,
+            [action.payload.inputType]: action.payload.value,
+          }
         }
       }
     },
@@ -55,9 +60,26 @@ const userSlice = createSlice({
           confirmPwd: ''
         }
       }
+    },
+
+    setAddress: (state, action) => {
+      console.log('action: ', action.payload);
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          address: {
+            ...state.user.address,
+            label: action.payload.label,
+            complement: action.payload.complement,
+            city: action.payload.city,
+            zipcode: action.payload.postcode
+          }
+        }
+      }
     }
   }
 });
 
-export const { inputValue, setSuccessMessage, setErrorMessage, resetUser } = userSlice.actions;
+export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, setAddress } = userSlice.actions;
 export default userSlice.reducer;

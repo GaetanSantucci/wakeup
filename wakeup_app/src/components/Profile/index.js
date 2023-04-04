@@ -3,54 +3,113 @@ import './profile.scss'
 
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { useSelector, useDispatch } from 'react-redux';
 
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+import { useState } from 'react';
+
+import SettingsIcon from '@mui/icons-material/Settings';
+
+import { ProfileModale } from '@/src/components';
+
+import { toggleProfileModale } from '@/src/store/reducers/Settings';
 
 const UserProfile = () => {
   const { push } = useRouter();
+  const dispatch = useDispatch();
 
-  // Read the "userData" cookie value
+
+  const { user } = useSelector((state) => state.user);
+
+  // Read the 'userData' cookie value
   const userData = Cookies.get('currentUser');
 
-  const user = userData ? JSON.parse(userData) : null;
+  const currentUser = userData ? JSON.parse(userData) : null;
 
-  if (!user) {
+  if (!currentUser) {
     push('/login')
     return null;
   }
 
-  //todo implanter api data gouv check adresse auto
+  const handleInputChange = () => {
+    dispatch(toggleProfileModale());
+  }
 
-  // todo store state for profile active, add input for all profile card and add button to validate
+  const pseudo = () => {
+    const lastname = user?.lastname;
+    const firstname = user?.firstname;
+
+    const firstnameLetter = firstname.charAt(0);
+    const lastnameLetter = lastname.charAt(0);
+
+    const result = `${lastnameLetter}${firstnameLetter}`.toUpperCase();
+    return result
+  }
+
+  const test = pseudo();
+
 
   return (
     <>
       <h3>Bienvenu sur votre page membre</h3>
-      <div className="container">
-        <div className="profile_card">
-          <p>Email : <span>{user?.email}</span></p>
-          <p>Nom : <span>{user?.id}</span></p>
-          <p>Prénom : <span>{user?.email}</span></p>
-          <p>Adresse : <span>{user?.email}</span></p>
-          <p>Complément d&apos;adress: <span>{user?.email}</span></p>
-          <p>Code postal <span>{user?.email}</span></p>
-          <p>Ville : <span>{user?.email}</span></p>
-          <div><ManageAccountsIcon /></div>
+      <div className='container'>
+        <ProfileModale />
+        <div className='profile_card'>
+          <div className='profile_card_avatar' >
+            {user.lastname && user.firstname ? <h2> {pseudo()} </h2> : <AccountCircleIcon className='avatar_logo' />}
+            <SettingsIcon className='settings' onClick={handleInputChange} />
+          </div>
+          <div className='profile_card_details'>
+            <div className='profile_card_input'>
+              <p>Email : <span>{user.email}</span></p>
+            </div>
+            <div className='profile_card_input'>
+              <p>Nom : <span>{user.lastname}</span></p>
+            </div>
+            <div className='profile_card_input'>
+              <p>Prénom : <span>{user.firstname}</span></p>
+            </div>
+
+            {user.address !== undefined && (
+              <>
+                <div className='profile_card_input'>
+                  <p>Adresse : {user?.address?.label}</p>
+                </div>
+                <div className='profile_card_input'>
+                  <p>Complement : {user?.address?.complement}</p>
+                </div>
+                <div className='profile_card_input'>
+                  <p>Code postal : <span>{user?.address?.zipcode}</span></p>
+                  <p><span>Ville : {user?.address?.city}</span></p>
+                </div>
+              </>
+            )}
+            {/* <div className='profile_card_input'>
+              <p>{currentUser?.address?.city}</p>
+            </div> */}
+          </div>
+          <div className='profile_card_input'>
+            <p>{currentUser?.phone}</p>
+          </div>
         </div>
-        <div className="last_booking">
-          <h3 className='card_subtitle'>Prochaine réservation :</h3>
-          <p>30 avril 2023, plateau réservé Dolce Vita </p>
-        </div>
-        <div className="orders">
-          <h3 className='card_subtitle'>Dernières commandes :</h3>
-          <ul>
-            <li>Plateau Sunshine - 02/02/2023 - total: 33,40e</li>
-            <li>Plateau Sunshine - 02/02/2023 - total: 33,40e</li>
-            <li>Plateau Sunshine - 02/02/2023 - total: 33,40e</li>
-            <li>Plateau Sunshine - 02/02/2023 - total: 33,40e</li>
-            <li>Plateau Sunshine - 02/02/2023 - total: 33,40e</li>
-          </ul>
-          <p></p>
+        <div className='booking_card'>
+          <div className='next_book'>
+            <div className='all_orders_card'>
+              <div>Plateau Sunshine<div className='all_orders_card_details'><p>qté: 2</p><span>33,40 €</span></div><div><p>29-03-2023</p></div></div>
+            </div>
+          </div>
+          <div className='all_orders'>
+            <div className='all_orders_card'>
+              <div>Plateau Sunshine<div className='all_orders_card_details'><p>qté: 2</p><span>66,80 €</span></div><div><p>14-01-2023</p></div></div>
+            </div>
+            <div className='all_orders_card'>
+              <div>Plateau Best-Seller<div className='all_orders_card_details'><p>qté: 2</p><span>46,40 €</span></div><div><p>04-12-2022</p></div></div>
+            </div>
+            <div className='all_orders_card'>
+              <div>Plateau  Dolce Vita<div className='all_orders_card_details'><p>qté: 2</p><span>53,40 €</span></div><div><p>28-11-2022</p></div></div>
+            </div>
+          </div>
         </div>
       </div>
     </>

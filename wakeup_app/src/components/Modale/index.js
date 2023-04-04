@@ -1,14 +1,18 @@
 'use client';
 import './modale.scss';
+
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleModale, toggleCartModale } from '@/src/store/reducers/Settings';
+import { useState } from 'react';
+
+import { toggleModale, toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Settings';
+import { setAddress, inputValue } from '@/src/store/reducers/User';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import easter from '/public/images/modale-paques.webp';
-// import surprise from '/public/images/surprise.webp';
 
 const EventModale = () => {
 
@@ -45,6 +49,7 @@ const EventModale = () => {
     </>
   )
 }
+
 const CartModale = () => {
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
@@ -83,4 +88,110 @@ const CartModale = () => {
   )
 }
 
-export { EventModale, CartModale }
+const ProfileModale = () => {
+
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.user);
+  const profileOpen = useSelector((state) => state.settings.profileIsOpen);
+
+  // state of address research
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  console.log('results: ', results);
+
+
+  const handleSearchInput = async (event) => {
+    if (event.target.value < 3) setResults([])
+    setSearchTerm(event.target.value)
+
+    if (searchTerm.length >= 3) {
+      try {
+        const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${event.target.value}&type=housenumber&autocomplete=1`)
+        console.log('response: ', response);
+        if (response.ok) {
+          const data = await response.json();
+          setResults(data.features)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  const handleCloseProfileModale = () => {
+    dispatch(toggleProfileModale())
+  }
+
+  const handleAddressChange = (e, elem) => {
+    // console.log('elem: ', elem);
+    const selectedValue = e.target.value;
+    // console.log('e.target.value: ', e.target.value);
+    setSearchTerm(selectedValue);
+    console.log('searchTerm after change :', searchTerm)
+    // dispatch(setAddress({
+    //   label: selectedValue,
+    //   complement: '',
+    //   city: '',
+    //   zipcode: '',
+    // }));
+  };
+
+  const submitUserProfile = (event) => {
+    event.preventDefault();
+    console.log('je mets a jour le profile')
+  }
+
+  const handleSetAddress = (elem) => {
+    console.log('elem for one option: ', elem.label);
+    setAddress({ label: elem.label, city: elem.city, zipcode: elem.postcode })
+    setResults([])
+    console.log('user address: ', user.address)
+  }
+
+
+  // Dynamic method for store input by type
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    dispatch(inputValue({ inputType: id, value }));
+  };
+
+  return (
+    <div className={profileOpen ? 'profile_modale open_profile_modale' : 'profile_modale'}>
+      <div className='modale_close' onClick={handleCloseProfileModale}>
+        <CancelSharpIcon />
+      </div>
+      {/* <div className='profile_modale_form_input'> */}
+      <form className='profile_modale_form' >
+        <div className='profile_modale_form_input'>
+          <input type='email' id='email' placeholder='Modifier votre email' value={user.email} onChange={handleInputChange} />
+        </div>
+        <div className='profile_modale_form_input'>
+          <input type='text' id='lastname' placeholder='Ajouter ou modifier le nom' value={user.lastname} onChange={handleInputChange} />
+        </div>
+        <div className='profile_modale_form_input'>
+          <input type='text' id='firstname' placeholder='Ajouter ou modifier le prénom' value={user.firstname} onChange={handleInputChange} />
+        </div>
+        <div className='profile_modale_form_input'>
+          {/* <span><SearchIcon /></span> */}
+          <input id='search' type='search' placeholder='Saisissez votre adresse' aria-autocomplete='list' onChange={handleSearchInput} value={searchTerm} />
+        </div>
+
+        {results && (
+          results.map(elem => {
+            return (
+              <div className='profile_modale_form_input_results' onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}>{elem.properties.label}</div>
+            )
+          })
+        )
+        }
+        <div className='profile_modale_form_input'>
+          <input type='text' id='complement' placeholder='Étage, bâtiment, interphone' onChange={handleInputChange} value={user.address.complement} />
+        </div>
+        <button type='submit' onSubmit={submitUserProfile}>Valider</button>
+      </form>
+    </div>
+  )
+}
+
+export { EventModale, CartModale, ProfileModale }

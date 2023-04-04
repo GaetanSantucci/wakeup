@@ -37,7 +37,6 @@ const UserLogin = () => {
     }, 4000)
   }, [dispatch, isError, isSuccess])
 
-  // const auth = new AuthService();
 
   const loginUser = async (event) => {
 

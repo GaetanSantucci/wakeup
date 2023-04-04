@@ -4,6 +4,7 @@ const initialState = {
   modaleIsOpen: true,
   menuIsOpen: false,
   cartIsOpen: false,
+  profileIsOpen: false,
   scrollYPosition: null,
   isRegister: false,
   showPassword: false,
@@ -33,6 +34,13 @@ const settingsSlice = createSlice({
       return {
         ...state,
         cartIsOpen: !state.cartIsOpen
+      }
+    },
+
+    toggleProfileModale: (state) => {
+      return {
+        ...state,
+        profileIsOpen: !state.profileIsOpen
       }
     },
 
@@ -72,5 +80,5 @@ const settingsSlice = createSlice({
   }
 });
 
-export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused } = settingsSlice.actions;
+export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused, toggleProfileModale } = settingsSlice.actions;
 export default settingsSlice.reducer;

@@ -118,27 +118,32 @@ const signOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 //? ----------------------------------------------------------- UPDATE USER
 const updateCustomerProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    logger('updateCustomerProfile: mis a jour du profile');
+    logger('req.body: ', req.body);
     try {
         const userId = req.params.userId;
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        logger('Update userId: ', userId);
         // Check if user exist     
+        if (!uuidRegex.test(userId))
+            throw new ErrorApi(`UUID invalid`, req, res, 400);
         const userExist = yield User.findOne(userId);
+        console.log('userExist: ', userExist);
         if (!userExist)
             throw new ErrorApi(`User not found`, req, res, 401);
-        // CHECK IF EMAIL NOT EXIST
-        if (req.body.email) {
-            const isExist = yield User.findUserIdentity(req.body.email);
-            if (isExist && !req.body.email)
-                throw new ErrorApi(`User with email ${isExist.email} already exists, choose another !`, req, res, 401);
-            // Validator.checkEmailPattern(req.body.email, req, res);
-        }
-        // CHECK PASSWORD AND HASH
-        if (req.body.password) {
-            // Validator.checkPasswordPattern(req.body.password, req, res);
-            req.body.password = yield bcrypt.hash(req.body.password, 10);
-        }
-        const userUpdated = yield User.update(req.body);
-        if (userUpdated)
-            return res.status(200).json("User successfully updated !");
+        // // CHECK IF EMAIL NOT EXIST
+        // if (req.body.email) {
+        //   const isExist = await User.findUserIdentity(req.body.email)
+        //   if (isExist && !req.body.email) throw new ErrorApi(`User with email ${isExist.email} already exists, choose another !`, req, res, 401);
+        //   // Validator.checkEmailPattern(req.body.email, req, res);
+        // }
+        // // CHECK PASSWORD AND HASH
+        // if (req.body.password) {
+        //   // Validator.checkPasswordPattern(req.body.password, req, res);
+        //   req.body.password = await bcrypt.hash(req.body.password, 10);
+        // }
+        // const userUpdated = await User.update(req.body);
+        // if (userUpdated) return res.status(200).json("User successfully updated !")
     }
     catch (err) {
         if (err instanceof Error)

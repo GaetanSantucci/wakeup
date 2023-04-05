@@ -18,8 +18,21 @@ function generateRefreshToken(user: object, req: Request) {
   return refreshToken;
 }
 
+
 function refreshToken(req: Request, res: Response) {
-  return res.json("token refresh")
+
+  if (req.session.refreshToken?.length === 0) {
+
+    const user = req.user;
+
+    //delete old token and replace with new token
+    const accessToken = generateAccessToken({ user });
+    const refreshToken = generateRefreshToken({ user }, req);
+
+    //generate a new accessToken and refreshToken
+    return res.status(200).json({ accessToken, refreshToken });
+  }
+
 }
 
 

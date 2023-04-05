@@ -12,7 +12,7 @@ const userSchemaUpdated = {
   type: "object",
   properties: {
     email: { type: "string", pattern: '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$' },
-    password: { type: 'string', pattern: '^(?=.*[0-9])(?=.*[-a-z])(?=.*[-A-Z]).{8,}$' },
+    // password: { type: 'string', pattern: '^(?=.*[0-9])(?=.*[-a-z])(?=.*[-A-Z]).{8,}$' },
     // confirmPassword: { type: 'string' },
     lastname: { type: "string" },
     firstname: { type: "string" },
@@ -22,13 +22,16 @@ const userSchemaUpdated = {
         label: {
           type: "string"
         },
+        name: {
+          type: "string"
+        },
         complement: {
           type: "string"
         },
         city: {
           "type": "string"
         },
-        zipcode: {
+        postcode: {
           "type": "string",
           "pattern": "^63\\d{3}$"
         }

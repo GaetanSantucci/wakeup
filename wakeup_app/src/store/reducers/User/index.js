@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAction } from '@reduxjs/toolkit';
 
 const initialState = {
   user: {
@@ -7,13 +7,15 @@ const initialState = {
     confirmPwd: '',
     lastname: '',
     firstname: '',
+    phone: '',
     address: {
-      label: 'nul a chier',
+      label: '',
+      name: '',
       complement: '',
       city: '',
-      zipcode: '',
+      postcode: '',
     },
-    isAdmin: false,
+    role: false,
   },
   isSuccess: '',
   isError: ''
@@ -36,6 +38,31 @@ const userSlice = createSlice({
         }
       }
     },
+
+    userUpdate: (state, action) => {
+      const { email, lastname, firstname, phone, address, role } = action.payload;
+      const { label, name, city, postcode } = address;
+
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          email,
+          lastname,
+          firstname,
+          phone,
+          address: {
+            ...state.user.address,
+            label,
+            name,
+            city,
+            postcode,
+          },
+          role
+        }
+      }
+    },
+
     setSuccessMessage: (state, action) => {
       return {
         ...state,
@@ -63,7 +90,6 @@ const userSlice = createSlice({
     },
 
     setAddress: (state, action) => {
-      console.log('action: ', action.payload);
       return {
         ...state,
         user: {
@@ -71,9 +97,10 @@ const userSlice = createSlice({
           address: {
             ...state.user.address,
             label: action.payload.label,
+            name: action.payload.name,
             complement: action.payload.complement,
             city: action.payload.city,
-            zipcode: action.payload.postcode
+            postcode: action.payload.postcode
           }
         }
       }
@@ -81,5 +108,30 @@ const userSlice = createSlice({
   }
 });
 
-export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, setAddress } = userSlice.actions;
+
+// export const updateUserInfo = createAction('user/update', (response) => {
+//   const { email, lastname, firstname, phone, address, role } = response;
+//   console.log('phone: ', phone);
+//   console.log('lastname: ', lastname);
+//   console.log('firstname: ', firstname);
+//   console.log('email: ', email);
+//   console.log('response: ', response);
+
+//   return {
+//     email,
+//     lastname,
+//     firstname,
+//     phone,
+//     address: {
+//       label: address?.label || '',
+//       name: address?.name || '',
+//       complement: address?.complement || '',
+//       city: address?.city || '',
+//       postcode: address?.postcode || '',
+//     },
+//     isAdmin: role
+//   };
+// });
+
+export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, setAddress, userUpdate } = userSlice.actions;
 export default userSlice.reducer;

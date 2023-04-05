@@ -93,10 +93,12 @@ const ProfileModale = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
+  console.log('user: ', user.address);
   const profileOpen = useSelector((state) => state.settings.profileIsOpen);
 
   // state of address research
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(user?.address?.label || '');
+  console.log('searchTerm: ', searchTerm);
   const [results, setResults] = useState([]);
   console.log('results: ', results);
 
@@ -123,30 +125,24 @@ const ProfileModale = () => {
     dispatch(toggleProfileModale())
   }
 
-  const handleAddressChange = (e, elem) => {
-    // console.log('elem: ', elem);
-    const selectedValue = e.target.value;
-    // console.log('e.target.value: ', e.target.value);
-    setSearchTerm(selectedValue);
-    console.log('searchTerm after change :', searchTerm)
-    // dispatch(setAddress({
-    //   label: selectedValue,
-    //   complement: '',
-    //   city: '',
-    //   zipcode: '',
-    // }));
-  };
+  // const handleAddressChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   setSearchTerm(selectedValue);
+  //   console.log('searchTerm after change :', searchTerm)
+  // };
 
   const submitUserProfile = (event) => {
     event.preventDefault();
+    dispatch(toggleProfileModale())
     console.log('je mets a jour le profile')
   }
 
   const handleSetAddress = (elem) => {
-    console.log('elem for one option: ', elem.label);
-    setAddress({ label: elem.label, city: elem.city, zipcode: elem.postcode })
+    const { label, name, city, postcode } = elem
+    dispatch(setAddress({ label, name, city, postcode }))
+    // Results to undefined to close div research
+    setSearchTerm(label)
     setResults([])
-    console.log('user address: ', user.address)
   }
 
 
@@ -161,7 +157,6 @@ const ProfileModale = () => {
       <div className='modale_close' onClick={handleCloseProfileModale}>
         <CancelSharpIcon />
       </div>
-      {/* <div className='profile_modale_form_input'> */}
       <form className='profile_modale_form' >
         <div className='profile_modale_form_input'>
           <input type='email' id='email' placeholder='Modifier votre email' value={user.email} onChange={handleInputChange} />
@@ -173,17 +168,16 @@ const ProfileModale = () => {
           <input type='text' id='firstname' placeholder='Ajouter ou modifier le prénom' value={user.firstname} onChange={handleInputChange} />
         </div>
         <div className='profile_modale_form_input'>
-          {/* <span><SearchIcon /></span> */}
           <input id='search' type='search' placeholder='Saisissez votre adresse' aria-autocomplete='list' onChange={handleSearchInput} value={searchTerm} />
         </div>
-
-        {results && (
-          results.map(elem => {
-            return (
-              <div className='profile_modale_form_input_results' onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}>{elem.properties.label}</div>
-            )
-          })
-        )
+        {
+          results && (
+            results.map(elem => {
+              return (
+                <div className='profile_modale_form_input_results' onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}>{elem.properties.label}</div>
+              )
+            })
+          )
         }
         <div className='profile_modale_form_input'>
           <input type='text' id='complement' placeholder='Étage, bâtiment, interphone' onChange={handleInputChange} value={user.address.complement} />

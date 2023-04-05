@@ -7,8 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import { useState } from 'react';
-
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import { ProfileModale } from '@/src/components';
@@ -19,15 +17,17 @@ const UserProfile = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
 
-
   const { user } = useSelector((state) => state.user);
+  console.log('user dans le profile: ', user);
 
   // Read the 'userData' cookie value
   const userData = Cookies.get('currentUser');
+  const currentUser = JSON.parse(userData);
 
-  const currentUser = userData ? JSON.parse(userData) : null;
+  // Compare if user match
+  const userMatch = currentUser.email === user.email;
 
-  if (!currentUser) {
+  if (!userMatch) {
     push('/login')
     return null;
   }
@@ -65,6 +65,9 @@ const UserProfile = () => {
               <p>Email : <span>{user.email}</span></p>
             </div>
             <div className='profile_card_input'>
+              <p>Télephone : {user?.phone}</p>
+            </div>
+            <div className='profile_card_input'>
               <p>Nom : <span>{user.lastname}</span></p>
             </div>
             <div className='profile_card_input'>
@@ -74,23 +77,21 @@ const UserProfile = () => {
             {user.address !== undefined && (
               <>
                 <div className='profile_card_input'>
-                  <p>Adresse : {user?.address?.label}</p>
+                  <p>Adresse : {user?.address?.name}</p>
                 </div>
+                {
+                  user.address.complement && <div className='profile_card_input'>
+                    <p>Complement : {user?.address?.complement}</p>
+                  </div>
+                }
+
                 <div className='profile_card_input'>
-                  <p>Complement : {user?.address?.complement}</p>
-                </div>
-                <div className='profile_card_input'>
-                  <p>Code postal : <span>{user?.address?.zipcode}</span></p>
+                  <p>Code postal : <span>{user?.address?.postcode}</span></p>
                   <p><span>Ville : {user?.address?.city}</span></p>
                 </div>
               </>
             )}
-            {/* <div className='profile_card_input'>
-              <p>{currentUser?.address?.city}</p>
-            </div> */}
-          </div>
-          <div className='profile_card_input'>
-            <p>{currentUser?.phone}</p>
+
           </div>
         </div>
         <div className='booking_card'>

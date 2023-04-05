@@ -9,6 +9,9 @@ import { NewHeader, CartModale, Footer, ScrollToTop, ButtonToScrollTop } from '@
 import { Providers } from './provider'
 
 export default function RootLayout({ children }) {
+
+
+
   return (
     <html lang="en">
       <head />

@@ -13,6 +13,8 @@ import { openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handle
 import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/src/store/reducers/User';
 
 import { PasswordChecker } from '@/src/utils/passwordChecker';
+
+import { useCurrentUser } from '@/src/hook/useCurrentUser';
 import { useLogin } from '@/src/hook/useLogin';
 import { useCreate } from '@/src/hook/useCreate';
 
@@ -22,6 +24,7 @@ const UserLogin = () => {
   const router = useRouter();
 
   // Hook to log and register user
+  const { refetchUser } = useCurrentUser();
   const { login } = useLogin();
   const { create } = useCreate();
 
@@ -47,7 +50,6 @@ const UserLogin = () => {
     } else {
       try {
         const { id } = await login(user.email, user.password);
-        console.log('id: ', id);
         router.push(`/user/profile/${id}`)
       } catch (err) {
         console.log(err)

@@ -93,14 +93,11 @@ const ProfileModale = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
-  console.log('user: ', user.address);
   const profileOpen = useSelector((state) => state.settings.profileIsOpen);
 
   // state of address research
   const [searchTerm, setSearchTerm] = useState(user?.address?.label || '');
-  console.log('searchTerm: ', searchTerm);
   const [results, setResults] = useState([]);
-  console.log('results: ', results);
 
 
   const handleSearchInput = async (event) => {
@@ -125,11 +122,6 @@ const ProfileModale = () => {
     dispatch(toggleProfileModale())
   }
 
-  // const handleAddressChange = (e) => {
-  //   const selectedValue = e.target.value;
-  //   setSearchTerm(selectedValue);
-  //   console.log('searchTerm after change :', searchTerm)
-  // };
 
   const submitUserProfile = (event) => {
     event.preventDefault();
@@ -144,7 +136,6 @@ const ProfileModale = () => {
     setSearchTerm(label)
     setResults([])
   }
-
 
   // Dynamic method for store input by type
   const handleInputChange = (event) => {

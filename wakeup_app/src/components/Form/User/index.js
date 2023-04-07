@@ -18,13 +18,15 @@ import { useCurrentUser } from '@/src/hook/useCurrentUser';
 import { useLogin } from '@/src/hook/useLogin';
 import { useCreate } from '@/src/hook/useCreate';
 
+import { AuthService } from '@/src/services/auth.services';
+
 const UserLogin = () => {
 
   const dispatch = useDispatch();
   const router = useRouter();
 
   // Hook to log and register user
-  const { refetchUser } = useCurrentUser();
+  const { setUser } = useCurrentUser();
   const { login } = useLogin();
   const { create } = useCreate();
 
@@ -49,8 +51,15 @@ const UserLogin = () => {
       dispatch(setErrorMessage('Merci de saisir votre email et votre mot de passe'))
     } else {
       try {
-        const { id } = await login(user.email, user.password);
-        router.push(`/user/profile/${id}`)
+        const { accessToken, id, errorMessage } = await login(user.email, user.password);
+
+        if (errorMessage) dispatch(setErrorMessage(errorMessage))
+
+        if (accessToken) {
+          const user = await setUser(id)
+          console.log('user dasn laccesstoken avant le push: ', user);
+          router.push(`/user/profile/${id}`)
+        }
       } catch (err) {
         console.log(err)
       }
@@ -68,7 +77,7 @@ const UserLogin = () => {
     try {
       const newUser = await create(user.email, user.password)
 
-      if (newUser !== 'User has signed up !') return dispatch(setErrorMessage(newUser))
+      if (newUser !== 'Votre compte a bien été créé !') return dispatch(setErrorMessage(newUser))
 
       dispatch(setSuccessMessage("Votre compte a bien été crée !"))
       dispatch(openRegisterForm());

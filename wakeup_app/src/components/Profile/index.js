@@ -2,6 +2,7 @@
 import './profile.scss'
 
 import Cookies from 'js-cookie';
+
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,21 +14,20 @@ import { ProfileModale } from '@/src/components';
 
 import { toggleProfileModale } from '@/src/store/reducers/Settings';
 
+import Pseudo from '@/src/utils/pseudoProfilePage';
+
+import { useLogout } from '@/src/hook/useLogout';
+import Link from 'next/link';
+
 const UserProfile = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
+  const { logout } = useLogout();
 
   const { user } = useSelector((state) => state.user);
-  console.log('user dans le profile: ', user);
+  console.log('user dans la profile page: ', user);
 
-  // Read the 'userData' cookie value
-  const userData = Cookies.get('currentUser');
-  const currentUser = JSON.parse(userData);
-
-  // Compare if user match
-  const userMatch = currentUser.email === user.email;
-
-  if (!userMatch) {
+  if (user.email === undefined) {
     push('/login')
     return null;
   }
@@ -36,18 +36,9 @@ const UserProfile = () => {
     dispatch(toggleProfileModale());
   }
 
-  const pseudo = () => {
-    const lastname = user?.lastname;
-    const firstname = user?.firstname;
-
-    const firstnameLetter = firstname.charAt(0);
-    const lastnameLetter = lastname.charAt(0);
-
-    const result = `${lastnameLetter}${firstnameLetter}`.toUpperCase();
-    return result
+  const userLogout = () => {
+    logout();
   }
-
-  const test = pseudo();
 
 
   return (
@@ -57,21 +48,21 @@ const UserProfile = () => {
         <ProfileModale />
         <div className='profile_card'>
           <div className='profile_card_avatar' >
-            {user.lastname && user.firstname ? <h2> {pseudo()} </h2> : <AccountCircleIcon className='avatar_logo' />}
+            {user.lastname && user.firstname ? <h2> {<Pseudo user={user} />} </h2> : <AccountCircleIcon className='avatar_logo' />}
             <SettingsIcon className='settings' onClick={handleInputChange} />
           </div>
           <div className='profile_card_details'>
             <div className='profile_card_input'>
-              <p>Email : <span>{user.email}</span></p>
+              <p>Email : <span>{user?.email}</span></p>
             </div>
             <div className='profile_card_input'>
               <p>Télephone : {user?.phone}</p>
             </div>
             <div className='profile_card_input'>
-              <p>Nom : <span>{user.lastname}</span></p>
+              <p>Nom : <span>{user?.lastname}</span></p>
             </div>
             <div className='profile_card_input'>
-              <p>Prénom : <span>{user.firstname}</span></p>
+              <p>Prénom : <span>{user?.firstname}</span></p>
             </div>
 
             {user.address !== undefined && (
@@ -112,6 +103,7 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+        <div onClick={userLogout}>Se deconnecter</div>
       </div>
     </>
   )

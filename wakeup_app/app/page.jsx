@@ -11,12 +11,12 @@ import Image from 'next/image';
 
 import { Suspense } from 'react';
 
-import { useCurrentUser } from '@/src/hook/useCurrentUser';
+// import { useCurrentUser } from '@/src/hook/useCurrentUser';
 
 export default function Home() {
 
-  const user = useCurrentUser();
-  console.log('user dans le home: ', user);
+  // const user = useCurrentUser();
+  // console.log('user dans le home: ', user);
 
   return (
     <>

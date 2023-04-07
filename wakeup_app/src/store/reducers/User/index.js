@@ -17,6 +17,7 @@ const initialState = {
     },
     role: false,
   },
+  isLogged: false,
   isSuccess: '',
   isError: ''
 }
@@ -42,6 +43,8 @@ const userSlice = createSlice({
     userUpdate: (state, action) => {
       const { email, lastname, firstname, phone, address, role } = action.payload;
       const { label, name, city, postcode } = address;
+      console.log('label: ', label);
+
 
       return {
         ...state,
@@ -58,7 +61,8 @@ const userSlice = createSlice({
             city,
             postcode,
           },
-          role
+          role,
+          isLogged: true
         }
       }
     },
@@ -81,10 +85,19 @@ const userSlice = createSlice({
       return {
         ...state,
         user: {
-          ...state,
+          ...state.user,
           email: '',
           password: '',
-          confirmPwd: ''
+          confirmPwd: '',
+          address: {
+            ...state.user.address,
+            label: '',
+            name: '',
+            city: '',
+            postcode: ''
+          },
+          role: '',
+          isLogged: false
         }
       }
     },

@@ -1,9 +1,11 @@
 import { getAuthorizationHeader } from "../utils/getAuthorizationHeader";
 
+
 export class AuthService {
 
   APIEndpoint = 'http://localhost:5555/api/v1/customers';
 
+  // method to fetch user and get token to validate access to profile page
   async login(email, password) {
 
     const requestOptions = {
@@ -22,7 +24,7 @@ export class AuthService {
       if (!response.ok) {
         const data = await response.json();
         const errorMessage = data.message || 'Une erreur est survenue lors de la connexion, veuillez ressayer';
-        return errorMessage;
+        return { errorMessage };
       }
 
       const data = await response.json();
@@ -32,8 +34,8 @@ export class AuthService {
     }
   };
 
-
-  async getUser(userId) {
+  // method to fetch user profile by id
+  async getMe(userId) {
     const requestOptions = {
       method: 'GET',
       headers: getAuthorizationHeader(),
@@ -42,14 +44,13 @@ export class AuthService {
     try {
 
       const response = await fetch(`${this.APIEndpoint}/profile/${userId}`, requestOptions)
-
       if (!response.ok) {
         const data = await response.json();
         const errorMessage = data.message || 'Une erreur est survenue lors de la connexion, veuillez ressayer';
-        return errorMessage;
+        return { errorMessage };
       }
+
       const data = await response.json();
-      console.log('data dans le getUser: ', data);
       return data;
 
     } catch (err) {

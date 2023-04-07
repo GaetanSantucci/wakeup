@@ -40,7 +40,6 @@ const UserProfile = () => {
     logout();
   }
 
-
   return (
     <>
       <h3>Bienvenu sur votre page membre</h3>
@@ -52,21 +51,24 @@ const UserProfile = () => {
             <SettingsIcon className='settings' onClick={handleInputChange} />
           </div>
           <div className='profile_card_details'>
-            <div className='profile_card_input'>
-              <p>Email : <span>{user?.email}</span></p>
+            <div className='profile_card_contact'>
+              <div className='profile_card_input'>
+                <p>Email : <span>{user?.email}</span></p>
+              </div>
+              <div className='profile_card_input'>
+                <p>Télephone : {user?.phone}</p>
+              </div>
             </div>
-            <div className='profile_card_input'>
-              <p>Télephone : {user?.phone}</p>
+            <div className='profile_card_name'>
+              <div className='profile_card_input'>
+                <p>Nom : <span>{user?.lastname}</span></p>
+              </div>
+              <div className='profile_card_input'>
+                <p>Prénom : <span>{user?.firstname}</span></p>
+              </div>
             </div>
-            <div className='profile_card_input'>
-              <p>Nom : <span>{user?.lastname}</span></p>
-            </div>
-            <div className='profile_card_input'>
-              <p>Prénom : <span>{user?.firstname}</span></p>
-            </div>
-
             {user.address !== undefined && (
-              <>
+              <div className='profile_card_address'>
                 <div className='profile_card_input'>
                   <p>Adresse : {user?.address?.name}</p>
                 </div>
@@ -80,7 +82,7 @@ const UserProfile = () => {
                   <p>Code postal : <span>{user?.address?.postcode}</span></p>
                   <p><span>Ville : {user?.address?.city}</span></p>
                 </div>
-              </>
+              </div>
             )}
 
           </div>
@@ -103,8 +105,8 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
-        <div onClick={userLogout}>Se deconnecter</div>
       </div>
+      <div className='profile_logout' onClick={userLogout}>Se deconnecter</div>
     </>
   )
 }

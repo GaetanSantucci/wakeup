@@ -8,8 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleCartModale } from '@/src/store/reducers/Settings';
 
 const CartNavbar = () => {
-  const openCart = useSelector((state) => state.settings.cartIsOpen)
+
   const dispatch = useDispatch();
+
+  const openCart = useSelector((state) => state.settings.cartIsOpen)
+  const { user, isLogged } = useSelector((state) => state.user)
+  console.log('user dans le hadder: ', user.id);
+  console.log('isLogged: ', isLogged);
 
   const handleOpenCart = (e) => {
     dispatch(toggleCartModale())
@@ -18,7 +23,7 @@ const CartNavbar = () => {
 
   return (
     <div className='shop_item'>
-      <Link href='/login'>
+      <Link href={isLogged ? `/user/profile/${user.id}` : '/login'}>
         <AccountCircleIcon className='shop_item_icon' />
       </Link>
       <ShoppingBagOutlinedIcon className='shop_item_icon' onClick={handleOpenCart} />

@@ -9,22 +9,17 @@ import logo from '/public/logo/logowakeuppng.png';
 import NewNavbar from './Navbar';
 import CartNavbar from './CartNavbar';
 
-import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 
 const NewHeader = () => {
 
-  const dispatch = useDispatch();
-  // const scrollPosition = useSelector((state) => state.settings.scrollYPosition)
-  // console.log('scrollPosition: ', scrollPosition);
   const [stickyClass, setStickyClass] = useState(null);
 
 
   useEffect(() => {
     const onScroll = () => {
       const scrollPosition = window.scrollY;
-      // dispatch(changeScrollYPosition(scrollPosition))
       scrollPosition > 130 ? setStickyClass('fixed') : setStickyClass(false)
     }
     window.addEventListener('scroll', onScroll, { passive: true });

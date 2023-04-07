@@ -2,6 +2,7 @@ import { createSlice, createAction } from '@reduxjs/toolkit';
 
 const initialState = {
   user: {
+    id: '',
     email: '',
     password: '',
     confirmPwd: '',
@@ -41,7 +42,8 @@ const userSlice = createSlice({
     },
 
     userUpdate: (state, action) => {
-      const { email, lastname, firstname, phone, address, role } = action.payload;
+      const { id, email, lastname, firstname, phone, address, role } = action.payload;
+      console.log('id: ', id);
       const { label, name, city, postcode } = address;
       console.log('label: ', label);
 
@@ -50,6 +52,7 @@ const userSlice = createSlice({
         ...state,
         user: {
           ...state.user,
+          id,
           email,
           lastname,
           firstname,
@@ -62,8 +65,8 @@ const userSlice = createSlice({
             postcode,
           },
           role,
-          isLogged: true
-        }
+        },
+        isLogged: true
       }
     },
 
@@ -86,6 +89,7 @@ const userSlice = createSlice({
         ...state,
         user: {
           ...state.user,
+          id: '',
           email: '',
           password: '',
           confirmPwd: '',
@@ -97,8 +101,8 @@ const userSlice = createSlice({
             postcode: ''
           },
           role: '',
-          isLogged: false
-        }
+        },
+        isLogged: false
       }
     },
 

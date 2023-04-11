@@ -12,6 +12,7 @@ function validate(schemaCustom) {
             next();
         }
         else {
+            console.log('req.body: ', req.body);
             throw new ErrorApi('Email ou mot de passe non valide', req, res, 400);
         }
     };

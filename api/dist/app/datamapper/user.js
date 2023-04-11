@@ -16,8 +16,8 @@ class UserDataMapper extends CoreDataMapper {
         this.tableName = 'customer';
         this.columns = `"id","email","lastname","firstname", address, phone, role, newsletter_optin`;
         this.createFunctionName = 'create_customer';
+        this.updateFunctionName = 'update_customer';
     }
-    // updateFunctionName = 'update_user';
     // userIdentity = 'user_identity';
     //& Find user by email
     findUserIdentity(email) {

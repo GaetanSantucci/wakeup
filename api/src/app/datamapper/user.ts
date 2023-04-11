@@ -7,7 +7,7 @@ class UserDataMapper extends CoreDataMapper {
   columns = `"id","email","lastname","firstname", address, phone, role, newsletter_optin`
 
   createFunctionName = 'create_customer';
-  // updateFunctionName = 'update_user';
+  updateFunctionName = 'update_customer';
   // userIdentity = 'user_identity';
 
   //& Find user by email

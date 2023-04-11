@@ -17,17 +17,17 @@ import { toggleProfileModale } from '@/src/store/reducers/Settings';
 import Pseudo from '@/src/utils/pseudoProfilePage';
 
 import { useLogout } from '@/src/hook/useLogout';
-import Link from 'next/link';
 
 const UserProfile = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
   const { logout } = useLogout();
 
-  const { user } = useSelector((state) => state.user);
-  console.log('user dans la profile page: ', user);
+  const { isLogged, user } = useSelector((state) => state.user);
 
-  if (user.email === undefined) {
+  const token = Cookies.get('accessToken');
+
+  if (!isLogged) {
     push('/login')
     return null;
   }
@@ -42,7 +42,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <h3>Bienvenu sur votre page membre</h3>
+      <h3 style={{ marginTop: '3rem', marginBottom: '3rem' }}>Bienvenu sur votre page membre</h3>
       <div className='container'>
         <ProfileModale />
         <div className='profile_card'>
@@ -53,34 +53,34 @@ const UserProfile = () => {
           <div className='profile_card_details'>
             <div className='profile_card_contact'>
               <div className='profile_card_input'>
-                <p>Email : <span>{user?.email}</span></p>
+                <p>Email : <span>{user.email}</span></p>
               </div>
               <div className='profile_card_input'>
-                <p>Télephone : {user?.phone}</p>
+                <p>Télephone : {user.phone}</p>
               </div>
             </div>
             <div className='profile_card_name'>
               <div className='profile_card_input'>
-                <p>Nom : <span>{user?.lastname}</span></p>
+                <p>Nom : <span>{user.lastname}</span></p>
               </div>
               <div className='profile_card_input'>
-                <p>Prénom : <span>{user?.firstname}</span></p>
+                <p>Prénom : <span>{user.firstname}</span></p>
               </div>
             </div>
             {user.address !== undefined && (
               <div className='profile_card_address'>
                 <div className='profile_card_input'>
-                  <p>Adresse : {user?.address?.name}</p>
+                  <p>Adresse : {user.address.name}</p>
                 </div>
                 {
                   user.address.complement && <div className='profile_card_input'>
-                    <p>Complement : {user?.address?.complement}</p>
+                    <p>Complement : {user.address.complement}</p>
                   </div>
                 }
 
                 <div className='profile_card_input'>
-                  <p>Code postal : <span>{user?.address?.postcode}</span></p>
-                  <p><span>Ville : {user?.address?.city}</span></p>
+                  <p>Code postal : <span>{user.address.postcode}</span></p>
+                  <p><span>Ville : {user.address.city}</span></p>
                 </div>
               </div>
             )}

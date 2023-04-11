@@ -205,16 +205,34 @@
       }
 
       &_results {
-        letter-spacing: 1px;
-        padding: 1rem;
+        padding: 0.4rem;
         transition: all 600ms;
         white-space: nowrap;
+        overflow: hidden;
 
         &:hover {
           transition: all 400ms;
-          background-color: antiquewhite;
-          letter-spacing: 1.2px;
+          background-color: rgba(214, 214, 214, 0.884);
+          letter-spacing: 0.6px;
           cursor: pointer;
+        }
+      }
+
+      &_checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        & input {
+          width: 25px;
+          height: 25px;
+          margin: 0 1rem;
+          cursor: pointer;
+          background-color: #ffffff;
+        }
+
+        & p {
+          font-size: 0.9rem;
         }
       }
     }

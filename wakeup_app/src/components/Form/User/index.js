@@ -16,9 +16,7 @@ import { PasswordChecker } from '@/src/utils/passwordChecker';
 
 import { useCurrentUser } from '@/src/hook/useCurrentUser';
 import { useLogin } from '@/src/hook/useLogin';
-import { useCreate } from '@/src/hook/useCreate';
-
-import { AuthService } from '@/src/services/auth.services';
+import { useSetupUser } from '@/src/hook/useSetUser';
 
 const UserLogin = () => {
 
@@ -28,7 +26,7 @@ const UserLogin = () => {
   // Hook to log and register user
   const { setUser } = useCurrentUser();
   const { login } = useLogin();
-  const { create } = useCreate();
+  const { create } = useSetupUser();
 
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
@@ -51,15 +49,13 @@ const UserLogin = () => {
       dispatch(setErrorMessage('Merci de saisir votre email et votre mot de passe'))
     } else {
       try {
-        const { accessToken, id, errorMessage } = await login(user.email, user.password);
+        const { id, errorMessage } = await login(user.email, user.password);
 
-        if (errorMessage) dispatch(setErrorMessage(errorMessage))
+        if (errorMessage) return dispatch(setErrorMessage(errorMessage))
 
-        if (accessToken) {
-          const user = await setUser(id)
-          console.log('user dasn laccesstoken avant le push: ', user);
-          router.push(`/user/profile/${id}`)
-        }
+        const response = await setUser(id)
+        if (response.id === id) router.push(`/user/profile/${response.id}`)
+
       } catch (err) {
         console.log(err)
       }
@@ -70,7 +66,6 @@ const UserLogin = () => {
 
     event.preventDefault();
 
-    console.log('user.email: ', user.email);
     if (!user.email || !user.password || !user.confirmPwd) return dispatch(setErrorMessage('Merci de saisir votre email et votre mot de passe'))
     if (user.password !== user.confirmPwd) return dispatch(setErrorMessage('Les mots de passe ne correspondent pas.'));
 

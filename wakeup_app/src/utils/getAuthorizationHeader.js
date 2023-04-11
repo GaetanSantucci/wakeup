@@ -7,6 +7,6 @@ export function getAuthorizationHeader() {
   const refreshToken = Cookies.get("refreshToken");
 
   return {
-    Authorization: `Bearer ${accessToken || refreshToken || ""}`,
+    Authorization: `Bearer ${accessToken || refreshToken || ""}`, 'Content-Type': 'application/json'
   };
 }

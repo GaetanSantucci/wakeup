@@ -15,9 +15,8 @@ export const useLogout = () => {
 
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
-    dispatch(resetUser());
-
     router.push("/login");
+    dispatch(resetUser());
   };
 
   return { logout };

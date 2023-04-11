@@ -13,12 +13,9 @@ const CartNavbar = () => {
 
   const openCart = useSelector((state) => state.settings.cartIsOpen)
   const { user, isLogged } = useSelector((state) => state.user)
-  console.log('user dans le hadder: ', user.id);
-  console.log('isLogged: ', isLogged);
 
   const handleOpenCart = (e) => {
     dispatch(toggleCartModale())
-    console.log('openCart: ', openCart);
   }
 
   return (

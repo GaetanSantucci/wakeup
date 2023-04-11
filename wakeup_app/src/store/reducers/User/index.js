@@ -1,4 +1,4 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: {
@@ -17,6 +17,7 @@ const initialState = {
       postcode: '',
     },
     role: false,
+    newsletter_optin: false,
   },
   isLogged: false,
   isSuccess: '',
@@ -28,25 +29,28 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     inputValue: (state, action) => {
+      console.log('action: ', action.payload);
+      const { inputType, value } = action.payload;
+
+      // Convert "on" to true for the newsletter_optin field
+      const newValue = inputType === 'newsletter_optin' ? value === 'on' : value;
+
       return {
         ...state,
         user: {
           ...state.user,
-          [action.payload.inputType]: action.payload.value,
-          address: {
-            ...state.user.address,
-            [action.payload.inputType]: action.payload.value,
-          }
+          [inputType]: newValue,
+          // address: {
+          //   ...state.user.address,
+          //   [inputType]: newValue,
+          // }
         }
       }
     },
 
     userUpdate: (state, action) => {
-      const { id, email, lastname, firstname, phone, address, role } = action.payload;
-      console.log('id: ', id);
-      const { label, name, city, postcode } = address;
-      console.log('label: ', label);
-
+      const { id, email, lastname, firstname, phone, address, role, newsletter_optin } = action.payload;
+      const { label, name, city, complement, postcode } = address;
 
       return {
         ...state,
@@ -54,17 +58,20 @@ const userSlice = createSlice({
           ...state.user,
           id,
           email,
+          password: state.user.password,
           lastname,
           firstname,
           phone,
           address: {
-            ...state.user.address,
+            // ...state.user.address,
             label,
             name,
+            complement,
             city,
             postcode,
           },
           role,
+          newsletter_optin
         },
         isLogged: true
       }
@@ -93,14 +100,16 @@ const userSlice = createSlice({
           email: '',
           password: '',
           confirmPwd: '',
-          address: {
-            ...state.user.address,
-            label: '',
-            name: '',
-            city: '',
-            postcode: ''
-          },
-          role: '',
+          // phone: '',
+          // address: {
+          //   // ...state.user.address,
+          //   label: '',
+          //   name: '',
+          //   city: '',
+          //   postcode: ''
+          // },
+          // role: '',
+          // newsletter_optin:
         },
         isLogged: false
       }
@@ -111,6 +120,11 @@ const userSlice = createSlice({
         ...state,
         user: {
           ...state.user,
+          email: state.user.email,
+          lastname: state.user.lastname,
+          firstname: state.user.firstname,
+          phone: state.user.phone,
+          newsletter_optin: state.user.newsletter_optin,
           address: {
             ...state.user.address,
             label: action.payload.label,
@@ -121,34 +135,23 @@ const userSlice = createSlice({
           }
         }
       }
+    },
+
+    updateComplement: (state, action) => {
+      state.user.address.complement = action.payload;
+    },
+
+    toggleCheckbox: (state, action) => {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          newsletter_optin: action.payload
+        }
+      }
     }
   }
 });
 
-
-// export const updateUserInfo = createAction('user/update', (response) => {
-//   const { email, lastname, firstname, phone, address, role } = response;
-//   console.log('phone: ', phone);
-//   console.log('lastname: ', lastname);
-//   console.log('firstname: ', firstname);
-//   console.log('email: ', email);
-//   console.log('response: ', response);
-
-//   return {
-//     email,
-//     lastname,
-//     firstname,
-//     phone,
-//     address: {
-//       label: address?.label || '',
-//       name: address?.name || '',
-//       complement: address?.complement || '',
-//       city: address?.city || '',
-//       postcode: address?.postcode || '',
-//     },
-//     isAdmin: role
-//   };
-// });
-
-export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, setAddress, userUpdate } = userSlice.actions;
+export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, setAddress, userUpdate, updateComplement, toggleCheckbox } = userSlice.actions;
 export default userSlice.reducer;

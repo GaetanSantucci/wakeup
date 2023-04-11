@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 
 const Auth = new AuthService();
 
-
 //hook to fetch user and set jwt token
 export const useLogin = () => {
 

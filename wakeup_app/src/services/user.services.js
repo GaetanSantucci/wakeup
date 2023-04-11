@@ -1,3 +1,5 @@
+import { getAuthorizationHeader } from "../utils/getAuthorizationHeader";
+
 export class UserService {
 
   APIEndpoint = 'http://localhost:5555/api/v1/customers';
@@ -16,7 +18,6 @@ export class UserService {
     try {
 
       const response = await fetch(`${this.APIEndpoint}/signup`, requestOptions)
-      console.log('response: ', response);
 
       if (!response.ok) {
         const data = await response.json();
@@ -26,7 +27,6 @@ export class UserService {
       }
 
       const data = await response.json();
-      console.log('data: ', data);
       return data
     } catch (err) {
       console.error(err.message);
@@ -35,12 +35,14 @@ export class UserService {
 
   //todo WIP
   async update(userData) {
+    console.log('userData dans le user services: ', userData);
 
     const requestOptions = {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthorizationHeader(),
       body: JSON.stringify(userData)
     };
+    console.log('requestOptions: ', requestOptions);
 
     try {
       const response = await fetch(`${this.APIEndpoint}/profile/${userData.id}`, requestOptions)
@@ -52,8 +54,8 @@ export class UserService {
         console.log('errorMessage: ', errorMessage);
         return errorMessage;
       }
-      // const data = await response.json();
-      // return data;
+      const data = await response.json();
+      return data;
 
     } catch (err) {
       console.error(err.message);

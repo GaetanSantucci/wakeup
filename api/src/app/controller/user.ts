@@ -29,15 +29,12 @@ const signUp = async (req: Request, res: Response) => {
   try {
     const isExist = await User.findUserIdentity(email)
 
-    if (isExist) throw new ErrorApi(`User with email ${isExist.email} already exists`, req, res, 401);
+    if (isExist) throw new ErrorApi(`Le mail ${isExist.email} existe déjà !`, req, res, 401);
 
     req.body.password = await bcrypt.hash(password, 10);
 
-    // if (!lastname) throw new ErrorApi(`Lastname required`, req, res, 400);
-    // if (!firstname) throw new ErrorApi(`Firstname required`, req, res, 400);
-
     const createUser = await User.create(req.body)
-    if (createUser) return res.status(201).json(`User has signed up !`)
+    if (createUser) return res.status(201).json(`Votre compte a bien été créé !`)
 
   } catch (err) {
     if (err instanceof Error) logger(err.message)
@@ -52,11 +49,11 @@ const signIn = async (req: Request, res: Response) => {
 
   try {
     const userExist = await User.findUserIdentity(email);
-    if (!userExist) throw new ErrorApi(`User not found`, req, res, 401);
+    if (!userExist) throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
 
     // verify if password is the same with user.password
     const validPassword = await bcrypt.compare(password, userExist.password);
-    if (!validPassword) throw new ErrorApi(`Incorrect password`, req, res, 403);
+    if (!validPassword) throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
 
     // delete user.password;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -81,7 +78,7 @@ const getCustomerProfile = async (req: Request, res: Response) => {
     const userId: UUID = req.params.userId as UUID;
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID invalid`, req, res, 400);
+    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
 
     const user = await User.findOne(userId);
     return res.status(200).json(user)
@@ -96,9 +93,9 @@ const signOut = async (req: Request, res: Response) => {
     const userId: UUID = req.params.userId as UUID;
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID invalid`, req, res, 400);
-    if (req.user?.id !== userId) throw new ErrorApi(`Unauthorized access`, req, res, 401)
-    return res.status(200).json(`User has been disconnected !`)
+    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
+    if (req.user?.id !== userId) throw new ErrorApi(`Accés non autorisé !`, req, res, 401)
+    return res.status(200).json(`L'utilisateur a été déconnecté !`)
   } catch (err) {
     if (err instanceof Error) logger(err.message)
   }
@@ -108,35 +105,34 @@ const signOut = async (req: Request, res: Response) => {
 //? ----------------------------------------------------------- UPDATE USER
 const updateCustomerProfile = async (req: Request, res: Response) => {
   logger('updateCustomerProfile: mis a jour du profile');
-  logger('req.body: ', req.body);
+  console.log('req.body: ', req.body);
 
   try {
     const userId: UUID = req.params.userId as UUID;
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    logger('Update userId: ', userId);
 
     // Check if user exist     
-    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID invalid`, req, res, 400);
+    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
     const userExist = await User.findOne(userId);
     console.log('userExist: ', userExist);
 
-    if (!userExist) throw new ErrorApi(`User not found`, req, res, 401);
+    if (!userExist) throw new ErrorApi(`Utilisateur non trouvé !`, req, res, 401);
 
     // // CHECK IF EMAIL NOT EXIST
-    // if (req.body.email) {
-    //   const isExist = await User.findUserIdentity(req.body.email)
-    //   if (isExist && !req.body.email) throw new ErrorApi(`User with email ${isExist.email} already exists, choose another !`, req, res, 401);
-    //   // Validator.checkEmailPattern(req.body.email, req, res);
-    // }
+    if (req.body.email) {
+      const isExist = await User.findUserIdentity(req.body.email)
+      if (isExist && !req.body.email) throw new ErrorApi(`User with email ${isExist.email} already exists, choose another !`, req, res, 401);
+    }
 
-    // // CHECK PASSWORD AND HASH
-    // if (req.body.password) {
-    //   // Validator.checkPasswordPattern(req.body.password, req, res);
-    //   req.body.password = await bcrypt.hash(req.body.password, 10);
-    // }
+    // CHECK PASSWORD AND HASH
+    if (req.body.password) {
+      // Validator.checkPasswordPattern(req.body.password, req, res);
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    }
 
-    // const userUpdated = await User.update(req.body);
-    // if (userUpdated) return res.status(200).json("User successfully updated !")
+    const userUpdated = await User.update(req.body);
+    logger('userUpdated: ', userUpdated);
+    if (userUpdated) return res.status(200).json("User successfully updated !")
   } catch (err) {
     if (err instanceof Error) logger(err.message)
   }
@@ -149,21 +145,21 @@ const deleteCustomer = async (req: Request, res: Response) => {
     const userId: UUID = req.params.userId as UUID;
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID invalid`, req, res, 400);
-    if (req.user?.id !== userId || req.user?.role === 'admin') throw new ErrorApi(`Unauthorized access`, req, res, 401)
+    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
+    if (req.user?.id !== userId || req.user?.role === 'admin') throw new ErrorApi(`Accés non autorisé !`, req, res, 401)
 
 
     const user = await User.findOne(userId);
-    if (!user) throw new ErrorApi(`User doesn't exist`, req, res, 400);
+    if (!user) throw new ErrorApi(`L'utilisateur n'existe pas`, req, res, 400);
 
     const isUser = req.user?.id;
     if (isUser === userId || req.user?.role === 'admin') {
 
       const userDeleted = await User.delete(userId);
 
-      if (userDeleted) return res.status(200).json(`User has been deleted !`)
+      if (userDeleted) return res.status(200).json(`L'utilisateur a été supprimé !`)
 
-    } else throw new ErrorApi(`You cannot access this info !`, req, res, 401);
+    } else throw new ErrorApi(`Vous ne pouvez pas avoir accés à cette information !`, req, res, 401);
   } catch (err) {
     if (err instanceof Error) logger(err.message)
   }

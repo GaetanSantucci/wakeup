@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useMedia } from 'react-use';
 
 import { AddonCarousel } from '@/src/components/Carousel';
+import { AddCartButton } from '../../Button';
 
 const Additionnal = ({ products }) => {
   const isSmallScreen = useMedia('(max-width: 768px)', false);

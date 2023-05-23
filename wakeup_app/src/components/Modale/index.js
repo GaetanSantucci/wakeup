@@ -10,7 +10,7 @@ import { toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Sett
 import { setAddress, inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
-import { selectTotalAmount, addItems, deleteItems } from '@/src/store/reducers/Cart';
+import { selectTotalAmount, addItems, deleteItems, resetAllCartItems } from '@/src/store/reducers/Cart';
 
 const CartModale = () => {
 
@@ -23,14 +23,21 @@ const CartModale = () => {
     dispatch(toggleCartModale());
   }
 
-  const handleChangeIncreaseQty = (qty) => {
-    // console.log("+ 1", qty + 1);
-    dispatch(addItems)
-  }
+  const handleChangeIncreaseQty = (qty, id) => {
+    dispatch(addItems({ id, quantity: qty + 1 }));
+  };
 
-  const handleChangeDecreaseQty = (qty) => {
-    // console.log("- 1", qty - 1);
-    dispatch(deleteItems)
+  const handleChangeDecreaseQty = (qty, id) => {
+    if (qty >= 0) {
+      dispatch(deleteItems({ id, quantity: qty - 1 }));
+    }
+  };
+
+  const handleDeleteCart = () => {
+    dispatch(resetAllCartItems());
+    setTimeout(() => {
+      closeModale();
+    }, 400)
   }
 
   return (
@@ -45,16 +52,19 @@ const CartModale = () => {
             <div className='cart_modale_item' key={elem.name}>
               <p>{elem.name}</p>
               <div className='cart_modale_item_quantity'>
-                <span onClick={() => { handleChangeDecreaseQty(elem.quantity) }}>-</span>
+                <span onClick={() => { handleChangeDecreaseQty(elem.quantity, elem.id) }}>-</span>
                 {elem.quantity}
-                <span onClick={() => { handleChangeIncreaseQty(elem.quantity) }}>+</span>
+                <span onClick={() => { handleChangeIncreaseQty(elem.quantity, elem.id) }}>+</span>
               </div>
             </div>
           )
         })
       }
       <p>{newTotal}</p>
-      <button>Validez</button>
+      <div className='cart_modale_controler'>
+        <button>Validez</button>
+        <p onClick={handleDeleteCart}>Videz le panier</p>
+      </div>
     </div>
   )
 }

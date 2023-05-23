@@ -1,19 +1,39 @@
 .shop_item {
   display: flex;
   align-items: center;
-  &_icon {
-    font-size: 1.8rem;
-    stroke: none;
-    fill: #353535;
-    text-align: end;
-    cursor: pointer;
 
-    &:nth-child(2) {
-      margin-bottom: 5px;
+  &_cart {
+    position: relative;
+
+    &_qty {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -4px;
+      right: -10px;
+      background-color: #8ea3aa;
+      color: #ffffff;
+      font-size: 0.7rem;
+      border-radius: 50%;
     }
 
-    &:hover {
-      fill: #000000;
+    &_icon {
+      font-size: 1.8rem;
+      stroke: none;
+      fill: #353535;
+      text-align: end;
+      cursor: pointer;
+
+      &:nth-child(2) {
+        margin-bottom: 5px;
+      }
+
+      &:hover {
+        fill: #000000;
+      }
     }
   }
 }

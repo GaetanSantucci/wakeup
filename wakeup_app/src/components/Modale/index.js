@@ -10,40 +10,50 @@ import { toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Sett
 import { setAddress, inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
+import { selectTotalAmount, addItems, deleteItems } from '@/src/store/reducers/Cart';
 
 const CartModale = () => {
+
+  const cartItems = useSelector((state) => Object.values(state.cart.cartItems))
+
+  const { newTotal } = useSelector(selectTotalAmount)
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
   const closeModale = () => {
     dispatch(toggleCartModale());
   }
+
+  const handleChangeIncreaseQty = (qty) => {
+    // console.log("+ 1", qty + 1);
+    dispatch(addItems)
+  }
+
+  const handleChangeDecreaseQty = (qty) => {
+    // console.log("- 1", qty - 1);
+    dispatch(deleteItems)
+  }
+
   return (
     <div className={cartOpen ? 'cart_modale open_cart_modale' : 'cart_modale'}>
       <div className='modale_close' onClick={closeModale}>
         <CancelSharpIcon />
       </div>
-      <h3>Votre panier </h3>
-
-      <p>Détail</p>
-      <div className='cart_modale_item'>
-        <p>plateau sunshine</p>
-        <span>29.90e</span>
-        <div className='cart_modale_quantity'>
-          <span>-</span>
-          <span>1</span>
-          <span>+</span>
-        </div>
-      </div>
-      <div className='cart_modale_item'>
-        <p>plateau dolce vita</p>
-        <span>49.90e</span>
-        <div className='cart_modale_quantity'>
-          <span>-</span>
-          <span>1</span>
-          <span>+</span>
-        </div>
-      </div>
-      <p>total : 78.90</p>
+      <h3 className='cart_modale_title'>Votre panier </h3>
+      {
+        cartItems.map(elem => {
+          return (
+            <div className='cart_modale_item' key={elem.name}>
+              <p>{elem.name}</p>
+              <div className='cart_modale_item_quantity'>
+                <span onClick={() => { handleChangeDecreaseQty(elem.quantity) }}>-</span>
+                {elem.quantity}
+                <span onClick={() => { handleChangeIncreaseQty(elem.quantity) }}>+</span>
+              </div>
+            </div>
+          )
+        })
+      }
+      <p>{newTotal}</p>
       <button>Validez</button>
     </div>
   )

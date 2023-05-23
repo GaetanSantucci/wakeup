@@ -4,22 +4,24 @@ import './button.scss';
 
 import { AddCartIcon } from '../ComponentSVG';
 
-import { toggleOpenCalendar, addToCart } from '@/src/store/reducers/Cart';
-import { useDispatch } from 'react-redux';
+import { addToCart } from '@/src/store/reducers/Cart';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AddCartButton = ({ items }) => {
+
+  // const cart = useSelector((state) => state.cart.cartItems)
+
   const { id, name, price } = items;
-  console.log('items:', items);
+
   const dispatch = useDispatch();
 
-  const handleToggleOpenCalendar = (item) => {
-    dispatch(toggleOpenCalendar())
+  const handleChangeCartItem = () => {
     dispatch(addToCart({ id, name, price }))
   }
 
   return (
     <>
-      <button id='add-cart-button' onClick={handleToggleOpenCalendar}><AddCartIcon /></button>
+      <button id='add-cart-button' onClick={handleChangeCartItem}><AddCartIcon /></button>
     </>
   )
 }

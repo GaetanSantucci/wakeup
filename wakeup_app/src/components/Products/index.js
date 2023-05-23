@@ -24,7 +24,7 @@ export default async function Products() {
           products.map(product => {
             const price = product.price.toString().replace('.', ',');
             return (
-              <div className={styles.product__container__card} key={product.name}>
+              <div className={styles.product__container__card} key={product.id}>
                 {product.is_new ? <div className={styles.product__container__card__new}>Nouveau</div> : null}
                 <Link href={`/plateau/${product.slug}/${product.id}`} >
                   <div className={styles.product__container__card__image}>

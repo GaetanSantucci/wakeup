@@ -6,51 +6,10 @@ import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-import { toggleModale, toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Settings';
+import { toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Settings';
 import { setAddress, inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
-
-
-import Image from 'next/image';
-import Link from 'next/link';
-import easter from '/public/images/modale-paques.webp';
-
-// const EventModale = () => {
-
-//   const dispatch = useDispatch();
-//   const isOpen = useSelector((state) => state.settings.modaleIsOpen)
-//   const closeModale = () => {
-//     dispatch(toggleModale());
-//   }
-
-//   return (
-//     <>
-//       {isOpen && (
-//         <div className='backdrop__container'>
-//           <div className='modale__container'>
-//             <div className='modale__container__item'>
-//               <Image src={easter} width={550} height={750} alt='Plateau de Pâques' />
-//               <div className='modale__container__item__details' >
-//                 <div className='modale_close' onClick={closeModale}>
-//                   <CancelSharpIcon />
-//                 </div>
-//                 <h2>Tentez de remporter une pépite d&apos;or d&apos;une valeur de 425€</h2>
-//                 <p>Participez à notre jeu concours</p>
-//                 <h3>&laquo; GOLDEN EGG &raquo;</h3>
-//                 <p>Tout plateau de Pâques livré entre le 1er et le 30 avril 2023</p>
-//                 <p className='modale__container__item__details__equal'>=</p>
-//                 <p>Une chance d&apos;être tiré au sort pour remporter une pépite d&apos;or de 3,17gr</p>
-//                 <span onClick={closeModale}><Link href='/plateau/paques/10'>En savoir plus</Link></span>
-//                 <Link href='/images/jeuconcourspaques.pdf' target='blank' onClick={closeModale}><code>Voir les conditions générales du jeu concours</code></Link>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   )
-// }
 
 const CartModale = () => {
   const dispatch = useDispatch();
@@ -202,4 +161,4 @@ const ProfileModale = () => {
   )
 }
 
-export { /* EventModale, */ CartModale, ProfileModale }
+export { CartModale, ProfileModale }

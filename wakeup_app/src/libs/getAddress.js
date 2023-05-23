@@ -1,4 +1,4 @@
-// Retrieves address-related data from the API data.gouv by making a request with the provided address
+// Method to get address-related data from the API data.gouv by making a request with the provided address
 export const getAddress = async ({ address }) => {
 
   const endpoint = `https://api-adresse.data.gouv.fr/search/?q=${address}&autocomplete=1`

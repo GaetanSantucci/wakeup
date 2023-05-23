@@ -1,8 +1,8 @@
 //method to get all plates products from wakeup api
-export const getProductsData = async () => {
+const endpoint = 'http://localhost:7777/api/v1'
+// const endpoint = 'https://wakeupbox.fr/api/v1'
 
-  const endpoint = 'http://localhost:7777/api/v1'
-  // const endpoint = 'https://wakeupbox.fr/api/v1'
+export const getProductsData = async () => {
 
   const res = await fetch(`${endpoint}/plates`);
 

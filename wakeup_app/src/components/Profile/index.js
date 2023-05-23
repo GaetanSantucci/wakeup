@@ -29,7 +29,6 @@ const UserProfile = () => {
   useEffect(() => {
     if (!isLogged) {
       push('/login')
-      // return null;
     }
   })
 

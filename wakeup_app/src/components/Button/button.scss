@@ -1,0 +1,12 @@
+#add-cart-button {
+  width: 200px;
+  background-color: #222222;
+  padding: 0.4rem 1.4rem;
+  border-radius: 5px;
+  transition: all 600ms;
+
+  &:hover {
+    background-color: black;
+    transition: all 400ms;
+  }
+}

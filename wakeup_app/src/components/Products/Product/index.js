@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Additionnal from '../Additional';
 import Spinner from '@/src/components/Spinner';
 
+import { AddCartButton } from '../../Button';
+
 import { getProductById } from '/src/libs/getProductList';
 import { Suspense } from 'react';
 
@@ -47,7 +49,7 @@ export default async function Product({ id, targetTime, currentTime }) {
                   </div>
                   <div className={styles.productId__container__card__details__order}>
                     <span className={styles.productId__container__card__details__order__price} >{price} €</span>
-                    <Link href='https://wakeupclf.simplybook.it/v2/#book' target='blank'><button className={styles.button}>Réserver</button></Link>
+                    <AddCartButton />
                   </div>
                 </div>
               </div>

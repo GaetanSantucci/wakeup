@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styles from '/public/styles/Product.module.scss';
 
 import { getProductsData } from '/src/libs/getProductList';
+import { AddCartButton } from '../Button';
 
 export default async function Products() {
 
@@ -37,7 +38,7 @@ export default async function Products() {
                   </div>
                   <div className={styles.product__container__card__information}>
                     <Link href={`/plateau/${product.slug}/${product.id}`} className={styles.product__container__card__information__link}>En savoir plus</Link>
-                    <Link href='https://wakeupclf.simplybook.it/v2/#book' target='blank'><button className={styles.button}>Réserver</button></Link>
+                    < AddCartButton items={{ id: product.id, name: product.name, price: product.price }} />
                   </div>
                 </div>
               </div>

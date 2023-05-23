@@ -1,6 +1,7 @@
+// method to fetch all reviews from wakeup api
 export const getReviewData = async () => {
 
-  const endpoint = 'http://localhost:5555/api/v1'
+  const endpoint = 'http://localhost:7777/api/v1'
   // const endpoint = 'https://wakeupbox.fr/api/v1'
 
   const res = await fetch(`${endpoint}/reviews`);

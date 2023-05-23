@@ -17,6 +17,7 @@ import { toggleProfileModale } from '@/src/store/reducers/Settings';
 import Pseudo from '@/src/utils/pseudoProfilePage';
 
 import { useLogout } from '@/src/hook/useLogout';
+import { useEffect } from 'react';
 
 const UserProfile = () => {
   const { push } = useRouter();
@@ -25,12 +26,12 @@ const UserProfile = () => {
 
   const { isLogged, user } = useSelector((state) => state.user);
 
-  const token = Cookies.get('accessToken');
-
-  if (!isLogged) {
-    push('/login')
-    return null;
-  }
+  useEffect(() => {
+    if (!isLogged) {
+      push('/login')
+      // return null;
+    }
+  })
 
   const handleInputChange = () => {
     dispatch(toggleProfileModale());

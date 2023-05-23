@@ -13,7 +13,7 @@ export const useLogin = () => {
     // set accessToken and refreshToken in cookie
     if (response.accessToken) {
       Cookies.set("refreshToken", response.refreshToken);
-      Cookies.set("accessToken", response.accessToken);
+      Cookies.set("accessToken", response.accessToken, { expires: 7 });
     }
     return response;
   };

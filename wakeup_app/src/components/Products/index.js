@@ -7,8 +7,10 @@ import { getProductsData } from '/src/libs/getProductList';
 
 export default async function Products() {
 
+  // Retrieve products data asynchronously
   const products = await getProductsData();
 
+  // Render the product section with the fetched data
   return (
     <>
       <h2 className={styles.product__title}>DES PLATEAUX GOURMANDS ET ÉLÉGANTS</h2>
@@ -17,7 +19,6 @@ export default async function Products() {
       </p>
       <p className={styles.product__text}>Découvrez nos plateaux et laissez vous tenter !</p>
       <section className={styles.product__container}>
-
         {
           products.map(product => {
             const price = product.price.toString().replace('.', ',');
@@ -26,7 +27,7 @@ export default async function Products() {
                 {product.is_new ? <div className={styles.product__container__card__new}>Nouveau</div> : null}
                 <Link href={`/plateau/${product.slug}/${product.id}`} >
                   <div className={styles.product__container__card__image}>
-                    <Image src={product.image} alt={product.name} width={300} height={430} />
+                    <Image src={`http://localhost:3000/images/${product.image}`} alt={product.name} width={300} height={430} />
                   </div>
                 </Link>
                 <div className={styles.product__container__card__desc}>

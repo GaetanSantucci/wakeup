@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['153.92.223.190'],
+    domains: ['153.92.223.190', 'wakeupclf.fr', 'localhost'],
   },
   publicRuntimeConfig: {
     // Will be available on both server and client

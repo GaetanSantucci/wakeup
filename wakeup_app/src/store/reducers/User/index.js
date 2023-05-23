@@ -63,7 +63,7 @@ const userSlice = createSlice({
           firstname,
           phone,
           address: {
-            // ...state.user.address,
+            ...state.user.address,
             label,
             name,
             complement,
@@ -100,16 +100,6 @@ const userSlice = createSlice({
           email: '',
           password: '',
           confirmPwd: '',
-          // phone: '',
-          // address: {
-          //   // ...state.user.address,
-          //   label: '',
-          //   name: '',
-          //   city: '',
-          //   postcode: ''
-          // },
-          // role: '',
-          // newsletter_optin:
         },
         isLogged: false
       }

@@ -2,7 +2,7 @@
 import styles from '/public/styles/Homepage.module.scss';
 
 // Components
-import { Articles, EventModale, Reviews, ScrollToTop, Spinner } from '@/src/components';
+import { Articles, Reviews, ScrollToTop, Spinner } from '@/src/components';
 
 import leftImage from '/public/images/left-full.webp';
 import rightImage from '/public/images/right-full.webp';
@@ -15,13 +15,10 @@ import { Suspense } from 'react';
 
 export default function Home() {
 
-  // const user = useCurrentUser();
-  // console.log('user dans le home: ', user);
 
   return (
     <>
       <ScrollToTop />
-      <EventModale />
       <div className={styles.homepage__header__container}>
         <div className={styles.homepage__header__container__image}>
           <Image src={leftImage} alt='Plateau Dolce Vita'/>

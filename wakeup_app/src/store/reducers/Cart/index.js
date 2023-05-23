@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   openCalendar: false,
-  cartItems: {}
+  cartItems: {},
+  bookingDate: ''
 }
 
 const cartSlice = createSlice({
@@ -108,11 +109,17 @@ const cartSlice = createSlice({
         ...state,
         cartItems: {}
       }
+    },
+    addNewBookingDate: (state, action) => {
+      return {
+        ...state,
+        bookingDate: action.payload
+      }
     }
   }
 });
 
-export const { toggleOpenCalendar, addToCart, addItems, deleteItems, resetAllCartItems } = cartSlice.actions;
+export const { toggleOpenCalendar, addToCart, addItems, deleteItems, resetAllCartItems, addNewBookingDate } = cartSlice.actions;
 
 // Add the selectTotalAmount selector function
 export const selectTotalAmount = (state) => {

@@ -1,6 +1,7 @@
 'use client';
 import './modale.scss';
 
+import Link from 'next/link';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -62,7 +63,9 @@ const CartModale = () => {
       }
       <p>{newTotal}</p>
       <div className='cart_modale_controler'>
-        <button>Validez</button>
+        <Link href='/checkout'>
+          <button onClick={closeModale}>Validez</button>
+        </Link>
         <p onClick={handleDeleteCart}>Videz le panier</p>
       </div>
     </div>

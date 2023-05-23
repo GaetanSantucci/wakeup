@@ -17,6 +17,7 @@
     "@mui/material": "^5.11.13",
     "@next/font": "13.1.2",
     "@reduxjs/toolkit": "^1.9.2",
+    "axios": "^1.4.0",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.2",
     "js-cookie": "^3.0.1",
@@ -29,6 +30,10 @@
     "sharp": "^0.31.3"
   },
   "devDependencies": {
+    "@fullcalendar/daygrid": "^6.1.7",
+    "@fullcalendar/interaction": "^6.1.7",
+    "@fullcalendar/react": "^6.1.7",
+    "moment": "^2.29.4",
     "sass": "^1.57.1"
   }
 }

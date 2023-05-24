@@ -11,12 +11,12 @@ const AddCartButton = ({ items }) => {
 
   // const cart = useSelector((state) => state.cart.cartItems)
 
-  const { id, name, price } = items;
+  const { id, name, price, img } = items;
 
   const dispatch = useDispatch();
 
   const handleChangeCartItem = () => {
-    dispatch(addToCart({ id, name, price }))
+    dispatch(addToCart({ id, name, price, img }))
   }
 
   return (

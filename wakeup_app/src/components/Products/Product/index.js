@@ -50,7 +50,7 @@ export default async function Product({ id, targetTime, currentTime }) {
                   <div className={styles.productId__container__card__details__order}>
                     <span className={styles.productId__container__card__details__order__price} >{price} €</span>
                     <div>
-                      <AddCartButton items={{ id: product.id, name: product.name, price: product.price }} />
+                      <AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
                     </div>
                   </div>
                 </div>

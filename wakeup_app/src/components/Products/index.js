@@ -38,7 +38,7 @@ export default async function Products() {
                   </div>
                   <div className={styles.product__container__card__information}>
                     <Link href={`/plateau/${product.slug}/${product.id}`} className={styles.product__container__card__information__link}>En savoir plus</Link>
-                    < AddCartButton items={{ id: product.id, name: product.name, price: product.price }} />
+                    < AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
                   </div>
                 </div>
               </div>

@@ -18,7 +18,7 @@ const cartSlice = createSlice({
     },
 
     addToCart: (state, action) => {
-      const { id, name, price } = action.payload;
+      const { id, name, price, img } = action.payload;
       const existingItem = state.cartItems[id];
 
       if (existingItem) {
@@ -41,6 +41,7 @@ const cartSlice = createSlice({
           id,
           name,
           price,
+          img,
           quantity: 1
         };
 

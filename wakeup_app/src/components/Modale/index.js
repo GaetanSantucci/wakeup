@@ -15,11 +15,11 @@ import { selectTotalAmount, addItems, deleteItems, resetAllCartItems } from '@/s
 
 const CartModale = () => {
 
-  const cartItems = useSelector((state) => Object.values(state.cart.cartItems))
-
-  const { newTotal } = useSelector(selectTotalAmount)
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
+  const cartItems = useSelector((state) => Object.values(state.cart.cartItems))
+  const { newTotal } = useSelector(selectTotalAmount)
+
   const closeModale = () => {
     dispatch(toggleCartModale());
   }

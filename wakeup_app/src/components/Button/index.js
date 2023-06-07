@@ -1,15 +1,17 @@
 'use client';
 
-import './button.scss';
+import styles from './button.module.scss';
 
 import { AddCartIcon } from '../ComponentSVG';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 import { addToCart } from '@/src/store/reducers/Cart';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 const AddCartButton = ({ items }) => {
 
-  // const cart = useSelector((state) => state.cart.cartItems)
+  const [added, setAdded] = useState(false);
 
   const { id, name, price, img } = items;
 
@@ -17,11 +19,15 @@ const AddCartButton = ({ items }) => {
 
   const handleChangeCartItem = () => {
     dispatch(addToCart({ id, name, price, img }))
+    // for animate button on click event
+    setAdded(true);
+    // reset animation state
+    setTimeout(() => setAdded(false), 2000)
   }
 
   return (
     <>
-      <button id='add-cart-button' onClick={handleChangeCartItem}><AddCartIcon /></button>
+      <button id={styles.add_cart_button} className={added ? `${styles.add}` : ''} onClick={handleChangeCartItem}>{added ? <CheckOutlinedIcon /> : <AddCartIcon />}</button>
     </>
   )
 }

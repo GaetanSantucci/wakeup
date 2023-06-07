@@ -1,7 +1,23 @@
 .container {
   width: 80%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-evenly;
+
+  &_order {
+    width: 70%;
+
+    &_title {
+      text-align: start;
+      margin: 1.8rem 0;
+    }
+  }
+
+  &_calendar {
+    width: 70%;
+    display: flex;
+  }
 }
 
 .checkout {

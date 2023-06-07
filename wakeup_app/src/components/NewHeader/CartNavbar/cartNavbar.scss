@@ -2,6 +2,14 @@
   display: flex;
   align-items: center;
 
+  & a {
+    display: flex;
+
+    & svg {
+      font-size: 1.8rem;
+    }
+  }
+
   &_cart {
     position: relative;
 
@@ -26,10 +34,8 @@
       fill: #353535;
       text-align: end;
       cursor: pointer;
-
-      &:nth-child(2) {
-        margin-bottom: 5px;
-      }
+      margin-bottom: -2px;
+      margin-left: 5px;
 
       &:hover {
         fill: #000000;

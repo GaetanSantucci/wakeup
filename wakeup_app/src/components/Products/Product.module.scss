@@ -1,0 +1,322 @@
+@use '/public/styles/mixins';
+@use '/public/styles/vars';
+
+.container {
+  &__title {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  &__text {
+    width: 75%;
+    margin: 0.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  &__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &__card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem;
+      padding: 1rem;
+
+      &__new {
+        position: absolute;
+        z-index: 10;
+        top: -20px;
+        left: -15px;
+        //todo $vars.tabletBackground
+        background-color: #8ea3aa;
+        color: rgb(255, 255, 255);
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        font-size: 1.2rem;
+      }
+
+      &__image {
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        transition: all 0.2s;
+      }
+
+      & img {
+        transition: all 0.4s;
+      }
+
+      &__desc {
+        width: 100%;
+
+        & > * {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 1rem;
+        }
+      }
+      &__title {
+        font-family: var(--fontTitle);
+        letter-spacing: 1.2px;
+        line-height: 1.4;
+        font-size: 1.2rem;
+
+        & p {
+          font-size: 1.6rem;
+          color: #000000;
+        }
+      }
+
+      &__information {
+        font-size: 1rem;
+        color: var(--text--color-secondary);
+
+        &__link {
+          margin-bottom: 0.5rem;
+        }
+
+        & a:nth-last-child(1) {
+          width: 300px;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+    & h3 {
+      font-weight: 400;
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.productId {
+  &__container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    & > * {
+      margin: 1rem;
+    }
+
+    &__card {
+      width: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      &__image {
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        min-height: 600px;
+        min-width: 400px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px #dbdbdb;
+        &:hover {
+          box-shadow: 1px 1px 10px 5px #fcfcfc;
+        }
+
+        & img {
+          transition: all 300ms;
+          border-radius: 5px;
+          &:hover {
+            transform: scale(1.05);
+            transition: all 500ms;
+          }
+        }
+      }
+
+      &__details {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        padding: 1.4rem;
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+        height: 100%;
+
+        & ul {
+          font-size: 1rem;
+        }
+
+        &__effect {
+          position: absolute;
+          z-index: -1;
+          top: 95px;
+          right: -20px;
+          bottom: -50px;
+          left: -180px;
+          background: #e8e8e8;
+        }
+
+        &__title {
+          font-family: var(--fontTitle);
+          font-size: 2.6rem;
+          text-transform: uppercase;
+        }
+
+        &__subtitle {
+          position: relative;
+          font-family: var(--fontItalic);
+          font-size: 1.4rem;
+          margin: 1rem;
+        }
+
+        &__order {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          &__price {
+            font-family: var(--fontTitle);
+            font-size: 2.4rem;
+            font-weight: 400;
+            margin: 2rem 0;
+          }
+        }
+
+        &__information {
+          font-size: 0.8rem;
+          margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .container__card__image:hover img {
+    transform: scale(1.1);
+    transition: all 0.4s;
+  }
+
+  .container__card__image:hover {
+    background-color: var(--background_color);
+    transition: all 0.2s;
+  }
+
+  .container__card__information__link:hover {
+    color: var(--paragraph--color);
+  }
+}
+@media (max-width: 1260px) {
+  .productId__container__card__details {
+    &__title {
+      font-size: 2rem;
+    }
+
+    &__subtitle {
+      font-size: 1.2;
+    }
+
+    & li {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .productId__container {
+    &__card {
+      flex-direction: column;
+      width: 100%;
+
+      &__image {
+        box-shadow: none;
+        width: 75%;
+        border-radius: 0;
+
+        & img {
+          border-radius: 0;
+          width: 100%;
+          max-width: 400px;
+        }
+      }
+
+      &__details {
+        & > * {
+          margin-bottom: 1rem;
+        }
+
+        & li {
+          line-height: 1.5;
+        }
+
+        &__effect {
+          display: none;
+        }
+        &__title {
+          text-align: center;
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    &__title {
+      width: 85%;
+      font-size: calc(1.4rem + 0.6vw);
+      text-align: center;
+      margin: 2rem 0;
+    }
+    &__text {
+      width: 95%;
+      text-align: justify;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+  }
+
+  .productId__container {
+    width: 100%;
+
+    &__card {
+      flex-direction: column;
+      width: 100%;
+      margin: 0;
+      & img {
+        width: 100%;
+      }
+
+      &__details {
+        &__title {
+          font-size: 1.8rem;
+        }
+        & li {
+          font-size: 0.9rem;
+        }
+
+        &__subtitle {
+          font-size: 1.2rem;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+@keyframes shine {
+  50% {
+    background-position: right;
+  }
+}

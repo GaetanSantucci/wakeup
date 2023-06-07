@@ -1,0 +1,150 @@
+@use '/public/styles/mixins';
+@use '/public/styles/vars';
+
+.container {
+  position: relative;
+  display: flex;
+  width: 70%;
+  margin-top: 8rem;
+
+  & span {
+    font-family: var(--fontTitle);
+    color: vars.$colorTitleLightTheme;
+  }
+
+  &__options {
+    @include mixins.flex(column, flex-start);
+    width: 40%;
+    height: 30%;
+    padding: 1rem 0.5rem;
+    background-color: #e8e8e8;
+
+    & h3 {
+      font-size: 1.4rem;
+      text-align: start;
+    }
+
+    & span {
+      font-size: 1.2rem;
+    }
+
+    & p {
+      font-size: 0.8rem;
+    }
+
+    &__input {
+      border: 1px solid #f3f3f3;
+      padding: 0.5rem;
+      &__title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      & > * {
+        margin: 0.5rem;
+      }
+      & label {
+        font-size: 0.9rem;
+        padding-right: 1rem;
+      }
+    }
+
+    & > * {
+      margin: 1rem;
+    }
+  }
+
+  &__cards {
+    @include mixins.flex(column);
+    width: 60%;
+
+    &__item {
+      @include mixins.flex(row);
+      width: 100%;
+      margin: 0.5rem;
+      &__details {
+        width: 50%;
+        margin-left: 2rem;
+        @include mixins.flex(column, flex-start, space-between);
+
+        & span {
+          font-size: 1.4rem;
+        }
+
+        & > * {
+          margin: 0.5rem 0;
+        }
+
+        & h3 {
+          font-size: 1.4rem;
+        }
+      }
+      &__image {
+        display: flex;
+
+        & img {
+          width: 210px;
+          height: 50%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    margin-top: 0;
+    align-items: center;
+    width: 80%;
+
+    &__options {
+      width: 100%;
+      margin-top: 2rem;
+      & h3 {
+        font-size: 1.2rem;
+        text-align: center;
+      }
+
+      &__input {
+        margin: 0.5rem;
+
+        & label {
+          padding-right: 0;
+        }
+
+        & span {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    &__cards {
+      width: 100%;
+
+      &__item {
+        position: relative;
+
+        &__image {
+          -webkit-filter: brightness(0.5);
+          filter: brightness(0.5);
+        }
+
+        &__details {
+          width: 60%;
+          height: 90%;
+          position: absolute;
+          margin-left: 0;
+          align-items: center;
+          justify-content: space-between;
+          & h3,
+          span,
+          p {
+            color: vars.$backgroundPrimaryLightTheme !important;
+          }
+        }
+      }
+    }
+  }
+}

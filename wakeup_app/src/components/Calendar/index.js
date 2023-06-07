@@ -9,7 +9,7 @@ import moment from 'moment';
 
 import interactionPlugin from '@fullcalendar/interaction';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addNewBookingDate } from '@/src/store/reducers/Cart';
 
 
@@ -17,19 +17,25 @@ import { addNewBookingDate } from '@/src/store/reducers/Cart';
 const BookingCalendar = () => {
   const dispatch = useDispatch();
 
-
-  // const { bookingDate } = useSelector((state) => state.cart)
   const [availability, setAvailability] = useState([]);
-  // const [selectedDate, setSelectedDate] = useState(null);
-  // const [events, setEvents] = useState([]);
-
+  const [closedDays, setClosedDays] = useState([]);
+  console.log('closedDays:', closedDays);
 
   useEffect(() => {
+
     // Fetch availability data from API
     fetch('http://localhost:7777/api/v1/orders')
       .then(response => response.json())
       .then(data => {
         setAvailability(data);
+      })
+      .catch(error => console.error(error));
+
+    // Fetch closed days from API
+    fetch('http://localhost:7777/api/v1/closed')
+      .then(response => response.json())
+      .then(data => {
+        setClosedDays(data);
       })
       .catch(error => console.error(error));
   }, []);
@@ -48,14 +54,28 @@ const BookingCalendar = () => {
       const availabilityOnDate = availability.find(a => moment(a.booking_date).format('YYYY-MM-DD') === currentDate);
       const isPlateQuantity12 = availabilityOnDate && availabilityOnDate.plate_quantity >= 12;
 
-      // Set the color of the event based on the plate quantity
-      const color = isPlateQuantity12 ? 'red' : 'green';
+      // Check if the date is within 24 hours from now
+      const isWithin24Hours = moment(currentDate).isBefore(moment().add(24, 'hours'));
+
+      // Check if the date is a closed day
+      const isClosedDay = closedDays.some(day => moment(day.closing_date).isSame(currentDate, 'day'));
+
+
+      // Set the color of the event based on the plate quantity and constraints
+      let color = 'green';
+      if (isPlateQuantity12) {
+        color = 'red';
+      } else if (isWithin24Hours || isClosedDay) {
+        color = 'gray';
+      }
+
 
       if (currentDay.isoWeekday() === 6 || currentDay.isoWeekday() === 7) {
         weekends.push({
           start: currentDate,
           display: 'background',
-          color
+          color,
+          text: color,
         });
       }
       currentDay = moment(currentDay).add(1, 'days');

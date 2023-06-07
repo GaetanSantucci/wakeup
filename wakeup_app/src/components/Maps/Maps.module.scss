@@ -1,0 +1,109 @@
+.container {
+  &__container {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > * {
+      margin: 1rem;
+    }
+
+    & select {
+      display: block;
+      width: 200px;
+      height: 36px;
+      margin-bottom: 1rem;
+      border-width: 0 0 2px 0;
+      border-color: #000;
+      font-family: var(--fontText);
+      font-size: 1rem;
+      line-height: 1.4rem;
+      font-weight: 400;
+      --outline-color: var(--background-color);
+      background-color: var(--color-text);
+      border-width: 0 0 2px 0;
+      color: var(--color-text);
+    }
+
+    & input {
+      display: block;
+      width: 200px;
+      height: 36px;
+      margin-bottom: 1rem;
+      border-width: 0 0 2px 0;
+      border-color: #000;
+      font-family: var(--fontText);
+      font-size: 1rem;
+      line-height: 1.4rem;
+      font-weight: 400;
+      --outline-color: var(--background-color);
+      background-color: var(--color-text);
+      border-width: 0 0 2px 0;
+      color: var(--color-text);
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__image {
+      margin-top: 1rem;
+      width: 70%;
+    }
+
+    &__information {
+      width: 70%;
+      display: flex;
+      justify-content: space-between;
+
+      &__area {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+
+        & ul {
+          display: flex;
+          flex-wrap: wrap;
+
+          & li {
+            list-style: '-';
+            margin: 6px;
+          }
+        }
+      }
+    }
+
+    &__alert {
+      width: 70%;
+      padding: 1rem 2rem;
+      border-radius: 5px;
+      text-align: center;
+    }
+  }
+}
+
+.success {
+  border: 1px solid #41b741;
+  background-color: #aae2aad6;
+}
+
+.failed {
+  border: 1px solid #ca2a2a;
+  background-color: #e08f8fba;
+}
+
+@media (max-width: 600px) {
+  .container {
+    &__title {
+      font-size: 2rem;
+    }
+    &__container {
+      &__image {
+        width: 110%;
+      }
+      &__alert {
+        width: 85%;
+      }
+    }
+  }
+}

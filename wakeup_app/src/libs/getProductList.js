@@ -17,6 +17,8 @@ export const getProductById = async (plateId) => {
   const res = await fetch(`${endpoint}/plates/${plateId}`);
 
   if (!res.ok) {
+    console.log('res.json:', res.json());
+
     throw new Error('Récupération des données liées à ce plateau impossible');
   }
   return res.json();

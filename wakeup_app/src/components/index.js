@@ -15,5 +15,6 @@ import Spinner from './Spinner';
 import { ButtonToScrollTop, ScrollUp, ScrollToTop } from './ScrollUp';
 import Footer from './Footer';
 import UserProfile from './Profile';
+import { CustomCalendar } from './Calendar';
 
-export { Additionnal, Articles, Business, ButtonToScrollTop, CartModale, Custom, Gift, NewHeader, UserLogin, Contact, Maps, Products, Product, Reviews, ScrollUp, ScrollToTop, Spinner, UserProfile, Footer, ProfileModale };
+export { Additionnal, Articles, Business, ButtonToScrollTop, CartModale, Custom, CustomCalendar, Gift, NewHeader, UserLogin, Contact, Maps, Products, Product, Reviews, ScrollUp, ScrollToTop, Spinner, UserProfile, Footer, ProfileModale };

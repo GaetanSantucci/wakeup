@@ -17,6 +17,7 @@ export default async function Product({ id, targetTime, currentTime }) {
   let plate = []
   const fetchProduct = await getProductById(id);
   plate.push(fetchProduct);
+  console.log('plate:', plate);
 
 
 
@@ -32,8 +33,8 @@ export default async function Product({ id, targetTime, currentTime }) {
             return (
               <div className={styles.productId__container__card} key={product.id}>
                 <div className={styles.productId__container__card__image}>
-                  {/* <Image src=`https://wakeupclf.fr/images/${product.image}` alt={product.name} width={400} height={600} /> */}
-                  <Image src='https://wakeupclf.fr/images/sunshine.webp' alt={product.name} width={400} height={600} />
+                  <Image src={`https://wakeupclf.fr/images/${product.image}`} alt={product.name} width={400} height={600} />
+                  {/* <Image src='https://wakeupclf.fr/images/sunshine.webp' alt={product.name} width={400} height={600} /> */}
                 </div>
                 <div className={styles.productId__container__card__details}>
                   <div className={styles.productId__container__card__details__effect}></div>

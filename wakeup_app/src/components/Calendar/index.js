@@ -1,38 +1,26 @@
 'use client';
-import './calendar.scss'
 import { useState, useEffect } from 'react';
-
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import frLocale from '@fullcalendar/core/locales/fr';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
+import 'moment/locale/fr'; // import the French locale
 
-import interactionPlugin from '@fullcalendar/interaction';
+const CustomCalendar = () => {
 
-import { useDispatch } from 'react-redux';
-import { addNewBookingDate } from '@/src/store/reducers/Cart';
-
-
-
-const BookingCalendar = () => {
-  const dispatch = useDispatch();
-
-  const [availability, setAvailability] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availabilityData, setAvailability] = useState([]);
   const [closedDays, setClosedDays] = useState([]);
-  console.log('closedDays:', closedDays);
 
   useEffect(() => {
-
-    // Fetch availability data from API
-    fetch('http://localhost:7777/api/v1/orders')
+    fetch('http://localhost:7777/api/v1/orders') // Fetch availability 
       .then(response => response.json())
       .then(data => {
         setAvailability(data);
       })
       .catch(error => console.error(error));
 
-    // Fetch closed days from API
-    fetch('http://localhost:7777/api/v1/closed')
+    fetch('http://localhost:7777/api/v1/closed') // Fetch closed days
       .then(response => response.json())
       .then(data => {
         setClosedDays(data);
@@ -40,71 +28,72 @@ const BookingCalendar = () => {
       .catch(error => console.error(error));
   }, []);
 
-  function generateWeekendEvents() {
-    const startOfMonth = moment().startOf('month');
-    const endOfMonth = moment().add(6, 'months').endOf('month');
-
-    const weekends = [];
-    let currentDay = moment(startOfMonth).startOf('week').add(5, 'days');
-
-    while (currentDay.isBefore(endOfMonth)) {
-      const currentDate = currentDay.format('YYYY-MM-DD');
-
-      // Check if the current date matches the booking date and plate quantity is 12
-      const availabilityOnDate = availability.find(a => moment(a.booking_date).format('YYYY-MM-DD') === currentDate);
-      const isPlateQuantity12 = availabilityOnDate && availabilityOnDate.plate_quantity >= 12;
-
-      // Check if the date is within 24 hours from now
-      const isWithin24Hours = moment(currentDate).isBefore(moment().add(24, 'hours'));
-
-      // Check if the date is a closed day
-      const isClosedDay = closedDays.some(day => moment(day.closing_date).isSame(currentDate, 'day'));
-
-
-      // Set the color of the event based on the plate quantity and constraints
-      let color = 'green';
-      if (isPlateQuantity12) {
-        color = 'red';
-      } else if (isWithin24Hours || isClosedDay) {
-        color = 'gray';
+  const theme = createTheme({
+    components: {
+      MuiPickersDay: {
+        styleOverrides: {
+          root: {
+            color: '#088519',
+            fontSize: '0.8rem',
+          },
+          dayelected: {
+            backgroundColor: '#ff00ff !important'
+          }
+        }
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+          },
+          color: '#252525 !important',
+          notchedOutline: {
+            borderColor: '#252525 !important'
+          }
+        }
+      },
+      MuiFormLabel: {
+        styleOverrides: {
+          root: {
+            color: '#252525 !important'
+          }
+        }
       }
-
-
-      if (currentDay.isoWeekday() === 6 || currentDay.isoWeekday() === 7) {
-        weekends.push({
-          start: currentDate,
-          display: 'background',
-          color,
-          text: color,
-        });
-      }
-      currentDay = moment(currentDay).add(1, 'days');
     }
-    return weekends;
-  }
+  });
 
-  const handleSelect = (info) => {
-    const { startStr } = info;
-    dispatch(addNewBookingDate(startStr))
-  }
+  moment.locale('fr'); // set the locale to French
 
+  const disableWeekdays = (date) => {
+    const day = moment(date).day(); // Get the day of the week for the given date
+    const dateString = moment(date).format('YYYY-MM-DD'); // Format the date as a string in 'YYYY-MM-DD' format
+    const availability = availabilityData.find((item) => item.booking_date.split('T')[0] === dateString); // Find the availability data for the given date
+    const isClosedDay = closedDays.some((item) => item.closing_date.split('T')[0] === dateString); // Check if the date is a closed day
+    const nextDay = moment().add(24, 'hours').format('YYYY-MM-DD'); // Get the next day's date in 'YYYY-MM-DD' format
+    const isWithin24Hours = moment(dateString).isBefore(nextDay); // Check if the date is within 24 hours from now
+
+    // Conditions to disable days according to the constraints
+    if (day !== 6 && day !== 0) return true; // Disable weekdays (Saturday: 6, Sunday: 0)
+    if (availability && parseInt(availability.plate_quantity) >= 12) return true; // Disable if plate quantity is greater than or equal to 12
+    if (isWithin24Hours) return true; // Disable if the date is within 24 hours from now
+    if (isClosedDay) return true; // Disable if it's a closed day
+
+    return false; // Enable the date if none of the disabling conditions are met
+  };
   return (
-    <FullCalendar
-      editable
-      selectable
-      select={handleSelect}
-      locale={frLocale}
-      firstDay={1}
-      plugins={[dayGridPlugin, interactionPlugin]}
-      headerToolbar={{
-        center: "prev next",
-        end: "",
-      }}
-      views={["dayGridMonth"]}
-      fixedWeekCount={false}
-      events={generateWeekendEvents()}
-    />
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <DatePicker
+          label="Choisissez votre date"
+          value={selectedDate}
+          onChange={(newValue) => setSelectedDate(newValue)}
+          shouldDisableDate={disableWeekdays}
+          // input={(params) => <TextField {...params} />}
+          format="DD-MM-YYYY"
+          slotProps={{ textField: { size: 'small' } }}
+        />
+      </LocalizationProvider>
+    </ThemeProvider>
   );
-}
+};
 
-export { BookingCalendar };
+export { CustomCalendar };

@@ -17,9 +17,6 @@ const connectEmail = (data) => {
     };
 };
 const emailReceived = (data) => {
-    // const mailList = [
-    //   'contact@wakeupbox.fr',
-    // ]
     return {
         from: `Wake up Clermont-Fd ${process.env.NODEMAILER_ACCOUNT}`,
         to: 'contact@wakeupbox.fr',

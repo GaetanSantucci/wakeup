@@ -4,25 +4,21 @@ import Image from 'next/image';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectTotalAmount, addItems, deleteItems } from '@/src/store/reducers/Cart';
+import { selectTotalAmount, addItems, deleteItems, incrementQuantity, decrementQuantity } from '@/src/store/reducers/Cart';
 
 const CartItem = () => {
 
   const dispatch = useDispatch();
 
-  const cartItems = useSelector((state) => Object.values(state.cart.cartItems))
-  const { newTotal } = useSelector(selectTotalAmount)
+  const cartItems = useSelector((state) => state.cart.cart)
 
-  const handleChangeIncreaseQty = (qty, id) => {
-    dispatch(addItems({ id, quantity: qty + 1 }));
+  const handleChangeIncreaseQty = (id) => {
+    dispatch(incrementQuantity())
   };
 
-  const handleChangeDecreaseQty = (qty, id) => {
-    if (qty >= 0) {
-      dispatch(deleteItems({ id, quantity: qty - 1 }));
-    }
+  const handleChangeDecreaseQty = (id) => {
+    dispatch(decrementQuantity())
   };
-  console.log('cartItems:', cartItems);
   return (
     <>
       {
@@ -35,16 +31,16 @@ const CartItem = () => {
               <div className='cart_modale_item_desc'>
                 <p>{elem.name}</p>
                 <div className='cart_modale_item_quantity'>
-                  <span onClick={() => { handleChangeDecreaseQty(elem.quantity, elem.id) }}>-</span>
+                  <span onClick={() => { handleChangeDecreaseQty(elem.id) }}>-</span>
                   {elem.quantity}
-                  <span onClick={() => { handleChangeIncreaseQty(elem.quantity, elem.id) }}>+</span>
+                  <span onClick={() => { handleChangeIncreaseQty(elem.id) }}>+</span>
                 </div>
               </div>
             </div>
           )
         })
       }
-      <p>Montant du panier : {newTotal} <span>€</span></p>
+      {/* <p>Montant du panier : {newTotal} <span>€</span></p> */}
     </>
   )
 }

@@ -25,4 +25,10 @@ router.use(UserRouter);
 import { router as ReviewRouter } from './review.js';
 router.use(ReviewRouter);
 
+import { router as OrderRouter } from './order.js';
+router.use(OrderRouter);
+
+import { router as CloseRouter } from './closed.js';
+router.use(CloseRouter);
+
 export { router };

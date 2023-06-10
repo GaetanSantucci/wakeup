@@ -11,8 +11,17 @@ import { selectTotalAmount } from '@/src/store/reducers/Cart';
 const CartNavbar = () => {
 
   const dispatch = useDispatch();
-  const { cartQty } = useSelector(selectTotalAmount)
+  // const { cartQty } = useSelector(selectTotalAmount)
   const { user, isLogged } = useSelector((state) => state.user)
+  const cart = useSelector((state) => state.cart.cart)
+
+  const getTotalQuantity = () => { // check qty items in cart to set icon on shopping bag
+    let total = 0;
+    cart.forEach(item => {
+      total += item.quantity
+    })
+    return total
+  }
 
   const handleOpenCart = (e) => {
     dispatch(toggleCartModale())
@@ -25,7 +34,10 @@ const CartNavbar = () => {
       </Link>
       <div className='shop_item_cart'>
         <ShoppingBagOutlinedIcon className='shop_item_cart_icon' onClick={handleOpenCart} />
-        {cartQty && <div className='shop_item_cart_qty'>{cartQty}</div>}
+        {
+          getTotalQuantity() !== 0 ? <div className='shop_item_cart_qty'>{getTotalQuantity()}</div> : null // display icon for items qty
+        }
+
       </div>
     </div>
   )

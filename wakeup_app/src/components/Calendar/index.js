@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { addNewBookingDate } from '@/src/store/reducers/Cart';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -7,6 +9,10 @@ import moment from 'moment';
 import 'moment/locale/fr'; // import the French locale
 
 const CustomCalendar = () => {
+
+  const dispatch = useDispatch();
+  const bookingDate = useSelector((state) => state.cart.bookingDate)
+  console.log('bookingDate:', bookingDate);
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [availabilityData, setAvailability] = useState([]);
@@ -61,6 +67,10 @@ const CustomCalendar = () => {
     }
   });
 
+  const handleSelectBookingDate = (newValue) => {
+    dispatch(addNewBookingDate(newValue.format('DD-MM-YYYY')))
+  }
+
   moment.locale('fr'); // set the locale to French
 
   const disableWeekdays = (date) => {
@@ -69,7 +79,7 @@ const CustomCalendar = () => {
     const availability = availabilityData.find((item) => item.booking_date.split('T')[0] === dateString); // Find the availability data for the given date
     const isClosedDay = closedDays.some((item) => item.closing_date.split('T')[0] === dateString); // Check if the date is a closed day
     const nextDay = moment().add(24, 'hours').format('YYYY-MM-DD'); // Get the next day's date in 'YYYY-MM-DD' format
-    const isWithin24Hours = moment(dateString).isBefore(nextDay); // Check if the date is within 24 hours from now
+    const isWithin24Hours = moment(dateString).isSameOrBefore(nextDay); // Check if the date is within 24 hours from now
 
     // Conditions to disable days according to the constraints
     if (day !== 6 && day !== 0) return true; // Disable weekdays (Saturday: 6, Sunday: 0)
@@ -85,7 +95,8 @@ const CustomCalendar = () => {
         <DatePicker
           label="Choisissez votre date"
           value={selectedDate}
-          onChange={(newValue) => setSelectedDate(newValue)}
+          // onChange={(newValue) => setSelectedDate(newValue)}
+          onChange={(newValue) => handleSelectBookingDate(newValue)}
           shouldDisableDate={disableWeekdays}
           // input={(params) => <TextField {...params} />}
           format="DD-MM-YYYY"

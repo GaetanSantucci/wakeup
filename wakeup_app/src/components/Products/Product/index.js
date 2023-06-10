@@ -12,14 +12,11 @@ import { getProductById } from '/src/libs/getProductList';
 import { Suspense } from 'react';
 
 
-export default async function Product({ id, targetTime, currentTime }) {
+export default async function Product({ id }) {
 
   let plate = []
   const fetchProduct = await getProductById(id);
   plate.push(fetchProduct);
-  console.log('plate:', plate);
-
-
 
   return (
     <>
@@ -34,7 +31,6 @@ export default async function Product({ id, targetTime, currentTime }) {
               <div className={styles.productId__container__card} key={product.id}>
                 <div className={styles.productId__container__card__image}>
                   <Image src={`https://wakeupclf.fr/images/${product.image}`} alt={product.name} width={400} height={600} />
-                  {/* <Image src='https://wakeupclf.fr/images/sunshine.webp' alt={product.name} width={400} height={600} /> */}
                 </div>
                 <div className={styles.productId__container__card__details}>
                   <div className={styles.productId__container__card__details__effect}></div>

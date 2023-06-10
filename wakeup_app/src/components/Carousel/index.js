@@ -5,6 +5,7 @@ import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutl
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 
 const HomepageCarousel = ({ items }) => {
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goTo = (index) => {
@@ -33,12 +34,12 @@ const HomepageCarousel = ({ items }) => {
   return (
     <div className="carousel">
       <div className="carousel-inner">
-        {items.map((item, i) => (
+        {items.map((image, i) => (
           <div
             key={i}
             className={`carousel-item ${i === currentIndex ? 'active' : ''}`}
           >
-            <Image src={item} alt="carousel de photo de brunch" width={640} height={455} priority />
+            <Image src={`http://localhost:3000/images/${image}`} alt="carousel de photo de brunch" width={640} height={455} priority />
           </div>
         ))}
       </div>

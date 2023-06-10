@@ -1,4 +1,4 @@
-import styles from '/public/styles/Article.module.scss';
+import styles from './Article.module.scss';
 
 import { use } from 'react';
 
@@ -15,7 +15,7 @@ const Articles = () => {
 
 
   return (
-    <section className={styles.articles__container}>
+    <section className={styles.container}>
       {
         articlesList.map((elem, i) => {
           const paragraph = elem.description.split('\\n')

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 // ~ Environment
 import 'dotenv/config';
-
+import { ErrorApi } from './app/services/errorHandler.js';
 import helmet from 'helmet';
 import cors from 'cors';
 
 // ~ Debug
-
 import debug from 'debug';
 const logger = debug('Entrypoint');
 
@@ -31,7 +30,8 @@ app.use(express.json());
 
 const corsOptions = {
   withCredentials: true,
-  origin: ["https://www.wakeupbox.fr", "https://www.wakeupclf.fr", "http://localhost:3000"],
+  origin: ["https://www.wakeupbox.fr", "https://www.wakeupclf.fr", "http://localhost:3000", "http://153.92.223.190"],
+  // origin: ["*"],
   method: ["GET", "POST", "PATCH", "DELETE"],
   responseHeader: ["Content-Type", "Origin", "X-Requested-With", "Authorization"],
   optionsSuccessStatus: 200,
@@ -63,7 +63,10 @@ import { router } from './app/router/index.js';
 // ~ Launch router
 
 app.use('/api/v1', router);
-// app.use(_404)
+app.use((req, res) => {
+  throw new ErrorApi(`Page not found !`, req, res, 404,);
+});
+
 
 const PORT = process.env.PORT ?? 3000;
 app.listen(PORT, () => {

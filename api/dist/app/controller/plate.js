@@ -28,10 +28,12 @@ const getAllPlates = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 const getPlateById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const plateId = +req.params.plateId;
+        console.log('plateId:', plateId);
         // console.log('plateId: ', plateId);
         // const plate = await Plate.findOne(plateId);
         //todo utiliser uniquement la deuxieme requete
         const associatedSale = yield Plate.findByPlateId(plateId);
+        console.log('associatedSale:', associatedSale);
         // logger('associatedSale: ', associatedSale);
         // logger('product: ', plate);
         if (!associatedSale)

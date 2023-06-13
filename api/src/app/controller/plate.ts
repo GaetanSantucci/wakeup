@@ -26,10 +26,12 @@ const getPlateById = async (req: Request, res: Response) => {
   try {
 
     const plateId = +req.params.plateId;
+    console.log('plateId:', plateId);
     // console.log('plateId: ', plateId);
     // const plate = await Plate.findOne(plateId);
     //todo utiliser uniquement la deuxieme requete
     const associatedSale = await Plate.findByPlateId(plateId);
+    console.log('associatedSale:', associatedSale);
     // logger('associatedSale: ', associatedSale);
     // logger('product: ', plate);
 

@@ -27,12 +27,11 @@ class PlateDatamapper extends CoreDataMapper {
                 // todo change associated_sale to addon_sale when new DB
                 const preparedQuery = {
                     text: `SELECT plate.*, json_agg(addon_sales) AS addon_sales
-        FROM plate
-        INNER JOIN plate_has_addon_sales ON plate.id = plate_has_addon_sales.plate_id
-        INNER JOIN addon_sales ON plate_has_addon_sales.addon_sales_id = addon_sales.id
-        WHERE plate.id = $1
-        GROUP BY plate.id
-              `,
+               FROM plate
+               LEFT JOIN plate_has_addon_sales ON plate.id = plate_has_addon_sales.plate_id
+               LEFT JOIN addon_sales ON plate_has_addon_sales.addon_sales_id = addon_sales.id
+               WHERE plate.id = $1
+               GROUP BY plate.id`,
                     values: [plateId]
                 };
                 const result = yield this.client.query(preparedQuery);

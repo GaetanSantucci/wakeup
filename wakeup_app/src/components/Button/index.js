@@ -55,4 +55,13 @@ const AddOrDeleteItems = ({ cart }) => {
   )
 }
 
-export { AddCartButton, AddOrDeleteItems }
+const StripeButton = ({ cart }) => {
+
+  const handleCheckout = () => {
+    console.log('Checkout go to pay', cart);
+  }
+
+  return <button type="button" onClick={handleCheckout}>Checkout</button>
+}
+
+export { AddCartButton, AddOrDeleteItems, StripeButton }

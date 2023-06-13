@@ -2,7 +2,7 @@ import { getAuthorizationHeader } from "../utils/getAuthorizationHeader";
 
 export class UserService {
 
-  APIEndpoint = 'http://localhost:5555/api/v1/customers';
+  APIEndpoint = 'http://localhost:7777/api/v1/customers';
 
   async create(email, password) {
 

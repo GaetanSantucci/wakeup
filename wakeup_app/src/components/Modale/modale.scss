@@ -43,20 +43,29 @@
     &_quantity {
       display: flex;
       align-items: center;
+      font-size: 1rem;
       // width: 30%;
-      & span {
-        margin: 0 5px;
-        display: block;
-        text-align: center;
-        width: 20px;
-        height: 20px;
-        background-color: #353535;
-        color: #ffffff;
+      &_add {
+        display: flex;
+        align-items: center;
+        border: 1px solid #d4d4d4;
+        background-color: #f7f7f7;
         border-radius: 5px;
-
-        &:hover {
-          cursor: pointer;
+        & > * {
+          margin: 8px;
         }
+        & svg {
+          font-size: 1rem !important;
+          stroke: none;
+          fill: rgb(54, 54, 54);
+        }
+      }
+      &_delete {
+        margin-left: 10px;
+      }
+
+      & svg:hover {
+        cursor: pointer;
       }
     }
   }

@@ -10,50 +10,25 @@ import { useState } from 'react';
 import { toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Settings';
 import { setAddress, inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
 
+import { getTotal } from '@/src/libs/getCartTotal';
 import { useSetupUser } from '@/src/hook/useSetUser';
-import { selectTotalAmount, addItems, deleteItems, resetAllCartItems, incrementQuantity, decrementQuantity } from '@/src/store/reducers/Cart';
+import { resetAllCartItems } from '@/src/store/reducers/Cart';
+import { AddOrDeleteItems } from '../Button';
 
 const CartModale = () => {
 
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
-  const cartItems = useSelector((state) => state.cart.cart)
-  console.log('cartItems:', cartItems);
-  // const cartItems = useSelector((state) => Object.values(state.cart.cartItems))
-  // const { newTotal } = useSelector(selectTotalAmount)
+  const cart = useSelector((state) => state.cart.cart)
+  console.log('cartItems:', cart);
 
-  const closeModale = () => {
-    dispatch(toggleCartModale());
-  }
-
-  //todo test
-  // const handleChangeIncreaseQty = (qty, id) => {
-  //   dispatch(addItems({ id, quantity: qty + 1 }));
-  // };
-
-  // const handleChangeDecreaseQty = (qty, id) => {
-  //   if (qty >= 0) {
-  //     dispatch(deleteItems({ id, quantity: qty - 1 }));
-  //   }
-  // };
-
-  const handleChangeIncreaseQty = (id) => {
-    // dispatch(addItems({ id, quantity: qty + 1 }));
-    dispatch(incrementQuantity(id))
-  };
-
-  const handleChangeDecreaseQty = (id) => {
-    // if (qty >= 0) {
-    // dispatch(deleteItems({ id, quantity: qty - 1 }));
-    dispatch(decrementQuantity(id))
-    // }
-  };
-
-  const handleDeleteCart = () => {
-    // dispatch(resetAllCartItems());
+  const closeModale = () => dispatch(toggleCartModale());
+  const handleRemoveItem = () => {
+    dispatch(resetAllCartItems());
     setTimeout(() => {
       closeModale();
     }, 400)
+
   }
 
   return (
@@ -63,25 +38,21 @@ const CartModale = () => {
       </div>
       <h3 className='cart_modale_title'>Votre panier </h3>
       {
-        cartItems.map(elem => {
+        cart.map(elem => {
           return (
             <div className='cart_modale_item' key={elem.name}>
               <p>{elem.name}</p>
-              <div className='cart_modale_item_quantity'>
-                <span onClick={() => { handleChangeDecreaseQty(elem.id) }}>-</span>
-                {elem.quantity}
-                <span onClick={() => { handleChangeIncreaseQty(elem.id) }}>+</span>
-              </div>
+              <AddOrDeleteItems cart={elem} />
             </div>
           )
         })
       }
-      {/* <p>{newTotal}</p> */}
+      <p>Montant du panier : {getTotal(cart).totalPrice.toFixed(2)}<span>€</span></p>
       <div className='cart_modale_controler'>
         <Link href='/checkout'>
           <button onClick={closeModale}>Validez</button>
         </Link>
-        <p onClick={handleDeleteCart}>Videz le panier</p>
+        <p onClick={() => handleRemoveItem()}>Videz le panier</p>
       </div>
     </div>
   )
@@ -103,7 +74,6 @@ const ProfileModale = () => {
   const handleSearchInput = async (event) => {
     if (event.target.value < 3) setResults([])
     setSearchTerm(event.target.value)
-    console.log('searchTerm: ', searchTerm.length);
 
     if (searchTerm.length > 3) {
       try {

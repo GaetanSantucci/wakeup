@@ -28,7 +28,7 @@ export default async function Products() {
                 {product.is_new ? <div className={styles.product__container__card__new}>Nouveau</div> : null}
                 <Link href={`/plateau/${product.slug}/${product.id}`} >
                   <div className={styles.product__container__card__image}>
-                    <Image src={`http://localhost:3000/images/${product.image}`} alt={product.name} width={300} height={430} />
+                    <Image src={`/images/${product.image}`} alt={product.name} width={300} height={430} />
                   </div>
                 </Link>
                 <div className={styles.product__container__card__desc}>

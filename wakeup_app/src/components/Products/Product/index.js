@@ -25,12 +25,10 @@ export default async function Product({ id }) {
           plate.map(product => {
             const price = product.price.toString().replace('.', ',');
             const text = product.description.split('\\n')
-
-            //todo mettre a jour la bdd pour retirer l'ip dans plates images
             return (
               <div className={styles.productId__container__card} key={product.id}>
                 <div className={styles.productId__container__card__image}>
-                  <Image src={`https://wakeupclf.fr/images/${product.image}`} alt={product.name} width={400} height={600} />
+                  <Image src={`/images/${product.image}`} alt={product.name} width={400} height={600} />
                 </div>
                 <div className={styles.productId__container__card__details}>
                   <div className={styles.productId__container__card__details__effect}></div>
@@ -58,7 +56,10 @@ export default async function Product({ id }) {
         }
       </div>
       <Suspense fallback={<Spinner />}>
-        <Additionnal products={fetchProduct.addon_sales} />
+        {
+          fetchProduct.addon_sales[0] !== null ? <Additionnal products={fetchProduct.addon_sales} /> : null
+        }
+
       </Suspense>
     </>
   );

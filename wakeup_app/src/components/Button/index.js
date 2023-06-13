@@ -4,6 +4,10 @@ import styles from './button.module.scss';
 
 import { AddCartIcon } from '../ComponentSVG';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import { removeItem, incrementQuantity, decrementQuantity } from '@/src/store/reducers/Cart';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import { addToCart } from '@/src/store/reducers/Cart';
 import { useDispatch } from 'react-redux';
@@ -32,4 +36,23 @@ const AddCartButton = ({ items }) => {
   )
 }
 
-export { AddCartButton }
+const AddOrDeleteItems = ({ cart }) => {
+  const { id, quantity } = cart;
+  const dispatch = useDispatch();
+
+  const handleChangeIncreaseQty = (id) => dispatch(incrementQuantity(id));
+  const handleChangeDecreaseQty = (id) => dispatch(decrementQuantity(id));
+  const handleRemoveItem = (id) => dispatch(removeItem(id));
+  return (
+    <div className='cart_modale_item_quantity'>
+      <div className='cart_modale_item_quantity_add'>
+        <RemoveOutlinedIcon onClick={() => { handleChangeDecreaseQty(id) }} />
+        {quantity <= 9 ? `0${quantity}` : quantity}
+        <AddOutlinedIcon onClick={() => { handleChangeIncreaseQty(id) }} />
+      </div>
+      <DeleteOutlineOutlinedIcon className='cart_modale_item_quantity_delete' onClick={() => handleRemoveItem(id)} />
+    </div>
+  )
+}
+
+export { AddCartButton, AddOrDeleteItems }

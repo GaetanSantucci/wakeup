@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { addNewBookingDate } from '@/src/store/reducers/Cart';
+import { addBookingDate } from '@/src/store/reducers/Cart';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -68,7 +68,8 @@ const CustomCalendar = () => {
   });
 
   const handleSelectBookingDate = (newValue) => {
-    dispatch(addNewBookingDate(newValue.format('DD-MM-YYYY')))
+    const date = newValue.format(('DD-MM-YYYY'))
+    dispatch(addBookingDate(date))
   }
 
   moment.locale('fr'); // set the locale to French

@@ -11,7 +11,24 @@ import Image from 'next/image';
 
 import { Suspense } from 'react';
 
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLocaleStorage } from '@/src/store/reducers/Cart';
+
 export default function Home() {
+  // const dispatch = useDispatch();
+  // const cart = useSelector((state) => state.cart.cart);
+  // console.log('cart homepage:', cart);
+
+  // console.log('locale storage cart:', cart);
+  // useEffect(() => {
+  //   const storedCart = localStorage.getItem('cart');
+  //   console.log('storedCart:', storedCart);
+  //   if (storedCart) {
+  //     dispatch(getLocaleStorage(storedCart));
+  //   }
+  // }, []);
+
   return (
     <>
       <ScrollToTop />

@@ -1,6 +1,5 @@
 //~ Import
 import rootReducer from './reducers';
-// import rootMiddleware from './middlewares';
 import { configureStore } from '@reduxjs/toolkit';
 
 //recent way to configure store

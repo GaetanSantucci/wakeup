@@ -11,9 +11,8 @@ const Additionnal = ({ products }) => {
   const isSmallScreen = useMedia('(max-width: 768px)', false);
 
   return (
+
     <div className={styles.additionnal__container}>
-
-
       <div className={styles.additionnal__container__cards}>
         {isSmallScreen ? <AddonCarousel products={products} /> : products.map(elem => {
           const price = elem.price.toString().replace('.', ',');

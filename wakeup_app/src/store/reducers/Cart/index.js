@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  cart: localStorage?.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
+  cart: /* localStorage?.getItem('cart') ? JSON.parse(localStorage?.getItem('cart')) : */[],
   bookingDate: '',
   totalAmount: 0,
   totalQuantity: 0,
@@ -52,8 +52,14 @@ const cartSlice = createSlice({
         bookingDate: action.payload
       }
     },
+    getStorageCart: (state, action) => {
+      return {
+        ...state,
+        cart: action.payload
+      }
+    }
   }
 });
 
-export const { toggleOpenCalendar, addToCart, incrementQuantity, decrementQuantity, removeItem, resetAllCartItems, addBookingDate } = cartSlice.actions;
+export const { toggleOpenCalendar, addToCart, incrementQuantity, decrementQuantity, removeItem, resetAllCartItems, addBookingDate, getStorageCart } = cartSlice.actions;
 export default cartSlice.reducer;

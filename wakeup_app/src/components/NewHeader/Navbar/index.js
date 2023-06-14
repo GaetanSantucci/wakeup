@@ -1,24 +1,8 @@
 'use client';
 import './navbar.scss';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
 import { mainRoutes } from '@/src/routes';
-
-// const navTitle = [{
-//   slug: '/',
-//   category: 'ACCUEIL'
-// }, {
-//   slug: '/plateau',
-//   category: 'NOS PLATEAUX'
-// }, {
-//   slug: '/prestation',
-//   category: 'NOS PRESTATIONS'
-// }, {
-//   slug: '/contact',
-//   category: 'CONTACT'
-// }];
 
 const NewNavbar = () => {
 

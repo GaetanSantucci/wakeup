@@ -4,41 +4,36 @@ import styles from '/public/styles/Homepage.module.scss';
 // Components
 import { Articles, Reviews, ScrollToTop, Spinner } from '@/src/components';
 
-import leftImage from '/public/images/left-full.webp';
-import rightImage from '/public/images/right-full.webp';
-
 import Image from 'next/image';
 
 import { Suspense } from 'react';
 
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getLocaleStorage } from '@/src/store/reducers/Cart';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getStorageCart } from '@/src/store/reducers/Cart';
 
 export default function Home() {
-  // const dispatch = useDispatch();
-  // const cart = useSelector((state) => state.cart.cart);
-  // console.log('cart homepage:', cart);
+  const dispatch = useDispatch();
 
-  // console.log('locale storage cart:', cart);
-  // useEffect(() => {
-  //   const storedCart = localStorage.getItem('cart');
-  //   console.log('storedCart:', storedCart);
-  //   if (storedCart) {
-  //     dispatch(getLocaleStorage(storedCart));
-  //   }
-  // }, []);
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage?.getItem('cart'));
+    console.log('storedCart:', storedCart);
+    if (storedCart) {
+      dispatch(getStorageCart(storedCart));
+    }
+  }, []);
 
   return (
     <>
       <ScrollToTop />
       <div className={styles.homepage__header__container}>
-        <div className={styles.homepage__header__container__image}>
-          <Image src={leftImage} alt='Plateau Dolce Vita' />
-        </div>
-        <div className={styles.homepage__header__container__image}>
-          <Image src={rightImage} alt='Plateau Sunshine' />
-        </div>
+        <Image
+          src={'/images/presentation_dolce_homepage.webp'}
+          alt='Plateau Dolce Vita avec presentation'
+          width={1920}
+          height={1440}
+          priority
+        />
       </div>
       <section className={styles.homepage__header__container__presentation}>
         <p>

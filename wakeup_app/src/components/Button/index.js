@@ -12,6 +12,8 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { addToCart } from '@/src/store/reducers/Cart';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const AddCartButton = ({ items }) => {
 
@@ -57,8 +59,38 @@ const AddOrDeleteItems = ({ cart }) => {
 
 const StripeButton = ({ cart }) => {
 
-  const handleCheckout = () => {
-    console.log('Checkout go to pay', cart);
+  const router = useRouter();
+
+  const handleCheckout = async () => {
+    const userId = 'testUser-54541'
+    // const endpoint = 'https://wakeupclf.fr/api/v1/contact'
+    const endpoint = 'http://localhost:7777/api/v1/payment/stripe'
+
+    axios.post(endpoint, {
+      cart,
+      userId
+    }).then((res) => {
+      if (res.data.url) {
+        console.log('res.data.url:', res.data.url);
+        window.location.replace(res.data.url)
+      }
+    }).catch((err) => console.log(err.message))
+    // const options = {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(cart, userId),
+    // }
+
+    // fetch(endpoint, options)
+    //   .then(response => console.log('response.json():', response.json()))
+    //   .then(data => console.log('Retour des data du fetch payment', data))
+
+    // const response = await fetch(endpoint, options)
+    // const result = await response.json()
+    // console.log('result:', result);
+    // console.log('Checkout go to pay', cart);
   }
 
   return <button type="button" onClick={handleCheckout}>Checkout</button>

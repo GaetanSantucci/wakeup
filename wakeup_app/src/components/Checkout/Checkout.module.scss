@@ -5,13 +5,17 @@
   align-items: center;
   justify-content: space-evenly;
 
-  &_order {
+  &_checkout {
     width: 70%;
     margin-bottom: 2rem;
 
     &_title {
       text-align: start;
       margin-bottom: 2rem;
+    }
+
+    &_desc {
+      margin: 1.6rem 0 0 0;
     }
   }
 

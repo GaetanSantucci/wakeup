@@ -28,7 +28,7 @@ const Article = ({ elem, paragraph, index }) => {
           </Link>
         </div>
         <div className={styles.container__image}>
-          {index === 0 ? <HomepageCarousel items={urlArray} /> : <Image src={`http://localhost:3000/images/${elem.image}`} width={640} height={455} alt={`photo ${elem.title}`} />}
+          {index === 0 ? <HomepageCarousel items={urlArray} /> : <Image src={`/images/${elem.image}.webp`} width={640} height={455} alt={`photo ${elem.title}`} />}
         </div>
       </div>
     </>

@@ -39,7 +39,7 @@ const HomepageCarousel = ({ items }) => {
             key={i}
             className={`carousel-item ${i === currentIndex ? 'active' : ''}`}
           >
-            <Image src={`http://localhost:3000/images/${image}`} alt="carousel de photo de brunch" width={640} height={455} priority />
+            <Image src={`/images/${image}.webp`} alt="carousel de photo de brunch" width={640} height={455} priority />
           </div>
         ))}
       </div>

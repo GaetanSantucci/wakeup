@@ -18,6 +18,28 @@ export default function Checkout() {
   const [informationModale, setInformationModale] = useState(false);
   const [paymentModale, setPaymentModale] = useState(false);
 
+  const handleNextPage = () => {
+    if (cartModale) {
+      setCartModale(false);
+      setInformationModale(true);
+    }
+    if (informationModale) {
+      setInformationModale(false);
+      setPaymentModale(true);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (informationModale) {
+      setInformationModale(false);
+      setCartModale(true);
+    }
+    if (paymentModale) {
+      setPaymentModale(false);
+      setInformationModale(true);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <CheckoutProgressBar
@@ -26,9 +48,14 @@ export default function Checkout() {
         paymentModale={paymentModale}
       />
 
-      {cartModale && <CheckoutCart />}
-      {informationModale && <CheckoutInformation />}
-      {paymentModale && <CheckoutPayment />}
+      {cartModale && <CheckoutCart nextPage={handleNextPage} />}
+      {informationModale && (
+        <CheckoutInformation
+          nextPage={handleNextPage}
+          previousPage={handlePreviousPage}
+        />
+      )}
+      {paymentModale && <CheckoutPayment previousPage={handlePreviousPage} />}
     </div>
   );
 }

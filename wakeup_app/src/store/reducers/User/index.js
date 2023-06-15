@@ -29,23 +29,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     inputValue: (state, action) => {
-      console.log('action: ', action.payload);
       const { inputType, value } = action.payload;
-
-      // Convert "on" to true for the newsletter_optin field
       const newValue = inputType === 'newsletter_optin' ? value === 'on' : value;
-
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          [inputType]: newValue,
-          // address: {
-          //   ...state.user.address,
-          //   [inputType]: newValue,
-          // }
-        }
-      }
+      state.user[inputType] = newValue;
     },
 
     userUpdate: (state, action) => {
@@ -76,21 +62,6 @@ const userSlice = createSlice({
         isLogged: true
       }
     },
-
-    setSuccessMessage: (state, action) => {
-      return {
-        ...state,
-        isSuccess: action.payload
-      }
-    },
-
-    setErrorMessage: (state, action) => {
-      return {
-        ...state,
-        isError: action.payload
-      }
-    },
-
     resetUser: (state) => {
       return {
         ...state,
@@ -126,20 +97,18 @@ const userSlice = createSlice({
         }
       }
     },
-
     updateComplement: (state, action) => {
       state.user.address.complement = action.payload;
     },
-
+    setSuccessMessage: (state, action) => {
+      state.isSuccess = action.payload;
+    },
+    setErrorMessage: (state, action) => {
+      state.isError = action.payload;
+    },
     toggleCheckbox: (state, action) => {
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          newsletter_optin: action.payload
-        }
-      }
-    }
+      state.user.newsletter_optin = action.payload;
+    },
   }
 });
 

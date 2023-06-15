@@ -1,7 +1,12 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Script from 'next/script'
 
 class MyDocument extends Document {
+
+  key = process.env.NEXT_PUBLIC_API_GOOGLE_KEY;
+
   static async getInitialProps(ctx) {
+    console.log('key:', key);
     const originalRenderPage = ctx.renderPage
 
     // Run the React rendering logic synchronously
@@ -18,11 +23,14 @@ class MyDocument extends Document {
 
     return initialProps
   }
-
   render() {
     return (
       <Html>
         <Head>
+          {/* <Script
+            src={`https://maps.googleapis.com/maps/api/js?key=Y${this.key}&libraries=places&callback=YOUR_CALLBACK_NAME`}
+            strategy="beforeInteractive"
+          /> */}
         </Head>
         <body>
           <Main />

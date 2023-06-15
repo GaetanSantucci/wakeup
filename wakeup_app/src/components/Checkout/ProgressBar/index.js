@@ -1,4 +1,3 @@
-import { Payment } from '@mui/icons-material';
 import styles from './Progress.module.scss';
 
 export const CheckoutProgressBar = ({ cartModale, informationModale, paymentModale }) => {

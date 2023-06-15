@@ -1,11 +1,15 @@
 .homepage__header__container {
   width: 100%;
   display: flex;
-
-  & {
-    img {
+  &__image {
+    & img {
       width: 100%;
       height: auto;
+    }
+    &_mobile {
+      & img {
+        display: none;
+      }
     }
   }
 
@@ -96,8 +100,16 @@
     width: 100%;
 
     &__image {
-      &:nth-child(1) {
+      & img {
         display: none;
+      }
+
+      &_mobile {
+        & img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
       }
     }
 
@@ -105,11 +117,6 @@
       text-align: justify;
       padding: 0.5rem;
       margin-top: 1rem;
-    }
-
-    & img {
-      width: 100% !important;
-      height: 100% !important;
     }
   }
 
@@ -119,10 +126,6 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .vercelLogo {
-    filter: invert(1);
-  }
-
   .logo,
   .thirteen img {
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);

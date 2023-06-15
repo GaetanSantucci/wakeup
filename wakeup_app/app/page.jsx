@@ -27,13 +27,24 @@ export default function Home() {
     <>
       <ScrollToTop />
       <div className={styles.homepage__header__container}>
-        <Image
-          src={'/images/presentation_dolce_homepage.webp'}
-          alt='Plateau Dolce Vita avec presentation'
-          width={1920}
-          height={1440}
-          priority
-        />
+        <div className={styles.homepage__header__container__image}>
+          <Image
+            src={'/images/presentation_dolce_homepage.webp'}
+            alt='Plateau Dolce Vita avec presentation'
+            width={1920}
+            height={1440}
+            priority
+          />
+        </div>
+        <div className={styles.homepage__header__container__image_mobile}>
+          <Image
+            src={'/images/presentation_dolce_homepage_mobile.webp'}
+            alt='Plateau Dolce Vita avec presentation'
+            width={768}
+            height={1300}
+            priority
+          />
+        </div>
       </div>
       <section className={styles.homepage__header__container__presentation}>
         <p>

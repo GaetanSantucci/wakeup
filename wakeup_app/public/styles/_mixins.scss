@@ -17,15 +17,18 @@
   font-family: var(--fontText);
   color: vars.$colorButtonLightTheme;
   padding: 0.8rem 3rem;
+  border-radius: 5px;
   text-align: center;
   display: inline-block;
   letter-spacing: 1px;
   will-change: transform;
   outline: none;
   cursor: pointer;
+  transition: all 600ms;
 
   &:hover {
     background-color: black;
+    transition: all 400ms;
   }
   &:active {
     top: 2px;

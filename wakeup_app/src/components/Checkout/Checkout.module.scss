@@ -1,5 +1,10 @@
+@use '/public/styles/vars';
+@import '/public/styles/mixins';
+
 .container {
   width: 80%;
+  min-height: 60vh;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,7 +12,7 @@
 
   &_checkout {
     width: 70%;
-    margin-bottom: 2rem;
+    margin-top: 8rem;
 
     &_title {
       text-align: start;
@@ -22,9 +27,55 @@
   &_calendar {
     width: 70%;
     display: flex;
+    margin-top: 1.6rem;
+  }
+
+  &_information {
+    &_input {
+      width: 100%;
+    }
+    &_address {
+      position: relative;
+      background-color: vars.$backgroundPrimaryLightTheme;
+
+      &_block {
+        position: absolute;
+        width: 100%;
+        z-index: 999;
+        background-color: vars.$backgroundPrimaryLightTheme;
+        box-shadow: 0 2px 4px vars.$backgroundPrimaryDarkTheme;
+        border-radius: 5px;
+
+        &_result {
+          display: flex;
+          align-items: center;
+          padding: 4px 8px;
+          cursor: pointer;
+          transition: all 600ms;
+
+          &:hover {
+            background-color: vars.$backgroundPrimaryLightThemeGradient;
+            transition: all 300ms;
+          }
+
+          & svg {
+            fill: vars.$backgroundAdditionnalColoredTheme;
+          }
+        }
+      }
+    }
   }
 }
 
-.checkout {
-  width: 100% !important;
+.checkout_button {
+  text-align: center;
+  margin-top: 2rem;
+  & button {
+    @include button(150px);
+    margin: 0.4rem;
+  }
 }
+
+// .checkout {
+//   width: 100% !important;
+// }

@@ -70,6 +70,11 @@
     }
   }
 
+  &_price {
+    width: 80%;
+    margin-top: 2rem;
+  }
+
   &_controler {
     display: flex;
     flex-direction: column;

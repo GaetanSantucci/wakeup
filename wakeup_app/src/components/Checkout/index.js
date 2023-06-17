@@ -2,8 +2,9 @@
 import styles from './Checkout.module.scss';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { inputValue, setAddress } from '@/src/store/reducers/User';
+import { getArea } from '/src/libs/getDeliveryArea.js';
 
 import { AddOrDeleteItems } from '../Button';
 import { StripeButton } from '@/src/components/Button';
@@ -14,6 +15,7 @@ import Link from 'next/link';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import RoomIcon from '@mui/icons-material/Room';
 
 const CheckoutCart = ({ nextPage }) => {
   const cart = useSelector((state) => state.cart.cart)
@@ -49,29 +51,35 @@ const CheckoutCart = ({ nextPage }) => {
             </>
         }
       </div>
-      <button className={styles.button} onClick={nextPage}>Validez</button>
+      <div className={styles.checkout_button}>
+        <button onClick={nextPage}>Validez</button>
+      </div>
     </>
   )
 }
 
+const areaFetch = getArea();
+
 const CheckoutInformation = ({ previousPage, nextPage }) => {
+
+  const data = use(areaFetch);
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user)
   // state of address research
-  const [searchTerm, setSearchTerm] = useState(user?.address?.label || '');
+  const [searchTerm, setSearchTerm] = useState('' || user.address.name);
   const [results, setResults] = useState(null);
-  // const [address, setAddress] = useState('');
+  const [isAvailable, setIsAvailable] = useState();
+  const [notInOurZone, setNotInOurZone] = useState();
+
 
   const handleSearchInput = async (event) => {
-    console.log('event.target.value:', event.target.value);
-    if (event.target.value < 3) setResults([])
+    if (event.target.value < 4) setResults([])
     setSearchTerm(event.target.value)
 
-    if (searchTerm.length > 3) {
+    if (searchTerm.length > 4) {
       try {
         const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${event.target.value}&type=housenumber&autocomplete=1`)
-        console.log('response:', response);
         if (response.ok) {
           const data = await response.json();
           setResults(data.features)
@@ -83,11 +91,26 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   }
 
   const handleSetAddress = (elem) => {
-    const { label, name, city, postcode } = elem
-    dispatch(setAddress({ label, name, city, postcode }))
+    const { label, name, postcode } = elem
+    const customerCity = elem.city.toLowerCase();
+
+    const result = data.filter(o =>
+      o.city.toLowerCase().includes(customerCity));
+    console.log('result:', result);
+
+    if (result.length !== 0) {
+      setNotInOurZone(false);
+      // setInputValue('')
+      setIsAvailable(result[0]);
+      dispatch(setAddress({ label, name, city: result[0].city, postcode }))
+
+    } else {
+      setIsAvailable(null)
+      setNotInOurZone(true);
+    }
+
     // Results to undefined to close div research
-    console.log('dans le handle setAddress voici le user profile', user);
-    setSearchTerm(label)
+    setSearchTerm(name)
     setResults([])
   }
 
@@ -99,7 +122,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
             color: '#088519',
             fontSize: '0.8rem',
           },
-          dayelected: {
+          daySelected: {
             backgroundColor: '#ff00ff !important'
           }
         }
@@ -130,47 +153,50 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
     dispatch(inputValue({ inputType: id, value }));
   };
 
-
-
-  // const handleInputAddressChange = (value) => {
-  //   setAddress(value);
-  // };
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Box
-          component='form'
-          sx={{
-            '& > :not(style)': { m: 2, width: '300px', display: 'flex', fontSize: '0.8rem' },
-          }}
-          noValidate
-          autoComplete='off'
-        >
-          {/* <TextField id='input-email' label='Email' value={user.email} onChange={handleInputChange} type='email' variant='outlined' size='small' required /> */}
-          <TextField id='lastname' label='Nom' value={user.lastname} onChange={handleInputChange} variant='outlined' size='small' required />
-          <TextField id='firstname' label='Prénom' value={user.firstname} onChange={handleInputChange} variant='outlined' size='small' required />
-          <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
-          <TextField id='search' label='Adresse' value={searchTerm} onChange={handleSearchInput} variant='outlined' size='small' required />
-          {
-            results && (
-              results.map(elem => {
-                return (
-                  <div className='profile_modale_form_input_results' onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}>{elem.properties.label}</div>
-                )
-              })
-            )
-          }
-          <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
-          <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' required />
-          <TextField id='city' label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' required />
-        </Box>
+      <div className={styles.container_checkout}>
+        <h3 className={styles.container_checkout_title}>Saisie de vos informations</h3>
+        <ThemeProvider theme={theme}>
+          <Box
+            component='form'
+            sx={{
+              width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', /* margin: '8rem 0 2rem 0' */
+              '& > :not(style)': { m: '0.8rem', width: '45%', fontSize: '0.8rem' },
+            }}
+            noValidate
+            autoComplete='off'
+          >
+            <TextField id='lastname' label='Nom' value={user.lastname} onChange={handleInputChange} variant='outlined' size='small' required />
+            <TextField id='firstname' label='Prénom' value={user.firstname} onChange={handleInputChange} variant='outlined' size='small' required />
+            <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
+            <div className={styles.container_information}>
+              <TextField id='search' className={styles.container_information_input} label='Adresse' value={searchTerm || user.address?.name} onChange={handleSearchInput} variant='outlined' size='small' required />
+              <div className={styles.container_information_address} >
+                <div className={styles.container_information_address_block} >
+                  {
+                    results && (
+                      results.map(elem => {
+                        return (
+                          <div className={styles.container_information_address_block_result} onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}><RoomIcon fontSize='small' /> {elem.properties.label}</div>
+                        )
+                      })
+                    )
+                  }
+                </div>
+              </div>
+            </div>
+            <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
+            <TextField id='postcode' label='Code postal' value={user.address?.postcode || ''} onChange={handleInputChange} variant='outlined' size='small' required />
+            <TextField id='city' label='Ville' value={user.address?.city || ''} onChange={handleInputChange} variant='outlined' size='small' required />
+          </Box>
 
-      </ThemeProvider >
-      <div style={{ display: 'flex' }}>
-        <button className={styles.button} onClick={previousPage}>Précédent</button>
-        <button className={styles.button} onClick={nextPage}>Validez</button>
+        </ThemeProvider >
       </div>
-
+      <div className={styles.checkout_button}>
+        <button onClick={previousPage}>Précédent</button>
+        <button onClick={nextPage}>Validez</button>
+      </div>
     </>
   )
 }
@@ -180,8 +206,14 @@ const CheckoutPayment = ({ previousPage }) => {
 
   return (
     <>
-      <StripeButton cart={cart} />
-      <button className={styles.button} onClick={previousPage}>Précédent</button>
+      <div className={styles.container_checkout}>
+        <h3 className={styles.container_checkout_title}>Choisissez votre mode de paiement</h3>
+
+        <StripeButton cart={cart} />
+      </div>
+      <div className={styles.checkout_button}>
+        <button onClick={previousPage}>Précédent</button>
+      </div>
     </>
   )
 }

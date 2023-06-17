@@ -9,7 +9,7 @@ const Business = () => {
         <h2 className={styles.business__title}>Nos prestations</h2>
         <div className={styles.business__container__details}>
           <div className={styles.business__container__details__background} >
-            <Image src={'/images/business.webp'} alt='photo presentation plateau entreprise' width={500} heigth={700} />
+            <Image src={'/images/business.webp'} alt='photo presentation plateau entreprise' width={500} height={700} />
           </div>
           <div className={styles.business__container__details__card}>
             <h3>Pour votre entreprise</h3>

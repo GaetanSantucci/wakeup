@@ -47,7 +47,7 @@ const CartModale = () => {
           )
         })
       }
-      <p>Montant du panier : {getTotal(cart).totalPrice.toFixed(2)}<span>€</span></p>
+      <p className='cart_modale_price'>Montant du panier : {getTotal(cart).totalPrice.toFixed(2)}<span> €</span></p>
       <div className='cart_modale_controler'>
         <Link href='/checkout'>
           <button onClick={closeModale}>Validez</button>

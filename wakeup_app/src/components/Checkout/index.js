@@ -6,7 +6,7 @@ import { useEffect, useState, use } from 'react';
 import { inputValue, setAddress } from '@/src/store/reducers/User';
 import { getArea } from '/src/libs/getDeliveryArea.js';
 
-import { AddOrDeleteItems } from '../Button';
+import { AddOrDeleteItems, PaypalButton } from '../Button';
 import { StripeButton } from '@/src/components/Button';
 import { CustomCalendar } from '../Calendar';
 
@@ -210,6 +210,7 @@ const CheckoutPayment = ({ previousPage }) => {
         <h3 className={styles.container_checkout_title}>Choisissez votre mode de paiement</h3>
 
         <StripeButton cart={cart} />
+        <PaypalButton />
       </div>
       <div className={styles.checkout_button}>
         <button onClick={previousPage}>Précédent</button>

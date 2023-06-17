@@ -15,7 +15,7 @@ const nextConfig = {
     },
   },
   env: {
-    NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_GOOGLE_KEY
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
   }
 }
 

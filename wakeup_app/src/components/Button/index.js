@@ -9,11 +9,15 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+
 import { addToCart } from '@/src/store/reducers/Cart';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const AddCartButton = ({ items }) => {
 
@@ -93,7 +97,26 @@ const StripeButton = ({ cart }) => {
     // console.log('Checkout go to pay', cart);
   }
 
-  return <button type="button" onClick={handleCheckout}>Checkout</button>
+  return <button className={styles.button_stripe} onClick={handleCheckout}><CreditCardIcon /> Payer en carte de crédit</button>
 }
 
-export { AddCartButton, AddOrDeleteItems, StripeButton }
+const PaypalButton = () => {
+
+  const initialOptions = {
+    clientId: 'Aeid7EDc0ak_n0KwMwjY4__IzTDESyj1hWWuc7szIERyoLsyFDDk5APZnvZUcT0OG_waLVPNMukpTnS-',
+    // clientId: NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+    currency: "EUR",
+    intent: "capture",
+  };
+
+
+  return (
+    <div className={styles.button_paypal}>
+      <PayPalScriptProvider options={initialOptions}>
+        <PayPalButtons style={{ layout: "horizontal", color: 'white', }} />
+      </PayPalScriptProvider>
+    </div>
+  )
+}
+
+export { AddCartButton, AddOrDeleteItems, StripeButton, PaypalButton }

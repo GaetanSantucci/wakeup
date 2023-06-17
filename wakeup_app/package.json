@@ -18,8 +18,7 @@
     "@mui/material": "^5.11.13",
     "@mui/x-date-pickers": "^6.7.0",
     "@next/font": "13.1.2",
-    "@paypal/paypal-js": "^6.0.0",
-    "@react-google-maps/api": "^2.18.1",
+    "@paypal/react-paypal-js": "^8.0.0",
     "@reduxjs/toolkit": "^1.9.2",
     "axios": "^1.4.0",
     "eslint": "8.32.0",
@@ -34,8 +33,7 @@
     "redux-persist": "^6.0.0",
     "sharp": "^0.31.3",
     "stripe": "^12.9.0",
-    "stripe-checkout": "^1.0.9",
-    "use-places-autocomplete": "^4.0.0"
+    "stripe-checkout": "^1.0.9"
   },
   "devDependencies": {
     "moment": "^2.29.4",

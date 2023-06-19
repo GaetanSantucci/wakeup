@@ -31,4 +31,7 @@ router.use(OrderRouter);
 import { router as CloseRouter } from './closed.js';
 router.use(CloseRouter);
 
+import { router as PaymentRouter } from './payment.js';
+router.use(PaymentRouter);
+
 export { router };

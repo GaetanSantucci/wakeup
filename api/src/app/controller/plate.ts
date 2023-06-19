@@ -11,8 +11,6 @@ const getAllPlates = async (req: Request, res: Response) => {
   try {
 
     const platesList = await Plate.findAll();
-    logger('platesList: ', platesList);
-
     if (!platesList) throw new ErrorApi('Impossible d\'obtenir la liste des articles', req, res, 400);
 
     return res.status(200).json(platesList)

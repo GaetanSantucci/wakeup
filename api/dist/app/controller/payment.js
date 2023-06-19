@@ -1,24 +1,38 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import '../../../dotenv';
-// import { ErrorApi } from '../services/errorHandler.js';
+// import { createOrder, capturePayment }from "../utils/paypalApi.js";
+import * as paypal from '../utils/paypalApi.js';
+// import path from "path"; // for dotenv config 
+// import { fileURLToPath } from "url";
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const dotenvPath = path.resolve(__dirname, "../.env");
+// import dotenv from "dotenv";
+// dotenv.config({ path: dotenvPath });
 // ~ DEBUG CONFIG ~ //
 import debug from 'debug';
 const logger = debug('Controller');
+// import { generateAccessToken, handleResponse } from '../utils/paypalApi.js'; // import method for Paypal payment
+// const base = "https://api-m.sandbox.paypal.com";
 import Stripe from 'stripe';
+import { ErrorApi } from '../services/errorHandler.js';
+// import { CartItems } from '../type/stripe.js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2022-11-15',
 });
-const createStripeSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const cart = req.body;
+const createStripeSession = async (req, res) => {
+    const test /* : CartItems  */ = req.body;
+    console.log('test:', test);
+    test.cart.map((item) => {
+        console.log('Je suis l item dans le controller payment', item);
+        // price_data: {
+        //   currency: "eur",
+        //   product_data: {
+        //     name: item.name,
+        //   },
+        //   unit_amount: item.price * 100,
+        // },
+        // quantity: item.quantity,
+    });
+    console.log('test:', test);
     const cart = [{
             id: 1,
             name: 'Plateau 1',
@@ -35,7 +49,7 @@ const createStripeSession = (req, res) => __awaiter(void 0, void 0, void 0, func
     //   },
     //   quantity: item.quantity,
     // }));
-    const session = yield stripe.checkout.sessions.create({
+    const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: /* lineItems, */ [
             {
@@ -53,7 +67,7 @@ const createStripeSession = (req, res) => __awaiter(void 0, void 0, void 0, func
         success_url: `${process.env.CLIENT_URL}/checkout-success`,
         cancel_url: `${process.env.CLIENT_URL}/checkout-cancel`,
     });
-    res.json({ id: session.id });
+    res.json({ id: session.id, url: session.url });
     // stripe.customers
     //   .create({
     //     email: 'customer@example.com',
@@ -80,8 +94,28 @@ const createStripeSession = (req, res) => __awaiter(void 0, void 0, void 0, func
     //         // Deal with an error
     //       });
     //   });
-});
-const createPaypalSession = (req, res) => {
-    return "bonjour";
 };
-export { createStripeSession, createPaypalSession };
+const createPaypalOrder = async (req, res) => {
+    try {
+        const order = await paypal.createOrder(req);
+        console.log('order:', order);
+        res.json(order);
+        console.log('order:', order);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            return res.status(500).json(err.message);
+    }
+};
+const capturePaypalPayment = async (req, res) => {
+    const { orderID } = req.body;
+    try {
+        const captureData = await paypal.capturePayment(orderID);
+        res.json(captureData);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            return new ErrorApi("Impossible de valider votre paiement", req, res, 500);
+    }
+};
+export { createStripeSession, createPaypalOrder, capturePaypalPayment };

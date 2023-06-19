@@ -1,10 +1,10 @@
-var _a;
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 // ~ Environment
 import 'dotenv/config';
 import { ErrorApi } from './app/services/errorHandler.js';
 import helmet from 'helmet';
 import cors from 'cors';
+// import paypal from 'paypal-rest-sdk';
 // ~ Debug
 import debug from 'debug';
 const logger = debug('Entrypoint');
@@ -56,7 +56,7 @@ app.use('/api/v1', router);
 app.use((req, res) => {
     throw new ErrorApi(`Page not found !`, req, res, 404);
 });
-const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000;
+const PORT = process.env.PORT ?? 3000;
 app.listen(PORT, () => {
     logger(` \x1b[1;33m⚡⚡ http://localhost:${PORT} ⚡⚡ \x1b[0m`);
 });

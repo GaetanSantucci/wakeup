@@ -9,7 +9,6 @@ const logger = debug('Controller');
 const getAllOrdersForCalendar = async (req: Request, res: Response) => {
   try {
     const allOrders = await Order.getAllOrders();
-    logger('allOrders: ', allOrders);
     // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
 
     return res.status(200).json(allOrders)

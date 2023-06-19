@@ -12,6 +12,7 @@ export type StripeItem = {
 };
 
 export type CartItems = {
+  map(arg0: (item: CartItems) => { name: string; price: number; currency: string; quantity: number; }): unknown;
   id: number;
   name: string;
   image: string;

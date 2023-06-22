@@ -3,8 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   cart: /* localStorage?.getItem('cart') ? JSON.parse(localStorage?.getItem('cart')) : */[],
   bookingDate: '',
-  totalAmount: 0,
-  totalQuantity: 0,
+  deliveryCost: 0
 }
 
 const cartSlice = createSlice({
@@ -57,9 +56,16 @@ const cartSlice = createSlice({
         ...state,
         cart: action.payload
       }
+    },
+    addDeliveryCost: (state, action) => {
+      console.log('action:', action);
+      return {
+        ...state,
+        deliveryCost: action.payload
+      }
     }
   }
 });
 
-export const { toggleOpenCalendar, addToCart, incrementQuantity, decrementQuantity, removeItem, resetAllCartItems, addBookingDate, getStorageCart } = cartSlice.actions;
+export const { toggleOpenCalendar, addToCart, addDeliveryCost, incrementQuantity, decrementQuantity, removeItem, resetAllCartItems, addBookingDate, getStorageCart } = cartSlice.actions;
 export default cartSlice.reducer;

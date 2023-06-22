@@ -4,9 +4,10 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, use } from 'react';
 import { inputValue, setAddress } from '@/src/store/reducers/User';
+import { addDeliveryCost, addToCart } from '@/src/store/reducers/Cart';
 import { getArea } from '/src/libs/getDeliveryArea.js';
 
-import { AddOrDeleteItems, PaypalButton } from '../Button';
+import { AddOrDeleteItems, PayPalButtonComponent } from '../Button';
 import { StripeButton } from '@/src/components/Button';
 import { CustomCalendar } from '../Calendar';
 
@@ -69,7 +70,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   // state of address research
   const [searchTerm, setSearchTerm] = useState('' || user.address.name);
   const [results, setResults] = useState(null);
-  const [isAvailable, setIsAvailable] = useState();
+  // const [isAvailable, setIsAvailable] = useState();
   const [notInOurZone, setNotInOurZone] = useState();
 
 
@@ -101,11 +102,12 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
     if (result.length !== 0) {
       setNotInOurZone(false);
       // setInputValue('')
-      setIsAvailable(result[0]);
-      dispatch(setAddress({ label, name, city: result[0].city, postcode }))
+      // setIsAvailable(result[0]);
+      dispatch(setAddress({ label, name, city: elem.city, postcode }))
+      dispatch(addDeliveryCost(result[0].price))
 
     } else {
-      setIsAvailable(null)
+      // setIsAvailable(null)
       setNotInOurZone(true);
     }
 
@@ -187,8 +189,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               </div>
             </div>
             <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
-            <TextField id='postcode' label='Code postal' value={user.address?.postcode || ''} onChange={handleInputChange} variant='outlined' size='small' required />
-            <TextField id='city' label='Ville' value={user.address?.city || ''} onChange={handleInputChange} variant='outlined' size='small' required />
+            <TextField id='postcode' label='Code postal' value={user.address?.postcode || ''} /* onChange={handleInputChange} */ variant='outlined' size='small' required />
+            <TextField id='city' label='Ville' value={user.address?.city || ''} /* onChange={handleInputChange} */ variant='outlined' size='small' required />
           </Box>
 
         </ThemeProvider >
@@ -202,15 +204,18 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
 }
 
 const CheckoutPayment = ({ previousPage }) => {
-  const cart = useSelector((state) => state.cart.cart)
+  // const cart = useSelector((state) => state.cart.cart)
+  const allCart = useSelector((state) => state.cart)
+  console.log('allCart avant paiement:', allCart);
+  // const totalAMount = getTotal(cart).totalPrice.toFixed(2);
 
   return (
     <>
       <div className={styles.container_checkout}>
         <h3 className={styles.container_checkout_title}>Choisissez votre mode de paiement</h3>
 
-        <StripeButton cart={cart} />
-        <PaypalButton />
+        <StripeButton cart={allCart} />
+        <PayPalButtonComponent />
       </div>
       <div className={styles.checkout_button}>
         <button onClick={previousPage}>Précédent</button>

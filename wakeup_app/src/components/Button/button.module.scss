@@ -23,12 +23,22 @@
 
 .button {
   &_stripe {
-    width: 300px;
+    width: 200px;
+    height: 40px;
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-bottom: 1rem;
+    & p {
+      // font-size: 1.1rem;
+      color: vars.$backgroundPrimaryLightTheme;
+    }
+    & svg {
+      margin-right: 10px;
+      font-size: 1.6rem;
+    }
   }
   &_paypal {
-    width: 300px;
+    width: 200px;
   }
 }

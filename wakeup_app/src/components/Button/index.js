@@ -8,16 +8,16 @@ import { removeItem, incrementQuantity, decrementQuantity } from '@/src/store/re
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 import { addToCart } from '@/src/store/reducers/Cart';
-import { useDispatch } from 'react-redux';
-import { useState } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+
+const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST;
 
 const AddCartButton = ({ items }) => {
 
@@ -62,61 +62,127 @@ const AddOrDeleteItems = ({ cart }) => {
 }
 
 const StripeButton = ({ cart }) => {
+  console.log('cart danns le stripe button:', cart);
 
   const router = useRouter();
 
   const handleCheckout = async () => {
     const userId = 'testUser-54541'
-    // const endpoint = 'https://wakeupclf.fr/api/v1/contact'
-    const endpoint = 'http://localhost:7777/api/v1/payment/stripe'
 
-    axios.post(endpoint, {
-      cart,
-      userId
-    }).then((res) => {
-      if (res.data.url) {
-        console.log('res.data.url:', res.data.url);
-        window.location.replace(res.data.url)
+    try {
+      const response = await fetch(`${endpoint}/payment/stripe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart,
+          userId
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.url) {
+          window.location.replace(data.url);
+        }
+      } else {
+        throw new Error('Request failed');
       }
-    }).catch((err) => console.log(err.message))
-    // const options = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(cart, userId),
-    // }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
-    // fetch(endpoint, options)
-    //   .then(response => console.log('response.json():', response.json()))
-    //   .then(data => console.log('Retour des data du fetch payment', data))
+  // axios.post(`${endpoint}/payment/stripe`, {
+  //   cart,
+  //   userId
+  // }).then((res) => {
+  //   if (res.data.url) {
+  //     console.log('res.data.url:', res.data.url);
+  //     window.location.replace(res.data.url)
+  //   }
+  // }).catch((err) => console.log(err.message))
+  // const options = {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(cart, userId),
+  // }
 
-    // const response = await fetch(endpoint, options)
-    // const result = await response.json()
-    // console.log('result:', result);
-    // console.log('Checkout go to pay', cart);
-  }
+  // fetch(endpoint, options)
+  //   .then(response => console.log('response.json():', response.json()))
+  //   .then(data => console.log('Retour des data du fetch payment', data))
 
-  return <button className={styles.button_stripe} onClick={handleCheckout}><CreditCardIcon /> Payer en carte de crédit</button>
+  // const response = await fetch(endpoint, options)
+  // const result = await response.json()
+  // console.log('result:', result);
+  // console.log('Checkout go to pay', cart);
+  // }
+
+  return <button className={styles.button_stripe} onClick={handleCheckout}><CreditCardIcon /><p>Carte bancaire</p></button>
 }
 
-const PaypalButton = () => {
+const PayPalButtonComponent = () => {
+  const cart = useSelector((state) => state.cart.cart)
+  const router = useRouter();
 
   const initialOptions = {
-    clientId: 'Aeid7EDc0ak_n0KwMwjY4__IzTDESyj1hWWuc7szIERyoLsyFDDk5APZnvZUcT0OG_waLVPNMukpTnS-',
-    // clientId: NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID, // using .env in NextJs project 
     currency: "EUR",
     intent: "capture",
   };
 
+  const style = { // style for paypal button
+    height: 40,
+    layout: "horizontal",
+    color: 'gold',
+    tagline: 'false'
+  }
+  const handleCreateOrder = async (data, actions) => {
+    console.log('handleCreateOrder:');
+    // Call your backend API to create the order
+    const response = await fetch(`${endpoint}/payment/create-paypal-order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cart }),
+    });
+
+    const order = await response.json();
+    console.log('order:', order);
+    return order.id;
+  };
+  const handleApproveOrder = useCallback(async (data, actions) => {
+
+    console.log("Je passe dans le handleApproveOrder");
+    // Call your backend API to capture the order
+    const response = await fetch(`${endpoint}/payment/capture-paypal-order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ orderID: data.orderID, payerID: data.payerID }),
+    });
+
+    const order = await response.json();
+    if (order.status === 'COMPLETED') {
+      router.push('/checkout/success'); // redirect to page success if payment completed
+    }
+  });
 
   return (
     <div className={styles.button_paypal}>
-      <PayPalScriptProvider options={initialOptions}>
-        <PayPalButtons style={{ layout: "horizontal", color: 'white', }} />
+      <PayPalScriptProvider options={initialOptions} >
+        <PayPalButtons
+          createOrder={handleCreateOrder}
+          onApprove={handleApproveOrder}
+          style={style}
+        />
       </PayPalScriptProvider>
     </div>
-  )
-}
-
-export { AddCartButton, AddOrDeleteItems, StripeButton, PaypalButton }
+  );
+};
+export { AddCartButton, AddOrDeleteItems, StripeButton, PayPalButtonComponent }

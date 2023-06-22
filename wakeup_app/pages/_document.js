@@ -3,10 +3,8 @@ import Script from 'next/script'
 
 class MyDocument extends Document {
 
-  key = process.env.NEXT_PUBLIC_API_GOOGLE_KEY;
 
   static async getInitialProps(ctx) {
-    console.log('key:', key);
     const originalRenderPage = ctx.renderPage
 
     // Run the React rendering logic synchronously

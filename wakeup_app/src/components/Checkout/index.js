@@ -69,8 +69,9 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   const { user } = useSelector((state) => state.user)
   // state of address research
   const [searchTerm, setSearchTerm] = useState('' || user.address.name);
+  const [city, setCity] = useState('' || user.address.city)
+  const [postcode, setPostcode] = useState('' || user.address.postcode)
   const [results, setResults] = useState(null);
-  // const [isAvailable, setIsAvailable] = useState();
   const [notInOurZone, setNotInOurZone] = useState();
 
 
@@ -97,17 +98,14 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
 
     const result = data.filter(o =>
       o.city.toLowerCase().includes(customerCity));
-    console.log('result:', result);
 
     if (result.length !== 0) {
       setNotInOurZone(false);
-      // setInputValue('')
-      // setIsAvailable(result[0]);
+
       dispatch(setAddress({ label, name, city: elem.city, postcode }))
       dispatch(addDeliveryCost(result[0].price))
 
     } else {
-      // setIsAvailable(null)
       setNotInOurZone(true);
     }
 
@@ -155,6 +153,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
     dispatch(inputValue({ inputType: id, value }));
   };
 
+
+
   return (
     <>
       <div className={styles.container_checkout}>
@@ -180,7 +180,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
                     results && (
                       results.map(elem => {
                         return (
-                          <div className={styles.container_information_address_block_result} onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}><RoomIcon fontSize='small' /> {elem.properties.label}</div>
+                          <div className={styles.container_information_address_block_result} onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}><RoomIcon fontSize='small' /> - {elem.properties.label}</div>
                         )
                       })
                     )
@@ -189,8 +189,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               </div>
             </div>
             <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
-            <TextField id='postcode' label='Code postal' value={user.address?.postcode || ''} /* onChange={handleInputChange} */ variant='outlined' size='small' required />
-            <TextField id='city' label='Ville' value={user.address?.city || ''} /* onChange={handleInputChange} */ variant='outlined' size='small' required />
+            <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' required />
+            <TextField id='city' label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' required />
           </Box>
 
         </ThemeProvider >

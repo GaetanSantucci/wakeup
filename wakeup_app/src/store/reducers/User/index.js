@@ -6,8 +6,8 @@ const initialState = {
     email: '',
     password: '',
     confirmPwd: '',
-    lastname: '',
-    firstname: '',
+    lastname: 'Santucci',
+    firstname: 'Gaetan',
     phone: '',
     address: {
       label: '',
@@ -30,6 +30,7 @@ const userSlice = createSlice({
   reducers: {
     inputValue: (state, action) => {
       const { inputType, value } = action.payload;
+      if (inputType === 'complement' || 'postcode ' || 'city') state.user.address[inputType] = action.payload.value;
       const newValue = inputType === 'newsletter_optin' ? value === 'on' : value;
       state.user[inputType] = newValue;
     },
@@ -77,26 +78,23 @@ const userSlice = createSlice({
     },
 
     setAddress: (state, action) => {
+      const { label, name, complement, city, postcode } = action.payload;
       return {
         ...state,
         user: {
           ...state.user,
-          email: state.user.email,
-          lastname: state.user.lastname,
-          firstname: state.user.firstname,
-          phone: state.user.phone,
-          newsletter_optin: state.user.newsletter_optin,
           address: {
             ...state.user.address,
-            label: action.payload.label,
-            name: action.payload.name,
-            complement: action.payload.complement,
-            city: action.payload.city,
-            postcode: action.payload.postcode
+            label,
+            name,
+            complement,
+            city,
+            postcode
           }
         }
       }
     },
+
     updateComplement: (state, action) => {
       state.user.address.complement = action.payload;
     },

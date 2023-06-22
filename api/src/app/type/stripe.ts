@@ -12,10 +12,19 @@ export type StripeItem = {
 };
 
 export type CartItems = {
-  map(arg0: (item: CartItems) => { name: string; price: number; currency: string; quantity: number; }): unknown;
+  // map(arg0: (item: CartItems) => { name: string; unit_amount: { currency_code: string, value: number }, quantity: number; }): unknown;
   id: number;
   name: string;
   image: string;
   price: number;
   quantity: number;
+}
+
+export type LineItems = {
+  name: string,
+  unit_amount: {
+    currency_code: string,
+    value: number,
+  },
+  quantity: number,
 }

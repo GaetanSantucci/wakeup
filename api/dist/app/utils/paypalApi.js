@@ -1,16 +1,13 @@
 import debug from 'debug';
 const logger = debug('Utils');
 const { PAYPAL_CLIENT_ID, PAYPAL_SECRET_KEY } = process.env;
-console.log('PAYPAL_SECRET_KEY:', PAYPAL_SECRET_KEY);
-console.log('PAYPAL_CLIENT_ID:', PAYPAL_CLIENT_ID);
 const base = "https://api-m.sandbox.paypal.com";
 const createOrder = async (req) => {
     try {
-        console.log("Je suis dans le create Order API");
+        // Get the cart and total amount from the request body
         const cart = req.body?.cart;
-        console.log('cart:', cart);
         const totalAmount = req.body?.totalAmount;
-        console.log('totalAmount:', totalAmount);
+        // Convert the cart items to line items for the payment gateway
         const lineItems = cart.map((item) => ({
             name: item.name,
             unit_amount: {
@@ -19,12 +16,14 @@ const createOrder = async (req) => {
             },
             quantity: item.quantity
         }));
-        console.log('lineItems:', lineItems);
+        // Calculate the total amount of the line items
         const itemTotal = lineItems.reduce((total, item) => total + item.unit_amount.value * item.quantity, 0);
-        console.log('itemTotal:', itemTotal);
+        // Generate an access token for the payment gateway
         const accessToken = await generateAccessToken();
         console.log('accessToken:', accessToken);
+        // Set the URL for creating a new order
         const url = `${base}/v2/checkout/orders`;
+        // Make a POST request to create a new order
         const response = await fetch(url, {
             method: "post",
             headers: {
@@ -45,17 +44,7 @@ const createOrder = async (req) => {
                                 },
                             },
                         },
-                        items: lineItems,
-                        // shipping_method: "Frais de livraison",
-                        // partner_fee_details: {
-                        //   receiver: {
-                        //     email: "contact@wakeupbox.fr"
-                        //   },
-                        //   amount: {
-                        //     value: 3.50, // todo montant a changer lors du choix de la commune
-                        //     currency: "EUR"
-                        //   }
-                        // },
+                        items: { lineItems },
                         redirect_urls: {
                             return_url: `${process.env.CLIENT_URL}/checkout-success`,
                             cancel_url: `${process.env.CLIENT_URL}/checkout-cancel`
@@ -68,6 +57,7 @@ const createOrder = async (req) => {
         return handleResponse(response);
     }
     catch (err) {
+        // Log any errors that occur
         if (err instanceof Error)
             logger(err.message);
     }

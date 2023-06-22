@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-// ~ Environment
 import 'dotenv/config';
-import { ErrorApi } from './app/services/errorHandler.js';
+import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-// import paypal from 'paypal-rest-sdk';
-// ~ Debug
 import debug from 'debug';
 const logger = debug('Entrypoint');
-// ~ Express
-import express from 'express';
+import { ErrorApi } from './app/services/errorHandler.js';
+// import paypal from 'paypal-rest-sdk';
+// paypal.configure({
+//   mode: 'sandbox', // Use 'live' for production
+//   client_id: process.env.PAYPAL_CLIENT_ID!,
+//   client_secret: process.env.PAYPAL_SECRET_KEY!,
+// });
 const app = express();
 app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // import { Request, Response } from 'express';
-//~ Cors
 // app.use((req: Request, res: Response, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000', 'https://wakeupbox.fr', 'https://wakeupclf.fr']);
 //   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -26,7 +27,6 @@ app.use(express.json());
 const corsOptions = {
     withCredentials: true,
     origin: ["https://www.wakeupbox.fr", "https://www.wakeupclf.fr", "http://localhost:3000", "http://153.92.223.190"],
-    // origin: ["*"],
     method: ["GET", "POST", "PATCH", "DELETE"],
     responseHeader: ["Content-Type", "Origin", "X-Requested-With", "Authorization"],
     optionsSuccessStatus: 200,
@@ -46,7 +46,6 @@ app.use(session({
         maxAge: 1 * 60 * 60 * 1000,
         httpOnly: true,
         sameSite: 'none' //'lax', // or 'strict'
-        //expires : new Date(Date.now() + 60 * 60 * 1000) //1 hour
     }
 }));
 import { router } from './app/router/index.js';

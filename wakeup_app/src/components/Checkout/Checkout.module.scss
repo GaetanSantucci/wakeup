@@ -22,6 +22,22 @@
     &_desc {
       margin: 1.6rem 0 0 0;
     }
+
+    &_payment {
+      width: 100%;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      &_resume {
+        border: 1px solid vars.$backgroundPrimaryLightThemeGradient;
+        padding: 1rem;
+        border-radius: 4px;
+        & > * {
+          margin-bottom: 1rem;
+        }
+      }
+    }
   }
 
   &_calendar {
@@ -33,6 +49,11 @@
   &_information {
     &_input {
       width: 100%;
+      position: relative;
+      &_error {
+        position: absolute;
+        color: red;
+      }
     }
     &_address {
       position: relative;
@@ -74,6 +95,11 @@
     @include button(150px);
     margin: 0.4rem;
   }
+}
+
+.selected {
+  background-color: vars.$backgroundPrimaryLightThemeGradient;
+  transition: all 300ms;
 }
 
 // .checkout {

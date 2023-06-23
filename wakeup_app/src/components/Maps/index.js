@@ -15,27 +15,27 @@ export default function Maps() {
 
   const data = use(areaFetch);
 
-  const [inputValue, setInputValue] = useState();
+  const [inputCityValue, setinputCityValue] = useState();
   const [isAvailable, setIsAvailable] = useState();
   const [notInOurZone, setNotInOurZone] = useState();
 
   const handleChangeCity = (e) => {
-    setInputValue(e.target.value);
+    setinputCityValue(e.target.value);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = data.filter(o =>
-      o.city.toLowerCase().includes(inputValue.toLowerCase()));
+      o.city.toLowerCase().includes(inputCityValue.toLowerCase()));
     if (result.length !== 0) {
       setNotInOurZone(false);
-      setInputValue('')
+      setinputCityValue('')
       setIsAvailable(result[0]);
 
       return result
     } else {
       setIsAvailable(null)
-      setInputValue('')
+      setinputCityValue('')
       setNotInOurZone(true);
     }
   }
@@ -45,7 +45,7 @@ export default function Maps() {
       <h2 className={styles.delivery__title}>Zone de livraison</h2>
       <div className={styles.delivery__container}>
         <form onSubmit={handleSubmit}>
-          <input type="text" placeholder='Entrez votre ville' value={inputValue} onChange={handleChangeCity} />
+          <input type="text" placeholder='Entrez votre ville' value={inputCityValue} onChange={handleChangeCity} />
         </form>
 
         {

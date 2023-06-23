@@ -8,7 +8,7 @@ const initialState = {
     confirmPwd: '',
     lastname: 'Santucci',
     firstname: 'Gaetan',
-    phone: '',
+    phone: '0629393202',
     address: {
       label: '',
       name: '',

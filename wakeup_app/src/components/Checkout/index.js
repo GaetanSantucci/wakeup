@@ -1,32 +1,37 @@
 'use client';
 import styles from './Checkout.module.scss';
 import Image from 'next/image';
+import Link from 'next/link';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState, use } from 'react';
 import { inputValue, setAddress } from '@/src/store/reducers/User';
-import { addDeliveryCost, addToCart } from '@/src/store/reducers/Cart';
-import { getArea } from '/src/libs/getDeliveryArea.js';
+import { addDeliveryCost } from '@/src/store/reducers/Cart';
 
 import { AddOrDeleteItems, PayPalButtonComponent } from '../Button';
 import { StripeButton } from '@/src/components/Button';
 import { CustomCalendar } from '../Calendar';
 
 import { getTotal } from '@/src/libs/getCartTotal';
-import Link from 'next/link';
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RoomIcon from '@mui/icons-material/Room';
 
+import { getArea } from '/src/libs/getDeliveryArea.js';
+import { Typography } from '@mui/material';
+const areaFetch = getArea(); // fetch to database for delivery area
+
 const CheckoutCart = ({ nextPage }) => {
-  const cart = useSelector((state) => state.cart.cart)
+  const allCart = useSelector((state) => state.cart)
 
   return (
     <>
       <div className={styles.container_checkout}>
         <h3 className={styles.container_checkout_title}>Résumé de votre commande</h3>
         {
-          cart.map(elem => {
+          allCart.cart.map(elem => {
             return (
               <div className='cart_modale_item' style={{ width: '100%' }} key={elem.name}>
                 <div className='cart_modale_item_img'>
@@ -41,11 +46,11 @@ const CheckoutCart = ({ nextPage }) => {
           })
         }
         {
-          getTotal(cart).totalQuantity === 0 ? <p>Votre panier est vide, commencez vos achats <Link href='/plateau' style={{ textDecoration: 'underline' }}>ici</Link></p>
+          getTotal(allCart.cart).totalQuantity === 0 ? <p>Votre panier est vide, commencez vos achats <Link href='/plateau' style={{ textDecoration: 'underline' }}>ici</Link></p>
             :
             <>
-              <p className={styles.container_checkout_desc}>Nombre d&apos;articles dans votre panier : {getTotal(cart).totalQuantity}</p>
-              <p className={styles.container_checkout_desc}>Montant du panier : {getTotal(cart).totalPrice.toFixed(2)}<span>€</span></p>
+              <p className={styles.container_checkout_desc}>Nombre d&apos;articles dans votre panier : {getTotal(allCart.cart).totalQuantity}</p>
+              <p className={styles.container_checkout_desc}>Montant du panier : {getTotal(allCart.cart).totalPrice.toFixed(2)}<span>€</span></p>
               <div className={styles.container_calendar}>
                 <CustomCalendar />
               </div>
@@ -53,27 +58,26 @@ const CheckoutCart = ({ nextPage }) => {
         }
       </div>
       <div className={styles.checkout_button}>
-        <button onClick={nextPage}>Validez</button>
+        {allCart.bookingDate && <button onClick={nextPage}>Validez</button>}
+
       </div>
     </>
   )
 }
 
-const areaFetch = getArea();
+
 
 const CheckoutInformation = ({ previousPage, nextPage }) => {
 
   const data = use(areaFetch);
-
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user)
-  // state of address research
-  const [searchTerm, setSearchTerm] = useState('' || user.address.name);
-  const [city, setCity] = useState('' || user.address.city)
-  const [postcode, setPostcode] = useState('' || user.address.postcode)
-  const [results, setResults] = useState(null);
-  const [notInOurZone, setNotInOurZone] = useState();
 
+  const { user } = useSelector((state) => state.user)
+  const [searchTerm, setSearchTerm] = useState('' || user.address.name);
+  const [results, setResults] = useState(null); // to display the result of the addresses following the api data.gouv fetch
+  const [isDeliverableCity, setIsDeliverableCity] = useState([]); // to display if the city is in our database
+  const [notInOurZone, setNotInOurZone] = useState(false); // to manage error if city is not in our area
+  const [errorCity, setErrorCity] = useState(false);
 
   const handleSearchInput = async (event) => {
     if (event.target.value < 4) setResults([])
@@ -95,17 +99,22 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   const handleSetAddress = (elem) => {
     const { label, name, postcode } = elem
     const customerCity = elem.city.toLowerCase();
-
     const result = data.filter(o =>
       o.city.toLowerCase().includes(customerCity));
 
-    if (result.length !== 0) {
-      setNotInOurZone(false);
-
-      dispatch(setAddress({ label, name, city: elem.city, postcode }))
-      dispatch(addDeliveryCost(result[0].price))
+    if (result.length >= 1) {
+      // setIsDeliverableCity(result)
+      if (result[0].city.toLowerCase() === customerCity) {
+        dispatch(setAddress({ label, name, city: elem.city, postcode }))
+        dispatch(addDeliveryCost(result[0].price))
+        setErrorCity(false)
+      }
 
     } else {
+      console.log("JE passe dans le else du setAddress");
+      dispatch(inputValue({ inputType: 'city', value: '' }))
+      dispatch(inputValue({ inputType: 'postcode', value: '' }))
+      setErrorCity(true)
       setNotInOurZone(true);
     }
 
@@ -150,10 +159,36 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   // Dynamic method for store input by type
   const handleInputChange = (event) => {
     const { id, value } = event.target;
+    let customerCity = value.toLowerCase();
+    if (id === 'city') {
+      const result = data.filter(o =>
+        o.city.toLowerCase().includes(customerCity));
+      console.log('result:', result);
+      if (result.length >= 1) {
+        setIsDeliverableCity(result)
+        if (result[0].city.toLowerCase() === customerCity) {
+          console.log('customerCity:', customerCity);
+          console.log('result[0].city.toLowerCase():', result[0].city.toLowerCase());
+          console.log("Je valide le result ");
+          // dispatch(setAddress({ label, name, city: elem.city, postcode }))
+          dispatch(addDeliveryCost(result[0].price))
+        }
+
+      } else {
+        setErrorCity(true)
+        setNotInOurZone(true);
+        console.log('setNotInOurZone:', notInOurZone);
+      }
+    }
     dispatch(inputValue({ inputType: id, value }));
   };
 
-
+  const handleSetAdressManually = (elem) => {
+    dispatch(inputValue({ inputType: 'city', value: elem.city }))
+    dispatch(inputValue({ inputType: 'postcode', value: elem.zipcode }))
+    dispatch(addDeliveryCost(elem.price))
+    setIsDeliverableCity([])
+  }
 
   return (
     <>
@@ -174,6 +209,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
             <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
             <div className={styles.container_information}>
               <TextField id='search' className={styles.container_information_input} label='Adresse' value={searchTerm || user.address?.name} onChange={handleSearchInput} variant='outlined' size='small' required />
+              {errorCity && <p className={styles.container_information_input_error}>Ville non livrable, retrouvez notre zone de livraison <Link href='/livraison'>ici</Link></p>}
+
               <div className={styles.container_information_address} >
                 <div className={styles.container_information_address_block} >
                   {
@@ -190,32 +227,69 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
             </div>
             <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
             <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' required />
-            <TextField id='city' label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' required />
+            <div className={styles.container_information}>
+              <TextField id='city' className={styles.container_information_input} label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' required />
+              <div className={styles.container_information_address} >
+                <div className={styles.container_information_address_block} >
+                  {
+                    isDeliverableCity && (
+                      isDeliverableCity.map((elem, index) => {
+                        if (index <= 4) {
+                          return (
+                            <div className={styles.container_information_address_block_result} onClick={() => handleSetAdressManually(elem)} key={elem.id}>{elem.city}</div>
+                          )
+                        }
+                      })
+                    )
+                  }
+                </div>
+              </div>
+            </div>
           </Box>
 
         </ThemeProvider >
       </div>
       <div className={styles.checkout_button}>
         <button onClick={previousPage}>Précédent</button>
-        <button onClick={nextPage}>Validez</button>
+        {
+          !notInOurZone ? <button onClick={nextPage}>Validez</button> : null}
+
       </div>
     </>
   )
 }
 
 const CheckoutPayment = ({ previousPage }) => {
-  // const cart = useSelector((state) => state.cart.cart)
   const allCart = useSelector((state) => state.cart)
-  console.log('allCart avant paiement:', allCart);
-  // const totalAMount = getTotal(cart).totalPrice.toFixed(2);
+  const deliveryCost = allCart.deliveryCost.toString().replace('.', ',');
+
 
   return (
     <>
       <div className={styles.container_checkout}>
         <h3 className={styles.container_checkout_title}>Choisissez votre mode de paiement</h3>
-
-        <StripeButton cart={allCart} />
-        <PayPalButtonComponent />
+        <div className={styles.container_checkout_payment} >
+          <div className={styles.container_checkout_payment_resume}>
+            <p>Résumé :</p>
+            <p>Livraison le {allCart.bookingDate}</p>
+            <ul>
+              {
+                allCart.cart.map(item => {
+                  const totalPrice = item.quantity * item.price
+                  const price = totalPrice.toString().replace('.', ',');
+                  return (
+                    <li>{item.quantity} {item.name} <span> total : {price} €</span></li>
+                  )
+                })
+              }
+            </ul>
+            <p>Frais de livraison : {deliveryCost} €</p>
+          </div>
+          <div className={styles.container_checkout_payment_resume_button}>
+            <StripeButton cart={allCart} />
+            <PayPalButtonComponent />
+          </div>
+        </div>
       </div>
       <div className={styles.checkout_button}>
         <button onClick={previousPage}>Précédent</button>

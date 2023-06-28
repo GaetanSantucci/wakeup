@@ -10,11 +10,14 @@ import NewNavbar from './Navbar';
 import CartNavbar from './CartNavbar';
 
 import { useEffect, useState } from 'react';
+import { HamburgerMenu, MobileNavbar } from './HamburgerMenu';
 
 
 const NewHeader = () => {
 
   const [stickyClass, setStickyClass] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(false);
+  console.log('activeMenu:', activeMenu);
 
 
   useEffect(() => {
@@ -29,15 +32,21 @@ const NewHeader = () => {
     };
   })
 
+  const handleActiveMenu = () => {
+    setActiveMenu(!activeMenu)
+  }
+
   return (
     <header className='header'>
       <Link legacyBehavior href='/'>
         <Image src={logo} alt='logo Wake up' className='logo' priority />
       </Link>
-      <div className={`navbar_shop ${stickyClass}`}>
+      <HamburgerMenu handleActiveMenu={handleActiveMenu} active={activeMenu} />
+      <MobileNavbar active={activeMenu} />
+      {/* <div className={`navbar_shop ${stickyClass}`}>
         <NewNavbar />
         <CartNavbar />
-      </div>
+      </div> */}
     </header>
   )
 }

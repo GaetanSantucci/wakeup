@@ -37,3 +37,9 @@
   width: 120px;
   height: auto;
 }
+
+@media (max-width: 768px) {
+  .logo {
+    width: 70px;
+  }
+}

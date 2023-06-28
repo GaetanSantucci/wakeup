@@ -9,7 +9,7 @@ const NewNavbar = () => {
   const router = usePathname();
 
   return (
-    <ul className='navbar'>
+    <ul className='navbar' id='menu'>
       {
         mainRoutes.map((elem) => <li key={elem.category} className={router === elem.slug ? 'navbar_list is_active' : 'navbar_list'}><Link href={elem.slug}>{elem.category}</Link></li>)
       }

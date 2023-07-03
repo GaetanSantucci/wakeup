@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { getTotal } from '@/src/libs/getCartTotal';
+import { ScrollToTop } from '@/src/components';
 
 export default function Checkout() {
   const cart = useSelector((state) => state.cart.cart);
@@ -46,6 +47,7 @@ export default function Checkout() {
 
   return (
     <div className={styles.container}>
+      <ScrollToTop />
       <CheckoutProgressBar
         cartModale={cartModale}
         informationModale={informationModale}

@@ -12,6 +12,7 @@ export default function CheckoutSuccessPage() {
 
   useEffect(() => {
     const timer = setInterval(() => {
+      // ? set timer to redirect to homepage after payment success
       setCounter((prevCounter) => prevCounter - 1);
     }, 1000);
 

@@ -1,5 +1,5 @@
 // method to fetch all blogs from wakeup api
-export const getArticlesData = async () => {
+export const getBlogs = async () => {
 
   const endpoint = 'http://localhost:7777/api/v1'
   // const endpoint = 'https://wakeupclf.fr/api/v1'

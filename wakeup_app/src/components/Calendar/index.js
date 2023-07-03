@@ -8,11 +8,12 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import 'moment/locale/fr'; // import the French locale
 
+import { useMediaQuery } from '@/src/hook/useMediaQuery';
+
+
 const CustomCalendar = () => {
 
   const dispatch = useDispatch();
-  const bookingDate = useSelector((state) => state.cart.bookingDate)
-  console.log('bookingDate:', bookingDate);
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [availabilityData, setAvailability] = useState([]);
@@ -33,6 +34,14 @@ const CustomCalendar = () => {
       })
       .catch(error => console.error(error));
   }, []);
+
+  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+  let positionElement = 'fixed';
+  let top = '0'
+  if (isBreakpoint) {
+    positionElement = 'absolute' // To display calendar in middle of the page
+    top = '100px'
+  }
 
   const theme = createTheme({
     components: {
@@ -61,6 +70,14 @@ const CustomCalendar = () => {
         styleOverrides: {
           root: {
             color: '#252525 !important'
+          }
+        }
+      },
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            position: positionElement, // custom css for mobile device
+            top
           }
         }
       }
@@ -96,10 +113,8 @@ const CustomCalendar = () => {
         <DatePicker
           label="Choisissez votre date"
           value={selectedDate}
-          // onChange={(newValue) => setSelectedDate(newValue)}
           onChange={(newValue) => handleSelectBookingDate(newValue)}
           shouldDisableDate={disableWeekdays}
-          // input={(params) => <TextField {...params} />}
           format="DD-MM-YYYY"
           slotProps={{ textField: { size: 'small' } }}
         />

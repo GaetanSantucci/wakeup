@@ -7,7 +7,7 @@ import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-import { toggleCartModale, toggleProfileModale } from '@/src/store/reducers/Settings';
+import { toggleCartModale, toggleProfileModale, toggleShowNavbar } from '@/src/store/reducers/Settings';
 import { setAddress, inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
 
 import { getTotal } from '@/src/libs/getCartTotal';
@@ -15,14 +15,23 @@ import { useSetupUser } from '@/src/hook/useSetUser';
 import { resetAllCartItems } from '@/src/store/reducers/Cart';
 import { AddOrDeleteItems } from '../Button';
 
+import { useMediaQuery } from '@/src/hook/useMediaQuery';
+
+
 const CartModale = () => {
+
+  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
 
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
   const cart = useSelector((state) => state.cart.cart)
-  console.log('cartItems:', cart);
 
-  const closeModale = () => dispatch(toggleCartModale());
+  const closeModale = () => {
+    if (isBreakpoint) {
+      dispatch(toggleShowNavbar())
+    }
+    dispatch(toggleCartModale())
+  };
   const handleRemoveItem = () => {
     dispatch(resetAllCartItems());
     setTimeout(() => {

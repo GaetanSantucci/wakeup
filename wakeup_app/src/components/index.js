@@ -1,10 +1,10 @@
 //& Imports Components
-import Articles from './Articles';
+import Blogs from './Blogs';
 import Business from './Business';
 import { CartModale, ProfileModale } from './Modale';
 import Custom from './Custom';
 import Gift from './Gift';
-import NewHeader from './NewHeader';
+import Header from './Header';
 import { UserLogin, Contact } from './Form';
 import Maps from './Maps';
 import Product from './Products/Product';
@@ -18,4 +18,4 @@ import UserProfile from './Profile';
 import { CustomCalendar } from './Calendar';
 import { CheckoutCart } from './Checkout';
 
-export { Additionnal, Articles, Business, ButtonToScrollTop, CartModale, CheckoutCart, Custom, CustomCalendar, Gift, NewHeader, UserLogin, Contact, Maps, Products, Product, Reviews, ScrollUp, ScrollToTop, Spinner, UserProfile, Footer, ProfileModale };
+export { Additionnal, Blogs, Business, ButtonToScrollTop, CartModale, CheckoutCart, Custom, CustomCalendar, Gift, Header, UserLogin, Contact, Maps, Products, Product, Reviews, ScrollUp, ScrollToTop, Spinner, UserProfile, Footer, ProfileModale };

@@ -1,7 +1,6 @@
-import styles from '/public/styles/Product.module.scss';
+import styles from '../Product.module.scss';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
 import Additionnal from '../Additional';
 import Spinner from '@/src/components/Spinner';
@@ -20,30 +19,30 @@ export default async function Product({ id }) {
 
   return (
     <>
-      <div className={styles.productId__container}>
+      <div className={styles.productId_container}>
         {
           plate.map(product => {
             const price = product.price.toString().replace('.', ',');
             const text = product.description.split('\\n')
             return (
-              <div className={styles.productId__container__card} key={product.id}>
-                <div className={styles.productId__container__card__image}>
+              <div className={styles.productId_container_card} key={product.id}>
+                <div className={styles.productId_container_card_image}>
                   <Image src={`/images/${product.image}`} alt={product.name} width={400} height={600} />
                 </div>
-                <div className={styles.productId__container__card__details}>
-                  <div className={styles.productId__container__card__details__effect}></div>
-                  <h2 className={styles.productId__container__card__details__title}>{product.name}</h2>
-                  <p className={styles.productId__container__card__details__subtitle}>{product.subtitle}</p>
-                  <ul className={styles.productId__container__card__details__list}>
+                <div className={styles.productId_container_card_details}>
+                  <div className={styles.productId_container_card_details_effect}></div>
+                  <h2 className={styles.productId_container_card_details_title}>{product.name}</h2>
+                  <p className={styles.productId_container_card_details_subtitle}>{product.subtitle}</p>
+                  <ul className={styles.productId_container_card_details_list}>
                     {
                       text.map(p => <li key={p}>- {p.replace('\\n', '')}</li>)
                     }
                   </ul>
-                  <div className={styles.productId__container__card__details__information}>
+                  <div className={styles.productId_container_card_details_information}>
                     <p>dimension en cm: {product.dimension}, photo non contractuelle</p>
                   </div>
-                  <div className={styles.productId__container__card__details__order}>
-                    <span className={styles.productId__container__card__details__order__price} >{price} €</span>
+                  <div className={styles.productId_container_card_details_order}>
+                    <span className={styles.productId_container_card_details_order_price} >{price} €</span>
                     <div>
                       <AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
                     </div>

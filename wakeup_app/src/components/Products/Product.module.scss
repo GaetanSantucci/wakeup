@@ -1,41 +1,41 @@
 @use '/public/styles/mixins';
 @use '/public/styles/vars';
 
+// All plate
 .container {
-  &__title {
+  width: 100%;
+  @include mixins.flex($direction: column);
+  margin-top: 2rem;
+
+  &_title {
     margin-bottom: 3rem;
     text-align: center;
   }
 
-  &__text {
+  &_text {
     width: 75%;
     margin: 0.5rem;
     text-align: center;
     font-size: 1.2rem;
   }
-  &__container {
+  &_section {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include mixins.flex($direction: row);
     flex-wrap: wrap;
 
-    &__card {
+    &_card {
       position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      @include mixins.flex($direction: column);
       margin: 2rem;
       padding: 1rem;
 
-      &__new {
+      &_new {
         position: absolute;
         z-index: 10;
         top: -20px;
         left: -15px;
-        //todo $vars.tabletBackground
-        background-color: #8ea3aa;
-        color: rgb(255, 255, 255);
+        background-color: vars.$backgroundTablet;
+        color: vars.$colorButtonLightTheme;
         border-radius: 50%;
         width: 100px;
         height: 100px;
@@ -57,7 +57,7 @@
         transition: all 0.4s;
       }
 
-      &__desc {
+      &_desc {
         width: 100%;
 
         & > * {
@@ -67,7 +67,7 @@
           padding-top: 1rem;
         }
       }
-      &__title {
+      &_title {
         font-family: var(--fontTitle);
         letter-spacing: 1.2px;
         line-height: 1.4;
@@ -79,11 +79,11 @@
         }
       }
 
-      &__information {
+      &_information {
         font-size: 1rem;
         color: var(--text--color-secondary);
 
-        &__link {
+        &_link {
           margin-bottom: 0.5rem;
         }
 
@@ -101,8 +101,9 @@
   }
 }
 
+// Plate by ID
 .productId {
-  &__container {
+  &_container {
     width: 80%;
     display: flex;
     justify-content: center;
@@ -113,13 +114,13 @@
       margin: 1rem;
     }
 
-    &__card {
+    &_card {
       width: 90%;
       display: flex;
       align-items: center;
       justify-content: space-evenly;
 
-      &__image {
+      &_image {
         display: flex;
         justify-content: center;
         overflow: hidden;
@@ -141,7 +142,7 @@
         }
       }
 
-      &__details {
+      &_details {
         position: relative;
         display: flex;
         justify-content: space-between;
@@ -155,7 +156,7 @@
           font-size: 1rem;
         }
 
-        &__effect {
+        &_effect {
           position: absolute;
           z-index: -1;
           top: 95px;
@@ -165,26 +166,26 @@
           background: #e8e8e8;
         }
 
-        &__title {
+        &_title {
           font-family: var(--fontTitle);
           font-size: 2.6rem;
           text-transform: uppercase;
         }
 
-        &__subtitle {
+        &_subtitle {
           position: relative;
           font-family: var(--fontItalic);
           font-size: 1.4rem;
           margin: 1rem;
         }
 
-        &__order {
+        &_order {
           width: 100%;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          &__price {
+          &_price {
             font-family: var(--fontTitle);
             font-size: 2.4rem;
             font-weight: 400;
@@ -192,7 +193,7 @@
           }
         }
 
-        &__information {
+        &_information {
           font-size: 0.8rem;
           margin-top: 0.5rem;
         }
@@ -202,27 +203,27 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .container__card__image:hover img {
+  .container_card_image:hover img {
     transform: scale(1.1);
     transition: all 0.4s;
   }
 
-  .container__card__image:hover {
+  .container_card_image:hover {
     background-color: var(--background_color);
     transition: all 0.2s;
   }
 
-  .container__card__information__link:hover {
+  .container_card_information_link:hover {
     color: var(--paragraph--color);
   }
 }
 @media (max-width: 1260px) {
-  .productId__container__card__details {
-    &__title {
+  .productId_container_card_details {
+    &_title {
       font-size: 2rem;
     }
 
-    &__subtitle {
+    &_subtitle {
       font-size: 1.2;
     }
 
@@ -233,12 +234,12 @@
 }
 
 @media (max-width: 1023px) {
-  .productId__container {
-    &__card {
+  .productId_container {
+    &_card {
       flex-direction: column;
       width: 100%;
 
-      &__image {
+      &_image {
         box-shadow: none;
         width: 75%;
         border-radius: 0;
@@ -250,7 +251,7 @@
         }
       }
 
-      &__details {
+      &_details {
         & > * {
           margin-bottom: 1rem;
         }
@@ -259,10 +260,10 @@
           line-height: 1.5;
         }
 
-        &__effect {
+        &_effect {
           display: none;
         }
-        &__title {
+        &_title {
           text-align: center;
           font-size: 1.5rem;
         }
@@ -273,13 +274,13 @@
 
 @media (max-width: 768px) {
   .container {
-    &__title {
+    &_title {
       width: 85%;
       font-size: calc(1.4rem + 0.6vw);
       text-align: center;
       margin: 2rem 0;
     }
-    &__text {
+    &_text {
       width: 95%;
       text-align: justify;
       font-size: 1rem;
@@ -287,10 +288,10 @@
     }
   }
 
-  .productId__container {
+  .productId_container {
     width: 100%;
 
-    &__card {
+    &_card {
       flex-direction: column;
       width: 100%;
       margin: 0;
@@ -298,25 +299,19 @@
         width: 100%;
       }
 
-      &__details {
-        &__title {
+      &_details {
+        &_title {
           font-size: 1.8rem;
         }
         & li {
           font-size: 0.9rem;
         }
 
-        &__subtitle {
+        &_subtitle {
           font-size: 1.2rem;
           margin: 0;
         }
       }
     }
-  }
-}
-
-@keyframes shine {
-  50% {
-    background-position: right;
   }
 }

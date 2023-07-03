@@ -2,26 +2,29 @@
 @use '/public/styles/vars';
 
 .container {
-  &__title {
+  width: 80%;
+  margin-top: 2rem;
+
+  &_title {
     text-align: center;
     margin-bottom: 3rem;
   }
 
-  &__container {
-    width: 80%;
+  &_business {
+    width: 100%;
 
-    &__details {
+    &_details {
       display: flex;
       width: 100%;
       align-items: flex-start;
       justify-content: space-evenly;
 
-      &__background {
+      &_background {
         width: 50%;
         height: auto;
       }
 
-      &__card {
+      &_card {
         width: 50%;
         padding: 0 2rem;
         display: flex;
@@ -32,11 +35,7 @@
         letter-spacing: 1px;
         text-align: start;
 
-        & li {
-          list-style-type: '- ';
-        }
-
-        &__price {
+        &_price {
           font-family: var(--fontTitle);
           font-size: 1.2rem;
         }
@@ -51,26 +50,29 @@
 
 @media (max-width: 768px) {
   .container {
-    &__title {
+    width: 100%;
+    &_title {
       font-size: calc(1.4rem + 0.6vw);
       text-align: center;
       margin: 2rem 0 3rem 0;
     }
-    &__container {
+    &_business {
       width: 100%;
       margin-top: 0;
 
-      &__details {
+      &_details {
         flex-direction: column;
         align-items: center;
-        &__background {
+        &_background {
           width: 100%;
+          height: auto;
+
           & img {
             width: 100%;
             height: auto;
           }
         }
-        &__card {
+        &_card {
           width: 95%;
           padding: 0 0.5rem;
           align-items: center;
@@ -83,7 +85,7 @@
             font-size: 0.9rem;
             margin: 0 0 1rem 0;
           }
-          &__price {
+          &_price {
             font-size: 1rem;
             color: vars.$colorTitleLightTheme;
           }
@@ -93,12 +95,12 @@
           }
         }
       }
-      a {
-        width: 100% !important;
-      }
-      .btn_business {
-        @include mixins.button(100%);
-      }
+    }
+    a {
+      width: 100% !important;
+    }
+    .btn_business {
+      @include mixins.button(100%);
     }
   }
 }

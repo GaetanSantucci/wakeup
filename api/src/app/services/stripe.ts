@@ -8,8 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { //? Stripe config wi
 
 const createStripeOrder = async (req: Request, res: Response) => {
 
+  // ? Extract the cart and delivery cost from the request body
   const { cart, deliveryCost } = req.body.cart;
 
+  // ? Map on cart to list all articles
   const lineItems = cart.map((item: Cart) => ({
     price_data: {
       currency: "eur",
@@ -22,6 +24,7 @@ const createStripeOrder = async (req: Request, res: Response) => {
   }));
 
   try {
+    // ? Create a new Stripe checkout session using the line items and delivery cost
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,

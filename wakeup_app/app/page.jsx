@@ -1,8 +1,7 @@
 'use client';
 import styles from '/public/styles/Homepage.module.scss';
-
 // Components
-import { Articles, Reviews, ScrollToTop, Spinner } from '@/src/components';
+import { Blogs, Reviews, ScrollToTop, Spinner } from '@/src/components';
 
 import Image from 'next/image';
 
@@ -29,7 +28,7 @@ export default function Home() {
         <div className={styles.homepage__header__container__image}>
           <Image
             src={'/images/presentation_dolce_homepage.webp'}
-            alt='Plateau Dolce Vita avec presentation'
+            alt='Plateau Brunch Dolce Vita avec presentation'
             width={1920}
             height={1440}
             priority
@@ -38,7 +37,7 @@ export default function Home() {
         <div className={styles.homepage__header__container__image_mobile}>
           <Image
             src={'/images/presentation_dolce_homepage_mobile.webp'}
-            alt='Plateau Dolce Vita avec presentation'
+            alt='Plateau Brunch Dolce Vita avec presentation'
             width={768}
             height={1300}
             priority
@@ -66,7 +65,7 @@ export default function Home() {
         </p>
       </section>
       <Suspense fallback={<Spinner />}>
-        <Articles />
+        <Blogs />
       </Suspense>
       <Suspense fallback={<Spinner />}>{/* <Reviews /> */}</Suspense>
     </>

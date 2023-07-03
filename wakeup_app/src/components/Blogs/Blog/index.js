@@ -2,11 +2,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import styles from '../Article.module.scss';
+import styles from '../Blog.module.scss';
 
 import { HomepageCarousel } from '@/src/components/Carousel';
 
-const Article = ({ elem, paragraph, index }) => {
+const Blog = ({ elem, paragraph, index }) => {
 
   let urlArray = [];
   if (elem.id === 1) {
@@ -35,5 +35,5 @@ const Article = ({ elem, paragraph, index }) => {
   )
 }
 
-export default Article;
+export default Blog;
 

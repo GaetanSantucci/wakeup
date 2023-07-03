@@ -11,8 +11,13 @@ const ajv = new Ajv();
 // const logger = debug('Validation');
 
 function validate(schemaCustom: object) {
+
   return function validateCheck(req: Request, res: Response, next: NextFunction) {
+
+    // ? Compile the schema using the ajv library
     const validate = ajv.compile(schemaCustom);
+
+    // ? If the request body matches the schema, call the next middleware function
     if (validate(req.body)) {
       next();
     } else {

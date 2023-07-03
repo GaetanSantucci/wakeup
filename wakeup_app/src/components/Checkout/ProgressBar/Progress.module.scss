@@ -38,3 +38,9 @@
 .active {
   background-color: vars.$backgroundAdditionnalColoredTheme;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 70%;
+  }
+}

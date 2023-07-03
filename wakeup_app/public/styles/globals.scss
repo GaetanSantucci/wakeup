@@ -18,26 +18,44 @@
   --text--color-secondary: #3f3f3fb8;
   --color--text-inactive: #9d9d9d;
   --background-color: #ffffff;
-
   --hover--link: #cacaca;
   --color--button: #000000;
-
   --color--border-contact: #1f1f1f;
+
+  // dark theme
+  --background-dark-color: #202020;
+  --text-dark-color: #f2f2f2;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    // --foreground-rgb: 255, 255, 255;
+    // --background-start-rgb: 0, 0, 0;
+    // --background-end-rgb: 0, 0, 0;
 
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
+    // body {
+    //   background: var(--background-dark-color);
+    //   h1,
+    //   h2,
+    //   h3,
+    //   p {
+    //     color: var(--text-dark-color);
+    //   }
+    //   header,
+    //   main,
+    //   section {
+    //     background: var(--background-dark-color);
+    //   }
+    //   svg {
+    //     fill: var(--background-dark-color);
+    //   }
+    // }
+    // button {
+    //   background-color: var(--text-dark-color) !important;
+    // }
+    // span {
+    //   background-color: var(--text-dark-color);
+    // }
   }
 }
 
@@ -63,6 +81,7 @@ body {
   font-size: 1rem !important;
   color: vars.$colorParagraphLightTheme;
   background: vars.$backgroundPrimaryLightTheme;
+  padding-right: 0 !important; // to not accept modification by MUI to display calendar
 }
 
 a {

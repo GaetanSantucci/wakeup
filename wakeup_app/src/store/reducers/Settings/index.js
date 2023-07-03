@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   modaleIsOpen: true,
+  mobileNavbar: false,
   menuIsOpen: false,
   cartIsOpen: false,
   profileIsOpen: false,
@@ -22,7 +23,6 @@ const settingsSlice = createSlice({
         modaleIsOpen: !state.modaleIsOpen
       }
     },
-
     handleChangeMenu: (state) => {
       return {
         ...state,
@@ -76,9 +76,15 @@ const settingsSlice = createSlice({
         ...state,
         isPasswordInputFocused: action.payload
       }
-    }
+    },
+    toggleShowNavbar: (state) => {
+      return {
+        ...state,
+        mobileNavbar: !state.mobileNavbar
+      }
+    },
   }
 });
 
-export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused, toggleProfileModale } = settingsSlice.actions;
+export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused, toggleProfileModale, toggleShowNavbar } = settingsSlice.actions;
 export default settingsSlice.reducer;

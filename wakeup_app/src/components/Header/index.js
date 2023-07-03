@@ -6,21 +6,24 @@ import Image from 'next/image';
 
 import logo from '/public/logo/logowakeuppng.png';
 
-import NewNavbar from './Navbar';
+import Navbar from './Navbar';
 import CartNavbar from './CartNavbar';
 
 import { useEffect, useState } from 'react';
-import { HamburgerMenu, MobileNavbar } from './HamburgerMenu';
 
+import { MobileNavbar } from './HamburgerMenu';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleMobileNavbar } from '@/src/store/reducers/Settings';
 
-const NewHeader = () => {
+import { useMediaQuery } from '@/src/hook/useMediaQuery';
+
+const Header = () => {
+  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
 
   const [stickyClass, setStickyClass] = useState(null);
-  const [activeMenu, setActiveMenu] = useState(false);
-  console.log('activeMenu:', activeMenu);
-
 
   useEffect(() => {
+    // Methods to fixed header on scroll
     const onScroll = () => {
       const scrollPosition = window.scrollY;
       scrollPosition > 130 ? setStickyClass('fixed') : setStickyClass(false)
@@ -32,23 +35,20 @@ const NewHeader = () => {
     };
   })
 
-  const handleActiveMenu = () => {
-    setActiveMenu(!activeMenu)
-  }
-
   return (
     <header className='header'>
       <Link legacyBehavior href='/'>
         <Image src={logo} alt='logo Wake up' className='logo' priority />
       </Link>
-      <HamburgerMenu handleActiveMenu={handleActiveMenu} active={activeMenu} />
-      <MobileNavbar active={activeMenu} />
-      {/* <div className={`navbar_shop ${stickyClass}`}>
-        <NewNavbar />
-        <CartNavbar />
-      </div> */}
+      {
+        isBreakpoint ? <MobileNavbar /> :
+          <div className={`navbar_shop ${stickyClass}`}>
+            <Navbar />
+            <CartNavbar />
+          </div>
+      }
     </header>
   )
 }
 
-export default NewHeader;
+export default Header;

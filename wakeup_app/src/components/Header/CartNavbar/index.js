@@ -6,19 +6,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCartModale } from '@/src/store/reducers/Settings';
-import { getStorageCart } from '@/src/store/reducers/Cart';
-import { useEffect } from 'react';
 
 const CartNavbar = () => {
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const storedCart = JSON.parse(localStorage?.getItem('cart'));
-  //   console.log('storedCart:', storedCart);
-  //   if (storedCart) {
-  //     dispatch(getStorageCart(storedCart));
-  //   }
-  // }, [])
 
   const { user, isLogged } = useSelector((state) => state.user)
   const cart = useSelector((state) => state.cart.cart)
@@ -31,7 +21,7 @@ const CartNavbar = () => {
     return total
   }
 
-  const handleOpenCart = (e) => {
+  const handleOpenCart = () => {
     dispatch(toggleCartModale())
   }
 

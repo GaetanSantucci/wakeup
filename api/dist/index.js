@@ -16,14 +16,6 @@ const app = express();
 app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// import { Request, Response } from 'express';
-// app.use((req: Request, res: Response, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000', 'https://wakeupbox.fr', 'https://wakeupclf.fr']);
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-//   next();
-// });
 const corsOptions = {
     withCredentials: true,
     origin: ["https://www.wakeupbox.fr", "https://www.wakeupclf.fr", "http://localhost:3000", "http://153.92.223.190"],
@@ -45,13 +37,12 @@ app.use(session({
         secure: true,
         maxAge: 1 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: 'none' //'lax', // or 'strict'
+        sameSite: 'none'
     }
 }));
 import { router } from './app/router/index.js';
 // import { _404 } from './app/service/errorHandling.js';
-// ~ Launch router
-app.use('/api/v1', router);
+app.use('/api/v1', router); // ~ Launch router
 app.use((req, res) => {
     throw new ErrorApi(`Page not found !`, req, res, 404);
 });

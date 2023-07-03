@@ -4,7 +4,7 @@ import '/public/styles/globals.scss';
 import styles from '/public/styles/Homepage.module.scss';
 
 import {
-  NewHeader,
+  Header,
   CartModale,
   Footer,
   ScrollToTop,
@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <ScrollToTop />
-          <NewHeader />
+          <Header />
           <CartModale />
           <main className={styles.main}>{children}</main>
           <Footer />

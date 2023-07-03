@@ -29,7 +29,7 @@
     }
 
     &_icon {
-      font-size: 1.8rem;
+      font-size: 1.8rem !important;
       stroke: none;
       fill: #353535;
       text-align: end;
@@ -41,5 +41,15 @@
         fill: #000000;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .shop_item {
+    position: fixed;
+    justify-content: flex-end;
+    width: 80%;
+    top: 100px;
+    right: 30px;
   }
 }

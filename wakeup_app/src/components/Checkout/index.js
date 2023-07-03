@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState, use } from 'react';
+import { useState, use } from 'react';
 import { inputValue, setAddress } from '@/src/store/reducers/User';
 import { addDeliveryCost } from '@/src/store/reducers/Cart';
 
@@ -14,13 +14,14 @@ import { CustomCalendar } from '../Calendar';
 
 import { getTotal } from '@/src/libs/getCartTotal';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RoomIcon from '@mui/icons-material/Room';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
-import { Typography } from '@mui/material';
+import { useMediaQuery } from '@/src/hook/useMediaQuery';
+
+
 const areaFetch = getArea(); // fetch to database for delivery area
 
 const CheckoutCart = ({ nextPage }) => {
@@ -190,6 +191,12 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
     setIsDeliverableCity([])
   }
 
+  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+  let widthElement = '45%'
+  if (isBreakpoint) {
+    widthElement = '85%' // To display calendar in middle of the page
+  }
+
   return (
     <>
       <div className={styles.container_checkout}>
@@ -199,7 +206,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
             component='form'
             sx={{
               width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', /* margin: '8rem 0 2rem 0' */
-              '& > :not(style)': { m: '0.8rem', width: '45%', fontSize: '0.8rem' },
+              '& > :not(style)': { m: '0.8rem', width: widthElement, fontSize: '0.8rem' },
             }}
             noValidate
             autoComplete='off'
@@ -263,6 +270,8 @@ const CheckoutPayment = ({ previousPage }) => {
   const allCart = useSelector((state) => state.cart)
   const deliveryCost = allCart.deliveryCost.toString().replace('.', ',');
 
+  const totalIncludeDelivery = Number(getTotal(allCart.cart).totalPrice.toFixed(2)) + Number(allCart.deliveryCost)
+  console.log('totalIncludeDelivery:', totalIncludeDelivery);
 
   return (
     <>
@@ -275,7 +284,7 @@ const CheckoutPayment = ({ previousPage }) => {
             <ul>
               {
                 allCart.cart.map(item => {
-                  const totalPrice = item.quantity * item.price
+                  const totalPrice = (item.quantity * item.price).toFixed(2);
                   const price = totalPrice.toString().replace('.', ',');
                   return (
                     <li>{item.quantity} {item.name} <span> total : {price} €</span></li>
@@ -284,6 +293,7 @@ const CheckoutPayment = ({ previousPage }) => {
               }
             </ul>
             <p>Frais de livraison : {deliveryCost} €</p>
+            <p>Montant total : {totalIncludeDelivery} €</p>
           </div>
           <div className={styles.container_checkout_payment_resume_button}>
             <StripeButton cart={allCart} />

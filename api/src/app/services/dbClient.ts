@@ -1,8 +1,7 @@
-// ~ PG CONNEXION DATABASE ~ //
+// ? PG CONNEXION DATABASE 
 import pg from 'pg';
 
-// ~ DEBUG CONFIG ~ //
-
+// ? DEBUG CONFIG
 import debug from 'debug';
 const logger = debug('Pool');
 

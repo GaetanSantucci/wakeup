@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '/public/styles/Maps.module.scss';
+import styles from './Maps.module.scss';
 
 // method to fetch data
 import { getArea } from '/src/libs/getDeliveryArea.js';
@@ -41,21 +41,21 @@ export default function Maps() {
   }
 
   return (
-    <>
-      <h2 className={styles.delivery__title}>Zone de livraison</h2>
-      <div className={styles.delivery__container}>
+    <div className={styles.container}>
+      <h2 className={styles.container_title} data-testid="title">Zone de livraison</h2>
+      <div className={styles.container_delivery}>
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder='Entrez votre ville' value={inputCityValue} onChange={handleChangeCity} />
         </form>
 
         {
-          isAvailable && <div className={`${styles.delivery__container__alert} ${styles.success}`}>
+          isAvailable && <div className={`${styles.container_delivery_alert} ${styles.success}`}>
             <p>Vous êtes livrable sur {isAvailable.city} pour des frais de livraison s&apos;élevant à  {isAvailable.price} €</p>
           </div>
         }
         {notInOurZone &&
           <>
-            <div className={`${styles.delivery__container__alert} ${styles.failed}`}>
+            <div className={`${styles.container_delivery_alert} ${styles.failed}`}>
               <p>Désolé, vous ne vous situez pas dans notre zone de livraison mais nous pouvons vous proposer un point de rendez-vous sur une des communes suivantes</p>
             </div>
             <select>
@@ -65,11 +65,11 @@ export default function Maps() {
             </select>
           </>
         }
-        <div className={styles.delivery__container__image}>
+        <div className={styles.container_delivery_image}>
           <Image src={map} alt='carte de la zone de livraison' style={{ width: '100%', height: '100%' }} />
         </div>
-        <div className={styles.delivery__container__information}>
-          <div className={styles.delivery__container__information__area}>
+        <div className={styles.container_delivery_information}>
+          <div className={styles.container_delivery_information_area}>
             <div style={{ backgroundColor: '#d9ffe2', padding: '0.5rem 1rem' }}>Livraison à 3,50 €</div>
             <ul>
               {
@@ -79,7 +79,7 @@ export default function Maps() {
               }
             </ul>
           </div>
-          <div className={styles.delivery__container__information__area}>
+          <div className={styles.container_delivery_information_area}>
             <div style={{ backgroundColor: '#fff9ce', padding: '0.5rem 1rem' }} >Livraison à 5,50 €</div>
             <ul>
               {
@@ -91,6 +91,6 @@ export default function Maps() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

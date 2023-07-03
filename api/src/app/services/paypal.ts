@@ -6,18 +6,21 @@ const baseURL = {
   production: "https://api-m.paypal.com"
 };
 
-// use the orders api to create an order
+// ? se the PayPal API to create an order
 const createOrder = async (req: Request, res: Response) => {
+  // ? Extract the cart array from the request body
   const { cart } = req.body
-  console.log('cart dans le create order:', cart);
 
+  //  ? Calculate the total amount of the order based on the cart items
   const totalAmount = cart.reduce((total: number, item: { price: string, quantity: number }) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2)
 
-  console.log('totalAmount:', totalAmount);
   try {
+    // ? Generate an access token for the PayPal API
     const accessToken = await generateAccessToken();
+    // ? Set the API endpoint URL for creating orders
     const url = `${baseURL.sandbox}/v2/checkout/orders`;
 
+    // ? Send a POST request to the API to create a new order
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -54,12 +57,15 @@ const createOrder = async (req: Request, res: Response) => {
 
 // use the orders api to capture payment for an order
 const capturePayment = async (orderId: string, res: Response) => {
-  console.log("Je passe dans le capturePayment");
 
 
   try {
+    // ? Call access token  function to connect to the PayPal API
     const accessToken = await generateAccessToken();
+
     const url = `${baseURL.sandbox}/v2/checkout/orders/${orderId}/capture`;
+
+    // ? Send a POST request to the API to capture a new order
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -76,7 +82,7 @@ const capturePayment = async (orderId: string, res: Response) => {
   }
 }
 
-// generate an access token using client id and app secret
+// ? Generate an access token using client id and app secret
 const generateAccessToken = async () => {
   const auth = Buffer.from(PAYPAL_CLIENT_ID + ":" + PAYPAL_SECRET_KEY).toString("base64")
   const response = await fetch(`${baseURL.sandbox}/v1/oauth2/token`, {

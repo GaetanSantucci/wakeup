@@ -1,6 +1,7 @@
 'use client'
-
-import styles from '/public/styles/ButtonScrollTop.module.scss';
+import ArrowDropUpOutlinedIcon from '@mui/icons-material/ArrowDropUpOutlined';
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+import styles from './Scroll.module.scss';
 
 import { useEffect } from 'react'
 
@@ -22,7 +23,7 @@ const ScrollToTop = () => {
 
 const ButtonToScrollTop = () => {
   return (
-    <div className={styles.btn_scrollTop} onClick={() => window.document.scrollingElement?.scrollTo(0, 0)}>&#8657;</div>
+    <div className={styles.btn_scrollTop} onClick={() => window.document.scrollingElement?.scrollTo(0, 0)}><ArrowBackIosOutlinedIcon /><ArrowDropUpOutlinedIcon /></div>
   )
 }
 

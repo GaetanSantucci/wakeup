@@ -3,13 +3,11 @@
 
 .btn_scrollTop {
   position: fixed;
-  bottom: 10px;
+  bottom: 20px;
   right: 10px;
-  background-color: #353535de;
-  opacity: 0.9;
-  border-radius: 30px;
-  height: 50px;
-  width: 50px;
+  opacity: 0.6;
+  height: 23px;
+  width: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,4 +15,15 @@
   color: white;
   font-size: 1.4rem;
   cursor: pointer;
+  text-decoration: underline;
+
+  & svg {
+    font-size: 2rem;
+    fill: vars.$backgroundPrimaryDarkTheme;
+    &:nth-child(1) {
+      position: absolute;
+      transform: rotate(90deg);
+      top: -55%;
+    }
+  }
 }

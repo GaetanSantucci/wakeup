@@ -287,7 +287,7 @@ const CheckoutPayment = ({ previousPage }) => {
                   const totalPrice = (item.quantity * item.price).toFixed(2);
                   const price = totalPrice.toString().replace('.', ',');
                   return (
-                    <li>{item.quantity} {item.name} <span> total : {price} €</span></li>
+                    <li key={item.name}>{item.quantity} {item.name} <span> total : {price} €</span></li>
                   )
                 })
               }

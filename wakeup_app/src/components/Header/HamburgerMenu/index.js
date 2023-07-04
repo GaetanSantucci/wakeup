@@ -38,8 +38,10 @@ const MobileNavbar = () => {
     <>
       <HamburgerMenu active={isMobileOpen} toggleMenu={handleActiveMenu} />
       <div className={isMobileOpen ? `${styles.container} ${styles.active_navbar}` : `${styles.container}`}  >
-        <CartNavbar />
+        {/* <div> */}
+        <CartNavbar className={isMobileOpen ? `${styles.menu_open}` : null} />
         <Navbar toggleMenu={handleActiveMenu} />
+        {/* </div> */}
       </div>
     </>
   )

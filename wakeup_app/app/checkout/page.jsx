@@ -1,6 +1,5 @@
 'use client';
 import styles from '@/src/components/Checkout/Checkout.module.scss';
-
 import {
   CheckoutCart,
   CheckoutInformation,
@@ -9,19 +8,10 @@ import {
 import { CheckoutProgressBar } from '@/src/components/Checkout/ProgressBar';
 import { useState } from 'react';
 
-import { useSelector } from 'react-redux';
-import { getTotal } from '@/src/libs/getCartTotal';
-import { ScrollToTop } from '@/src/components';
-
 export default function Checkout() {
-  const cart = useSelector((state) => state.cart.cart);
-
   const [cartModale, setCartModale] = useState(true);
   const [informationModale, setInformationModale] = useState(false);
   const [paymentModale, setPaymentModale] = useState(false);
-
-  // const totalAMount = getTotal(cart).totalPrice.toFixed(2);
-  // console.log('totalAMount:', totalAMount);
 
   const handleNextPage = () => {
     if (cartModale) {
@@ -47,13 +37,11 @@ export default function Checkout() {
 
   return (
     <div className={styles.container}>
-      <ScrollToTop />
       <CheckoutProgressBar
         cartModale={cartModale}
         informationModale={informationModale}
         paymentModale={paymentModale}
       />
-
       {cartModale && <CheckoutCart nextPage={handleNextPage} />}
       {informationModale && (
         <CheckoutInformation

@@ -12,13 +12,17 @@ import CartNavbar from './CartNavbar';
 import { useEffect, useState } from 'react';
 
 import { MobileNavbar } from './HamburgerMenu';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleMobileNavbar } from '@/src/store/reducers/Settings';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { toggleMobileNavbar } from '@/src/store/reducers/Settings';
 
 import { useMediaQuery } from '@/src/hook/useMediaQuery';
+import { useSelector } from 'react-redux';
+import { UserLogin } from '../Form';
 
 const Header = () => {
   const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+
+  const isLoginModale = useSelector((state) => state.settings.toggleLoginModale)
 
   const [stickyClass, setStickyClass] = useState(null);
 
@@ -47,6 +51,9 @@ const Header = () => {
             <CartNavbar />
           </div>
       }
+      {/* {
+        isLoginModale && <UserLogin />
+      } */}
     </header>
   )
 }

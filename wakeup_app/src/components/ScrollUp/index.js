@@ -25,13 +25,9 @@ const ScrollToTop = () => {
 const ButtonToScrollTop = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [screenHeight, setScreenHeight] = useState(0);
-  const [isButtonScroll, setIsButtonScroll] = useState(false)
-  console.log('isButtonScroll:', isButtonScroll);
-  // console.log('screenHeight:', screenHeight);
-  // console.log('scrollPosition:', scrollPosition);
 
   const handleScroll = () => {
-    const userScreen = window.innerHeight;
+    const userScreen = window.innerHeight - 200;
     const position = window.scrollY;
     setScreenHeight(userScreen);
     setScrollPosition(position);

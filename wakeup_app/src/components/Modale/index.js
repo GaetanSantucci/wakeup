@@ -15,21 +15,14 @@ import { useSetupUser } from '@/src/hook/useSetUser';
 import { resetAllCartItems } from '@/src/store/reducers/Cart';
 import { AddOrDeleteItems } from '../Button';
 
-import { useMediaQuery } from '@/src/hook/useMediaQuery';
-
 
 const CartModale = () => {
-
-  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
 
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
   const cart = useSelector((state) => state.cart.cart)
 
   const closeModale = () => {
-    if (isBreakpoint) {
-      dispatch(toggleShowNavbar())
-    }
     dispatch(toggleCartModale())
   };
   const handleRemoveItem = () => {

@@ -1,13 +1,10 @@
 .shop_item {
+  position: relative;
   display: flex;
   align-items: center;
-
-  & a {
-    display: flex;
-
-    & svg {
-      font-size: 1.8rem;
-    }
+  & svg {
+    font-size: 1.8rem !important;
+    cursor: pointer;
   }
 
   &_cart {
@@ -29,11 +26,9 @@
     }
 
     &_icon {
-      font-size: 1.8rem !important;
       stroke: none;
       fill: #353535;
       text-align: end;
-      cursor: pointer;
       margin-bottom: -2px;
       margin-left: 5px;
 

@@ -1,0 +1,117 @@
+@use '/public/styles/vars';
+@use '/public/styles/mixins';
+
+.container_form {
+  position: absolute;
+  @include mixins.flex(
+    $direction: column,
+    $align: center,
+    $justify: space-between
+  );
+  width: 300px;
+  height: 460px;
+  background-color: vars.$backgroundPrimaryLightTheme;
+  top: 50px;
+  right: 5%;
+  padding: 1rem 1.6rem;
+  box-shadow: 2px 2px 4px lightgray;
+  border-radius: vars.$border-radius;
+
+  &_passwordStrength {
+    @include mixins.flex($direction: column, $justify: space-between);
+    margin-top: 5px;
+  }
+  &_validate {
+    width: 100%;
+    @include mixins.flex(
+      $direction: column,
+      $align: center,
+      $justify: space-between
+    );
+    margin: 1rem;
+    & span {
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    & button {
+      width: 100%;
+      margin-top: 1rem;
+      background-color: rgb(31, 31, 31);
+      &::after {
+        display: none;
+      }
+      &:hover {
+        background-color: #363636;
+        box-shadow: 0 2px 5px #4e4d4d /* , -3px -6px 5px #ffffff */;
+      }
+    }
+  }
+
+  &_password_strength {
+    width: 70%;
+    font-size: 0.8rem;
+    line-height: 1.1;
+
+    &_indicator {
+      text-align: center;
+      margin-top: 5px;
+      height: 2px;
+      // border-radius: 10px;S
+    }
+  }
+
+  &_success {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #41b741;
+    background-color: #aae2aad6;
+    border-radius: 5px;
+  }
+
+  &_error {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ca2a2a;
+    background-color: #e08f8fba;
+    border-radius: 5px;
+  }
+}
+
+.visibility {
+  // width: 70%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  // padding: 1rem;
+
+  & svg {
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    cursor: pointer;
+    stroke: none;
+
+    &:hover {
+      fill: grey;
+    }
+  }
+}
+
+.password_check {
+  color: #48bf48;
+}
+@media (max-width: 768px) {
+  .container_form {
+    // width: 90%;
+    width: 95%;
+    height: 60vh;
+    margin: 0;
+    // padding: 0.6rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

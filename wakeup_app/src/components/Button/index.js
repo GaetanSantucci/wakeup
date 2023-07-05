@@ -94,33 +94,6 @@ const StripeButton = ({ cart }) => {
     }
   };
 
-  // axios.post(`${endpoint}/payment/stripe`, {
-  //   cart,
-  //   userId
-  // }).then((res) => {
-  //   if (res.data.url) {
-  //     console.log('res.data.url:', res.data.url);
-  //     window.location.replace(res.data.url)
-  //   }
-  // }).catch((err) => console.log(err.message))
-  // const options = {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(cart, userId),
-  // }
-
-  // fetch(endpoint, options)
-  //   .then(response => console.log('response.json():', response.json()))
-  //   .then(data => console.log('Retour des data du fetch payment', data))
-
-  // const response = await fetch(endpoint, options)
-  // const result = await response.json()
-  // console.log('result:', result);
-  // console.log('Checkout go to pay', cart);
-  // }
-
   return <button className={styles.button_stripe} onClick={handleCheckout}><CreditCardIcon /><p>Carte bancaire</p></button>
 }
 

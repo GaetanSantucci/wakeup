@@ -52,14 +52,12 @@ const cartSlice = createSlice({
       }
     },
     getStorageCart: (state, action) => {
-      console.log('action:', action);
       return {
         ...state,
         cart: action.payload
       }
     },
     addDeliveryCost: (state, action) => {
-      console.log('action:', action);
       return {
         ...state,
         deliveryCost: action.payload

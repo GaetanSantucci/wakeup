@@ -1,22 +1,38 @@
-// 'use client';
 import styles from './mobileNavbar.module.scss';
 import Navbar from '../Navbar';
 import CartNavbar from '../CartNavbar';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleShowNavbar } from '@/src/store/reducers/Settings';
+import { toggleShowNavbar, toggleLoginModale } from '@/src/store/reducers/Settings';
 
+const MobileNavbar = () => {
 
+  const dispatch = useDispatch();
+  const { mobileNavbar, loginModale } = useSelector((state) => state.settings)
+  console.log('mobileNavbar:', mobileNavbar);
+  const handleActiveMenu = () => {
+    dispatch(toggleShowNavbar());
+    if (loginModale) dispatch(toggleLoginModale())
+  }
 
-
+  return (
+    <>
+      <HamburgerMenu active={mobileNavbar} toggleMenu={handleActiveMenu} />
+      <div className={mobileNavbar ? `${styles.container} ${styles.active_navbar}` : `${styles.container}`}  >
+        {/* <div> */}
+        <CartNavbar className={mobileNavbar ? `${styles.menu_open}` : null} toggleMenu={handleActiveMenu} />
+        <Navbar toggleMenu={handleActiveMenu} />
+        {/* </div> */}
+      </div>
+    </>
+  )
+}
 
 const HamburgerMenu = ({ toggleMenu }) => {
 
-  const isMobileOpen = useSelector((state) => state.settings.mobileNavbar)
-
+  const mobileNavbar = useSelector((state) => state.settings.mobileNavbar)
 
   return (
-    <div className={isMobileOpen ? `${styles.mobile_menu} ${styles.open}` : `${styles.mobile_menu}`}
+    <div className={mobileNavbar ? `${styles.mobile_menu} ${styles.open}` : `${styles.mobile_menu}`}
       onClick={toggleMenu}>
       <span></span>
       <span></span>
@@ -26,25 +42,6 @@ const HamburgerMenu = ({ toggleMenu }) => {
   )
 }
 
-const MobileNavbar = () => {
 
-  const dispatch = useDispatch();
-  const isMobileOpen = useSelector((state) => state.settings.mobileNavbar)
-  const handleActiveMenu = () => {
-    dispatch(toggleShowNavbar());
-  }
-
-  return (
-    <>
-      <HamburgerMenu active={isMobileOpen} toggleMenu={handleActiveMenu} />
-      <div className={isMobileOpen ? `${styles.container} ${styles.active_navbar}` : `${styles.container}`}  >
-        {/* <div> */}
-        <CartNavbar className={isMobileOpen ? `${styles.menu_open}` : null} />
-        <Navbar toggleMenu={handleActiveMenu} />
-        {/* </div> */}
-      </div>
-    </>
-  )
-}
 
 export { HamburgerMenu, MobileNavbar };

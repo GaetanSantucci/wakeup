@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  modaleIsOpen: true,
   mobileNavbar: false,
   menuIsOpen: false,
   cartIsOpen: false,
+  loginModale: false,
   profileIsOpen: false,
   scrollYPosition: null,
   isRegister: false,
-  showPassword: false,
-  showPasswordConfirm: false,
+  // showPassword: false,
+  // showPasswordConfirm: false,
   isPasswordInputFocused: false,
 }
 
@@ -17,10 +17,16 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    toggleModale: (state) => {
+    toggleLoginModale: (state) => {
       return {
         ...state,
-        modaleIsOpen: !state.modaleIsOpen
+        loginModale: !state.loginModale
+      }
+    },
+    toggleShowNavbar: (state) => {
+      return {
+        ...state,
+        mobileNavbar: !state.mobileNavbar
       }
     },
     handleChangeMenu: (state) => {
@@ -57,19 +63,18 @@ const settingsSlice = createSlice({
         isRegister: !state.isRegister
       }
     },
-
-    toggleShowPassword: (state) => {
-      return {
-        ...state,
-        showPassword: !state.showPassword
-      }
-    },
-    toggleShowPasswordConfirm: (state) => {
-      return {
-        ...state,
-        showPasswordConfirm: !state.showPasswordConfirm
-      }
-    },
+    // toggleShowPassword: (state) => {
+    //   return {
+    //     ...state,
+    //     showPassword: !state.showPassword
+    //   }
+    // },
+    // toggleShowPasswordConfirm: (state) => {
+    //   return {
+    //     ...state,
+    //     showPasswordConfirm: !state.showPasswordConfirm
+    //   }
+    // },
 
     handleInputFocused: (state, action) => {
       return {
@@ -77,14 +82,9 @@ const settingsSlice = createSlice({
         isPasswordInputFocused: action.payload
       }
     },
-    toggleShowNavbar: (state) => {
-      return {
-        ...state,
-        mobileNavbar: !state.mobileNavbar
-      }
-    },
+
   }
 });
 
-export const { toggleModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, toggleShowPassword, toggleShowPasswordConfirm, handleInputFocused, toggleProfileModale, toggleShowNavbar } = settingsSlice.actions;
+export const { toggleLoginModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, handleInputFocused, toggleProfileModale, toggleShowNavbar } = settingsSlice.actions;
 export default settingsSlice.reducer;

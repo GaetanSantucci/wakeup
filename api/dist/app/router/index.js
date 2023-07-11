@@ -1,7 +1,7 @@
 // ~ ROUTER CONFIG ~ //
 import { Router } from 'express';
 const router = Router();
-router.get('/api/v1', (req, res) => {
+router.get('/', (req, res) => {
     return res.json('Welcome to the WAKE UP API');
 });
 import { router as PlateRouter } from './plate.js';

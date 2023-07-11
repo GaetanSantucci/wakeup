@@ -6,7 +6,9 @@ const baseURL = {
 // ? se the PayPal API to create an order
 const createOrder = async (req, res) => {
     // ? Extract the cart array from the request body
-    const { cart } = req.body;
+    const { cart, user } = req.body;
+    console.log('req.body:', req.body);
+    console.log('user:', user);
     //  ? Calculate the total amount of the order based on the cart items
     const totalAmount = cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
     try {

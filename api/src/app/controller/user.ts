@@ -20,6 +20,20 @@ const getAllCustomers = async (req: Request, res: Response) => {
   }
 }
 
+//? ----------------------------------------------------------- GET USER PROFILE
+const getCustomerProfile = async (req: Request, res: Response) => {
+  try {
+    const userId: UUID = req.params.userId as UUID;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
+
+    const user = await User.findOne(userId);
+    return res.status(200).json(user)
+  } catch (err) {
+    if (err instanceof Error) logger(err.message)
+  }
+}
 
 //? ----------------------------------------------------------- CREATE USER
 const signUp = async (req: Request, res: Response) => {
@@ -72,20 +86,6 @@ const signIn = async (req: Request, res: Response) => {
   }
 }
 
-//? ----------------------------------------------------------- GET USER PROFILE
-const getCustomerProfile = async (req: Request, res: Response) => {
-  try {
-    const userId: UUID = req.params.userId as UUID;
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-    if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
-
-    const user = await User.findOne(userId);
-    return res.status(200).json(user)
-  } catch (err) {
-    if (err instanceof Error) logger(err.message)
-  }
-}
 
 //? ----------------------------------------------------------- LOGOUT
 const signOut = async (req: Request, res: Response) => {

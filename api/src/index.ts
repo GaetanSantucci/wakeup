@@ -8,20 +8,28 @@ const logger = debug('Entrypoint');
 
 import { ErrorApi } from './app/services/errorHandler.js';
 
-// import paypal from 'paypal-rest-sdk';
-
-// paypal.configure({
-//   mode: 'sandbox', // Use 'live' for production
-//   client_id: process.env.PAYPAL_CLIENT_ID!,
-//   client_secret: process.env.PAYPAL_SECRET_KEY!,
-// });
-
 const app = express();
 
 app.use(helmet());
 
+// Use JSON parser for all non-webhook routes
+app.use(
+  (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): void => {
+    if (req.originalUrl === '/api/v1/payment/stripe/webhook') {
+      console.log('req.originalUrl:', req.originalUrl);
+      next();
+    } else {
+      express.json()(req, res, next);
+    }
+  }
+);
+
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.json());
 
 const corsOptions = {
   withCredentials: true,
@@ -50,10 +58,8 @@ app.use(session({
   }
 }));
 
+
 import { router } from './app/router/index.js';
-// import { _404 } from './app/service/errorHandling.js';
-
-
 
 app.use('/api/v1', router); // ~ Launch router
 app.use((req, res) => {

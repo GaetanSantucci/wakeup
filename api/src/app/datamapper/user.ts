@@ -12,7 +12,6 @@ class UserDataMapper extends CoreDataMapper {
 
   //& Find user by email
   async findUserIdentity(email: string) {
-    console.log('findUserIdentity ou pas')
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
         text: `SELECT * FROM "${this.tableName}" WHERE email = ($1);`,
@@ -20,14 +19,10 @@ class UserDataMapper extends CoreDataMapper {
       };
 
       const result = await this.client.query(preparedQuery);
-      console.log('result User: ', result.rows[0]);
       if (!result.rows[0]) return null;
       return result.rows[0];
     }
   }
-
-
-
 }
 
 const User = new UserDataMapper(client);

@@ -21,40 +21,8 @@ const createStripeSession = async (req: Request, res: Response) => {
   return order;
 }
 
-
-// // Create order function
-
-// const createOrder = async (customer, data) => {
-//   const Items = JSON.parse(customer.metadata.cart);
-
-//   const products = Items.map((item) => {
-//     return {
-//       productId: item.id,
-//       quantity: item.cartQuantity,
-//     };
-//   });
-
-//   const newOrder = new Order({
-//     userId: customer.metadata.userId,
-//     customerId: data.customer,
-//     paymentIntentId: data.payment_intent,
-//     products,
-//     subtotal: data.amount_subtotal,
-//     total: data.amount_total,
-//     shipping: data.customer_details,
-//     payment_status: data.payment_status,
-//   });
-
-//   try {
-//     const savedOrder = await newOrder.save();
-//     console.log("Processed Order:", savedOrder);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// ! test en local : stripe listen --forward-to localhost:7777/api/v1/payment/stripe/webhook
-// 4242424242424242
+//  test en local : stripe listen --forward-to localhost:7777/api/v1/payment/stripe/webhook
+// 4242424242424242 
 // stripe trigger checkout.session.completed
 
 // ? Create Stripe Webhook to capture completed payment intent 
@@ -92,12 +60,12 @@ const stripeWebhook = async (req: Request, res: Response): Promise<void> => {
     // Webhook signing is recommended, but if the secret is not configured in `config.js`,
     // retrieve the event data directly from the request body.
     data = req.body.data.object;
-    console.log('data:', data);
     eventType = req.body.type;
   }
 
   // Handle the checkout.session.completed event
   if (eventType === "checkout.session.completed") {
+    // launch createOrder to set differents data in database
     console.log("Checkout session completed");
     console.log('data:', data);
     console.log('eventType:', eventType);

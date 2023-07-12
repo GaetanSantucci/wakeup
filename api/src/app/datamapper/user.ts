@@ -3,11 +3,11 @@ import { client } from '../services/dbClient.js';
 import { CoreDataMapper } from './coreDatamapper.js';
 
 class UserDataMapper extends CoreDataMapper {
-  tableName = 'customer';
+  tableName = 'user';
   columns = `"id","email","lastname","firstname", address, phone, role, newsletter_optin`
 
-  createFunctionName = 'create_customer';
-  updateFunctionName = 'update_customer';
+  createFunctionName = 'create_user';
+  updateFunctionName = 'update_user';
   // userIdentity = 'user_identity';
 
   //& Find user by email

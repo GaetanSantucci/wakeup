@@ -8,7 +8,10 @@ import { CoreDataMapper } from './coreDatamapper.js';
 class OrderDatamapper extends CoreDataMapper {
 
   tableName = 'order_details';
-  columns = `"id", "customer_id", "booking_date", "total"`;
+  columns = `"id", "user_id", "booking_date", "total", "payment_id`;
+
+  createFunctionName = 'insert_order_details';
+  // updateFunctionName = 'update_order_details';
 
   async getAllOrders(): Promise<any> {
     if (this.client instanceof pg.Pool) {

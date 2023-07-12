@@ -33,9 +33,18 @@ const createOrder = (data: string) => async (req: Request, res: Response) => {
     // ~ si le user existe, recuperer son id : isExiste.id
     if (isExist) {
       console.log("l utilisateur exist");
-      // 
+      // todo create payment_details and get ID in return 
+      // todo create order_details using payment ID, the trigger update payment_details in same time
+      // todo  create order_items with order_id and body with all items 
     } else {
       console.log("il existe pas");
+      //todo create user
+      const createUser = await User.create(req.body)
+      // todo create payment_details and get ID in return 
+      // todo create order_details using payment ID, the trigger update payment_details in same time
+      // todo  create order_items with order_id and body with all items 
+      console.log('createUser:', createUser);
+
     }
 
   } catch (err) {

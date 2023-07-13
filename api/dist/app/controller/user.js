@@ -35,15 +35,15 @@ const getCustomerProfile = async (req, res) => {
 //? ----------------------------------------------------------- CREATE USER
 const signUp = async (req, res) => {
     const { email, password, /* lastname, firstname  */ } = req.body;
-    logger('password: ', password);
-    logger('email: ', email);
     try {
         const isExist = await User.findUserIdentity(email);
+        console.log('isExist:', isExist);
         if (isExist)
             throw new ErrorApi(`Le mail ${isExist.email} existe déjà !`, req, res, 401);
         req.body.password = await bcrypt.hash(password, 10);
-        const createUser = await User.create(req.body);
-        if (createUser)
+        const response = await User.create(req.body);
+        const isCreatedUser = response.create_user;
+        if (isCreatedUser)
             return res.status(201).json(`Votre compte a bien été créé !`);
     }
     catch (err) {

@@ -7,14 +7,10 @@ BEGIN
   IF ($1 ? 'email' AND $1 ? 'password') THEN
     IF NOT EXISTS(SELECT U.email FROM "user" as U WHERE U.email = ($1->>'email')) THEN
       INSERT INTO "user"("email", "password", "lastname", "firstname", "address", "phone", "role", "newsletter_optin")
-      VALUES (($1 ->> 'email')::EMAIL, 
-			  ($1 ->> 'password')::TEXT, 
-			  ($1 ->> 'lastname')::TEXT, 
-			  ($1 ->> 'firstname')::TEXT, 
-			  ($1 ->> 'address')::JSON, 
-			  ($1 ->> 'phone')::TEXT, 
-			  ($1 ->> 'role')::TEXT, 
-			  ($1 ->> 'newsletter_optin')::BOOLEAN)
+      VALUES (
+          COALESCE(($1 ->> 'email')::EMAIL, ''),
+          COALESCE(($1 ->> 'password')::TEXT, ''),
+          COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, false))
       RETURNING id INTO user_id;
     ELSE
       RAISE NOTICE 'User already exists';
@@ -22,12 +18,38 @@ BEGIN
   ELSE
     INSERT INTO "user"("lastname", "firstname", "address", "phone")
     VALUES (
-			($1 ->> 'lastname')::TEXT, 
-			($1 ->> 'firstname')::TEXT, 
-			($1 ->> 'address')::JSON, 
-			($1 ->> 'phone')::TEXT)
+          COALESCE(($1 ->> 'email')::EMAIL, ''),
+          COALESCE(($1 ->> 'password')::TEXT, ''),
+          COALESCE(($1 ->> 'lastname')::TEXT, ''),
+          COALESCE(($1 ->> 'firstname')::TEXT, ''),
+          COALESCE(($1 ->> 'address')::JSON, null),
+          COALESCE(($1 ->> 'phone')::TEXT, ''),
+          COALESCE(($1 ->> 'role')::TEXT, null),
+          COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, false)
+          )
     RETURNING id INTO user_id;
   END IF;
+    RETURN user_id;
+END;
+$$
+;
+
+CREATE OR REPLACE FUNCTION create_user(jsonb) RETURNS UUID LANGUAGE plpgsql AS $$
+DECLARE
+  user_id UUID;
+BEGIN
+      INSERT INTO "user"("email", "password", "lastname", "firstname", "address", "phone", "role", "newsletter_optin")
+      VALUES ( 
+          COALESCE(($1 ->> 'email')::EMAIL, ''),
+          COALESCE(($1 ->> 'password')::TEXT, ''),
+          COALESCE(($1 ->> 'lastname')::TEXT, ''),
+          COALESCE(($1 ->> 'firstname')::TEXT, ''),
+          COALESCE(($1 ->> 'address')::JSON, ''),
+          COALESCE(($1 ->> 'phone')::TEXT, ''),
+          COALESCE(($1 ->> 'role')::TEXT, null),
+          COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, false)
+          )
+      RETURNING id INTO user_id;
     RETURN user_id;
 END;
 $$

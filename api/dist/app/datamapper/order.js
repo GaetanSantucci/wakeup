@@ -31,4 +31,10 @@ class OrderDatamapper extends CoreDataMapper {
     }
 }
 const Order = new OrderDatamapper(client);
-export { Order };
+class OrderItemsDatamapper extends CoreDataMapper {
+    tableName = 'order_items';
+    columns = '"id", "order_id", "plate_id", "addon_id", "quantity"';
+    createFunctionName = 'insert_order_items';
+}
+const OrderItems = new OrderItemsDatamapper(client);
+export { Order, OrderItems };

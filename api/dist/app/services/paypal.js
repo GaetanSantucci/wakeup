@@ -4,7 +4,7 @@ const baseURL = {
     production: "https://api-m.paypal.com"
 };
 // ? se the PayPal API to create an order
-const createOrder = async (req, res) => {
+const createPaypalOrder = async (req, res) => {
     // ? Extract the cart array from the request body
     const { cart, user } = req.body;
     console.log('req.body:', req.body);
@@ -52,7 +52,7 @@ const createOrder = async (req, res) => {
     }
 };
 // use the orders api to capture payment for an order
-const capturePayment = async (orderId, res) => {
+const capturePaypalPayment = async (orderId, res) => {
     try {
         // ? Call access token  function to connect to the PayPal API
         const accessToken = await generateAccessToken();
@@ -87,4 +87,4 @@ const generateAccessToken = async () => {
     const data = await response.json();
     return data.access_token;
 };
-export { capturePayment, createOrder };
+export { createPaypalOrder, capturePaypalPayment };

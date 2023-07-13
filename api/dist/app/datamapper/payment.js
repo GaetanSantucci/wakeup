@@ -6,6 +6,7 @@ import { CoreDataMapper } from './coreDatamapper.js';
 class PaymentDatamapper extends CoreDataMapper {
     tableName = 'payment_details';
     columns = `"id", "order_id", "amount", "status", "payment_mode", "payment_date"`;
+    createFunctionName = 'insert_payment_details';
 }
 const Payment = new PaymentDatamapper(client);
 export { Payment };

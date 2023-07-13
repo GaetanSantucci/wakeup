@@ -37,8 +37,8 @@ class CoreDataMapper {
       };
 
       const result = await this.client.query(preparedQuery);
-      console.log('result: ', result);
-      return result.rowCount;
+      console.log('result: ', result.rows[0].create_user);
+      return result.rows[0];
     }
   }
   //& FindAll

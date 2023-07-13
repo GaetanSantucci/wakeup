@@ -7,7 +7,7 @@ const baseURL = {
 };
 
 // ? se the PayPal API to create an order
-const createOrder = async (req: Request, res: Response) => {
+const createPaypalOrder = async (req: Request, res: Response) => {
   // ? Extract the cart array from the request body
   const { cart, user } = req.body
   console.log('req.body:', req.body);
@@ -58,7 +58,7 @@ const createOrder = async (req: Request, res: Response) => {
 }
 
 // use the orders api to capture payment for an order
-const capturePayment = async (orderId: string, res: Response) => {
+const capturePaypalPayment = async (orderId: string, res: Response) => {
 
 
   try {
@@ -98,4 +98,4 @@ const generateAccessToken = async () => {
   return data.access_token;
 }
 
-export { capturePayment, createOrder }
+export { createPaypalOrder, capturePaypalPayment }

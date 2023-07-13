@@ -4,7 +4,7 @@ import { CoreDataMapper } from './coreDatamapper.js';
 // const logger = debug('Datamapper');
 class DeliveryDatamapper extends CoreDataMapper {
     tableName = 'delivery_area';
-    columns = `"id", "city", "zipcode", "price"`;
+    columns = `"id", "name", "postcode", "price"`;
 }
 const Delivery = new DeliveryDatamapper(client);
 export { Delivery };

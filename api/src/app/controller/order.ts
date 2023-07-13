@@ -6,6 +6,7 @@ import { Payment } from '../datamapper/payment.js';
 
 // ~ DEBUG CONFIG ~ //
 import debug from 'debug';
+import { DataStripe } from '../type/stripe.js';
 const logger = debug('Controller');
 
 const getAllOrdersForCalendar = async (req: Request, res: Response) => {
@@ -20,43 +21,51 @@ const getAllOrdersForCalendar = async (req: Request, res: Response) => {
 }
 
 
-const createOrder = (data: string) => async (req: Request, res: Response) => {
-  const isSuccess = data
-  console.log('isSuccess:', isSuccess);
-  const { email } = req.body.user
-  //todo apres validation du paiement par stripe ou paypal
+const createOrder = async (data: DataStripe, req: Request, res: Response) => {
+  logger("on passe dans le createOrder", data.metadata.cart)
+
+  const orderBody = {
+    booking_date: data.metadata.bookingDate,
+    payment_status: data.payment_status,
+    payment_id: data.id,
+    amount: data.amount_total,
+    payment_date: data.created,
+    payment_method: data.payment_method_types,
+    cart: JSON.parse(data.metadata.cart),
+    user: {
+      email: data.customer_details.email,
+      lastname: data.metadata.lastname,
+      firstname: data.metadata.firstname,
+      address: {
+        name: data.customer_details.address.line1,
+        complement: data.customer_details.address.line2,
+        city: data.customer_details.address.city,
+        postcode: data.customer_details.address.postal_code,
+      }
+    }
+  }
+  console.log('orderBody:', orderBody);
+
 
   try {
     // ? 1/ verifier si user a deja un compte sinon 
-    const isExist = await User.findUserIdentity(email)
+    const isExist = await User.findUserIdentity(data.customer_details.email)
     console.log('isExist:', isExist);
     // ~ si le user existe, recuperer son id : isExiste.id
     if (isExist) {
       console.log("l utilisateur exist");
-      // todo create payment_details and get ID in return 
-      // todo create order_details using payment ID, the trigger update payment_details in same time
-      // todo  create order_items with order_id and body with all items 
     } else {
       console.log("il existe pas");
-      //todo create user
-      const createUser = await User.create(req.body)
-      // todo create payment_details and get ID in return 
-      // todo create order_details using payment ID, the trigger update payment_details in same time
-      // todo  create order_items with order_id and body with all items 
+      const createUser = await User.create(orderBody.user)
       console.log('createUser:', createUser);
-
+      // create payment_details and get ID in return 
+      const createPayment = await Payment.create({})
+      console.log('createPayment:', createPayment);
     }
 
   } catch (err) {
     if (err instanceof Error) logger(err.message)
   }
-  // ? 1.1/ Creer un user et recuperer son ID, 
-
-  // ? 2/ Creer un payment_details et recuperer son ID
-
-  // ? 3/ Creer un order en utilisant customer(id) et payment_details(id), et recuperer son ID
-
-  // ? 4/ Creer un order_items en utilsant order(id) + les produits
   return res.json("Order created successfully")
 }
 

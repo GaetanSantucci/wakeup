@@ -7,7 +7,7 @@ import { CoreDataMapper } from './coreDatamapper.js';
 class DeliveryDatamapper extends CoreDataMapper {
 
   tableName = 'delivery_area';
-  columns = `"id", "city", "zipcode", "price"`
+  columns = `"id", "name", "postcode", "price"`
 
   // createFunctionName = 'create_blog';
   // updateFunctionName = 'update_blog';

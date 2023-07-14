@@ -11,7 +11,7 @@ class OrderDatamapper extends CoreDataMapper {
     async getAllOrders() {
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
-                text: `SELECT od.booking_date, 
+                text: `SELECT od.booking_date AT TIME ZONE 'Etc/GMT+2' AS booking_date, 
           SUM(oi.quantity) AS plate_quantity, 
           COUNT(od.id) AS order_count
         FROM 
@@ -19,7 +19,7 @@ class OrderDatamapper extends CoreDataMapper {
           INNER JOIN order_items oi ON od.id = oi.order_id 
           INNER JOIN payment_details pd ON od.id = pd.order_id 
         WHERE 
-          pd.status = 'success'
+          pd.status = 'paid'
         GROUP BY 
           od.booking_date
           ORDER BY 
@@ -33,7 +33,7 @@ class OrderDatamapper extends CoreDataMapper {
 const Order = new OrderDatamapper(client);
 class OrderItemsDatamapper extends CoreDataMapper {
     tableName = 'order_items';
-    columns = '"id", "order_id", "plate_id", "addon_id", "quantity"';
+    columns = '"id", "order_id", "product_id", "quantity"';
     createFunctionName = 'insert_order_items';
 }
 const OrderItems = new OrderItemsDatamapper(client);

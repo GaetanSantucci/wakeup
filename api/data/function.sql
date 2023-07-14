@@ -69,7 +69,7 @@ BEGIN
     ($1 ->> 'amount')::NUMERIC(10, 2),
     ($1 ->> 'status')::VARCHAR(50),
     ($1 ->> 'payment_mode')::VARCHAR(50),
-    ($1 ->> 'payment_date')::TIMESTAMP
+    to_timestamp(($1 ->> 'payment_date')::BIGINT)
   )
   RETURNING id INTO new_id;
   
@@ -146,16 +146,18 @@ RETURNS INTEGER
 AS $$
 DECLARE
   new_id INTEGER;
-  BEGIN
-		INSERT INTO order_items("order_id", "plate_id", "addon_id", "quantity")
-		VALUES (
-			   	($1 ->> 'order_id')::uuid,
-			   	($1 ->> 'plate_id')::INT,
-			   	($1 ->> 'addon_id')::INT,
-			   	($1 ->> 'quantity')::INT
-		);
+BEGIN
+  INSERT INTO order_items("order_id", "product_id", "quantity")
+  VALUES (
+    ($1 ->> 'order_id')::uuid,
+    ($1 ->> 'product_id')::INT,
+    ($1 ->> 'quantity')::INT
+  )
+  RETURNING id INTO new_id;
+  
+  RETURN new_id;
 END;
-$$ 
+$$
 LANGUAGE plpgsql;
 
 DROP FUNCTION IF EXISTS create_user();

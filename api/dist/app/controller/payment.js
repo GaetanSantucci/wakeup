@@ -49,7 +49,6 @@ const stripeWebhook = async (req, res) => {
         // launch createPaypalOrder to set differents data in database
         console.log("Checkout session completed");
         await createOrder(data, req, res);
-        // console.log('isCreatedOrder:', isCreatedOrder);
     }
     res.status(200).end();
 };

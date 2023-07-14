@@ -11,7 +11,6 @@ app.use(helmet());
 // Use JSON parser for all non-webhook routes
 app.use((req, res, next) => {
     if (req.originalUrl === '/api/v1/payment/stripe/webhook') {
-        console.log('req.originalUrl:', req.originalUrl);
         next();
     }
     else {

@@ -59,10 +59,16 @@ const createPaypalSession = async (req, res) => {
 };
 // ? captures a PayPal payment for a given order ID
 const capturePaypalSession = async (req, res) => {
-    const { orderID } = req.body;
-    console.log('req.body:', req.body);
-    const captureData = await capturePaypalPayment(orderID, res);
+    const captureData = await capturePaypalPayment(req, res);
     console.log('captureData:', captureData);
+    const customData = JSON.parse(captureData.purchase_units[0].custom);
+    const bookingDate = customData.bookingDate;
+    console.log('bookingDate:', bookingDate);
+    const user = customData.user;
+    console.log('user:', user);
     res.json(captureData);
 };
-export { createStripeSession, stripeWebhook, createPaypalSession, capturePaypalSession };
+const paypalWebhook = async (req, res) => {
+    return res.status(200).json("Webhook Paypal !");
+};
+export { createStripeSession, stripeWebhook, createPaypalSession, capturePaypalSession, paypalWebhook };

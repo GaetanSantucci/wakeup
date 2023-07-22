@@ -15,6 +15,7 @@ declare module 'express-session' {
   interface SessionData {
     token?: string;
     refreshToken?: string | string[];
+    cart?: string
   }
 
   interface Session {

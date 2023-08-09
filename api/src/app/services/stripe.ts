@@ -18,12 +18,10 @@ const createStripeOrder = async (req: Request, res: Response) => {
     name: `${user.lastname} ${user.firstname}`,
     phone: user.phone,
     address: {
-      country: 'France',
       city: user.address.city,
       line1: user.address.name,
       line2: user.address.complement,
-      postal_code: user.address.postcode,
-      state: '63 - Puy-de-Dôme'
+      postal_code: user.address.postcode
     }
   })
 

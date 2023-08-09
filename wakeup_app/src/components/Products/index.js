@@ -11,6 +11,8 @@ export default async function Products() {
   // ? Retrieve products data asynchronously
   const products = await getProductsData();
 
+  // todo if product.type = plate mapping dessus
+
   // ? Render the product section with the fetched data
   return (
     <div className={styles.container}>
@@ -22,27 +24,29 @@ export default async function Products() {
       <section className={styles.container_section}>
         {
           products.map(product => {
-            const price = product.price.toString().replace('.', ','); // ? To replace . by , after fect price from database
-            return (
-              <div className={styles.container_section_card} key={product.id}>
-                {product.is_new ? <div className={styles.container_section_card_new}>Nouveau</div> : null}
-                <Link href={`/plateau/${product.slug}/${product.id}`} >
-                  <div className={styles.container_section_card_image}>
-                    <Image src={`/images/${product.image}`} alt={product.name} width={300} height={430} />
-                  </div>
-                </Link>
-                <div className={styles.container_section_card_desc}>
-                  <div className={styles.container_section_card_title}>
-                    <h3>{product.name}</h3>
-                    <p>{price} €</p>
-                  </div>
-                  <div className={styles.container_section_card_information}>
-                    <Link href={`/plateau/${product.slug}/${product.id}`} className={styles.container_section_card_information_link}>En savoir plus</Link>
-                    < AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
+            if (product.category === 'plateau') {
+              const price = product.price.toString().replace('.', ','); // ? To replace . by , after fect price from database
+              return (
+                <div className={styles.container_section_card} key={product.id}>
+                  {product.is_new ? <div className={styles.container_section_card_new}>Nouveau</div> : null}
+                  <Link href={`/plateau/${product.slug}/${product.id}`} >
+                    <div className={styles.container_section_card_image}>
+                      <Image src={`/images/${product.image}.webp`} alt={product.name} width={300} height={430} />
+                    </div>
+                  </Link>
+                  <div className={styles.container_section_card_desc}>
+                    <div className={styles.container_section_card_title}>
+                      <h3>{product.name}</h3>
+                      <p>{price} €</p>
+                    </div>
+                    <div className={styles.container_section_card_information}>
+                      <Link href={`/plateau/${product.slug}/${product.id}`} className={styles.container_section_card_information_link}>En savoir plus</Link>
+                      < AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
+              )
+            }
           })
         }
       </section>

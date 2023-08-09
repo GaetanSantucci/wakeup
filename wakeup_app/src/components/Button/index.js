@@ -62,13 +62,11 @@ const AddOrDeleteItems = ({ cart }) => {
 }
 
 const StripeButton = ({ cart }) => {
-  console.log('cart danns le stripe button:', cart);
-
-  const router = useRouter();
+  console.log('cart:', cart);
+  const { user } = useSelector((state) => state.user)
+  console.log('user:', user);
 
   const handleCheckout = async () => {
-    const userId = 'testUser-54541'
-
     try {
       const response = await fetch(`${endpoint}/payment/stripe`, {
         method: 'POST',
@@ -77,12 +75,13 @@ const StripeButton = ({ cart }) => {
         },
         body: JSON.stringify({
           cart,
-          userId
+          user
         })
       });
 
       if (response.ok) {
         const data = await response.json();
+        console.log('data:', data);
         if (data.url) {
           window.location.replace(data.url);
         }
@@ -98,7 +97,8 @@ const StripeButton = ({ cart }) => {
 }
 
 const PayPalButtonComponent = () => {
-  const cart = useSelector((state) => state.cart.cart)
+  const { user } = useSelector((state) => state.user)
+  const { cart, bookingDate } = useSelector((state) => state.cart)
   const router = useRouter();
 
   const initialOptions = {
@@ -114,23 +114,20 @@ const PayPalButtonComponent = () => {
     tagline: 'false'
   }
   const handleCreateOrder = async (data, actions) => {
-    console.log('handleCreateOrder:');
     // Call your backend API to create the order
     const response = await fetch(`${endpoint}/payment/create-paypal-order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cart }),
+      body: JSON.stringify({ cart, user, bookingDate }),
     });
 
     const order = await response.json();
-    console.log('order:', order);
     return order.id;
   };
   const handleApproveOrder = useCallback(async (data, actions) => {
 
-    console.log("Je passe dans le handleApproveOrder");
     // Call your backend API to capture the order
     const response = await fetch(`${endpoint}/payment/capture-paypal-order`, {
       method: 'POST',

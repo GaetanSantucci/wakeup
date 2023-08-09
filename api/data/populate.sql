@@ -1,51 +1,97 @@
-INSERT INTO public.plate(name, subtitle, description, image, price, slug)
-	VALUES ( 'plateau sunshine', 'Conseillé pour 2-3 personnes', '3 viennoiseries artisanales\n
-			Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n Cake saveur vanille (fait-maison)\n Fruits frais\n 1 bouteille de jus d''orange frais (pressé maison de 25cl)\n Pâte à tartiner et confiture (Alain Milliat)', 
-			'http://localhost:3000/images/sunshine.jpg',
-			29.90, 
-			'sunshine'),
-			( 'plateau veggie', 'Conseillé pour 2-3 personnes', 
-			'3 viennoiseries artisanales\n Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n 6 madeleines aux pépites de chocolat (fait-maison)\n Cake saveur vanille (fait-maison)\n 4 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n Cream cheese à l''huile d''olive et basilic frais\n
-			Fruits frais, légumes croquants\n 1 bouteille de jus d''orange frais (pressé maison de 25cl)\n Pâte à tartiner et confiture (Alain Milliat)', 
-			'http://localhost:3000/images/veggie.jpg', 
- 			34.90, 
- 			'veggie'),
-			( 'plateau best-seller', 'Conseillé pour 2-3 personnes', 
-			'3 viennoiseries artisanales\n Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n 4 madeleines aux pépites de chocolat (fait-maison)\n Cake saveur vanille (fait-maison)\n 4 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n 4 crescentine (petits pains italien fait-maison) au jambon Serrano 			affinage 12 mois\n Cantal entre deux AOP (lait cru)\n 
-			Fruits frais, légumes croquants\n 1 bouteille de jus d''orange frais (pressé maison de 25cl)\n Pâte à tartiner et confiture (Alain Milliat)', 
-			'http://localhost:3000/images/bestseller.jpg', 
- 			42.90, 
- 			'bestseller'),
-			( 'plateau dolce vita', 'Conseillé pour 2-3 personnes', 
-			'3 viennoiseries artisanales\n Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n 4 madeleines aux pépites de chocolat (fait-maison)\n Cake saveur vanille (fait-maison)\n 4 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n 4 crescentines (petits pains italien fait-maison) au jambon de 			Parme\n Jambon de Parme 16 mois d''affinage\n 
-			Pecorino DOP (fromage de brebis au lait pasteurisé) et Burrata à l''huile d''olive\n Fruits frais, légumes croquants et olives vertes\n Pâte à tartiner et confiture (Alain Milliat)', 
-			'http://localhost:3000/images/dolcevita.jpg', 
- 			49.90, 
- 			'dolcevita'),
-			( 'plateau apéritif', 'Conseillé pour 4-5 personnes', 
-			'Pain artisanal tranché\n 6 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n Cantal entre deux AOP (lait cru)\n Bleu d''Auvergne AOP (lait cru)\n Bûche cendrée au lait de chèvre\n Jambon Serrano\n Bresaola (boeuf séché)\n Pistaches et figues séchées\n Fruits frais, légumes croquants et olives vertes\n 			Confiture (Alain Milliat) et miel (de notre apiculteur local)', 
-			'http://localhost:3000/images/aperitive.jpg', 
- 			69.90, 
- 			'aperitif');
+INSERT INTO public.product(name, subtitle, description, image, price, is_new, slug, dimension, category)
+	VALUES ('plateau sunshine', 'Conseillé pour 2-3 personnes', '3 viennoiseries artisanales\n
+			Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n 8 madeleines aux pépites de chocolat (fait-maison\n Cake  vanillé (fait-maison)\n Fruits frais\n 1 bouteille de jus d''orange frais (pressé maison de 25cl)\n Pâte à tartiner et confiture (Alain Milliat).', 
+			'new_sunshine',
+			29.90, false, 
+			'sunshine', '45 x 25 x 6', 'plateau'),
+			('plateau veggie', 'Conseillé pour 2-3 personnes', 
+			'3 viennoiseries artisanales\n Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n 4 madeleines aux pépites de chocolat (fait-maison)\n Cake vanillé (fait-maison)\n 4 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n Cream cheese à l''huile d''olive et basilic frais\n
+			Fruits frais, légumes croquants\n 1 bouteille de jus d''orange frais (pressé maison de 25cl)\n Pâte à tartiner et confiture (Alain Milliat).', 
+			'veggie', 
+ 			34.90, false,
+ 			'veggie', '45 x 25 x 6', 'plateau'),
+			('plateau best-seller', 'Conseillé pour 2-3 personnes', 
+			'3 viennoiseries artisanales\n Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n 4 madeleines aux pépites de chocolat (fait-maison)\n Cake vanillé  (fait-maison)\n 4 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n 4 "crescentine" (petits pains italien fait-maison) au jambon Serrano affinage 12 mois\n Cantal entre deux AOP (lait cru)\n 
+			Fruits frais, légumes croquants\n 1 bouteille de jus d''orange frais (pressé maison de 25cl)\n Pâte à tartiner et confiture (Alain Milliat).', 
+			'new_bestseller', 
+ 			42.90, false,
+ 			'bestseller', '45 x 25 x 6', 'plateau'),
+			('plateau dolce vita', 'Conseillé pour 2-3 personnes', 
+			'3 viennoiseries artisanales\n Pain artisanal tranché\n 6 mini crêpes vanillées (fait-maison)\n Cake vanillé (fait-maison)\n 6 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n 4 "crescentine"(petits pains italien fait-maison) au jambon de Parme\n Jambon de Parme 16 mois d''affinage\n Pecorino DOP (fromage de brebis au lait pasteurisé) et Burrata à l''huile d''olive\n Fruits frais, légumes croquants et olives vertes\n Pâte à tartiner et confiture (Alain Milliat).', 
+			'new_dolcevita', 
+ 			49.90, false,
+ 			'dolcevita', '45 x 25 x 6', 'plateau'),
+			('plateau apéritif', 'Conseillé pour 4-5 personnes', 
+			'Pain artisanal tranché\n 6 gaufres salées emmental, tomates séchées et basilic frais (fait-maison)\n Cantal entre deux AOP (lait cru)\n Bleu d''Auvergne AOP (lait cru)\n Bûche cendrée au lait de chèvre\n Jambon Serrano\n Bresaola (boeuf séché)\n Pistaches et figues séchées\n Fruits frais, légumes croquants et olives vertes\n Confiture (Alain Milliat).', 
+			'aperitif', 
+ 			69.90, false,
+ 			'aperitif', '45 x 25 x 6', 'plateau'),
+			('mini best-seller', 'Conseillé pour 1-2 personnes', 
+			'1 pain au chocolat artisanal\n Pain artisanal tranché\n 3 mini crêpes vanillées (fait-maison)\n 2 madeleines aux pépites de chocolat (fait-maison)\n Cake vanillé (fait-maison)\n 2 gaufres emmental tomates séchées et basilic frais\n Cantal AOP (lait cru)\n Pâte à tartiner et confiture (Alain Milliat)\n Fruits frais et légumes croquants.', 
+			'mini_bestseller', 
+ 			29.90, false,
+ 			'mini-best-seller', 'diam. 24', 'plateau'),
+			( 'burrata à partager', 'Conseillé pour 1-2 personnes', 
+			'Burrata crémeuse de 300g au lait de Bufflone et huile d''olive\n Pain tranché\n Fruits frais et légumes croquants.', 
+			'burrata', 
+ 			32.90, false,
+ 			'burrata', 'diam. 24', 'plateau'),
+			('plateau fruité', 'Conseillé pour 2-3 personnes', 
+			'Plateau de fruits frais à partager.\n Il sera idéal pour un moment de douceur et de fraicheur avec l''arrivée des beaux jours\n Les fruits de ce plateau peuvent varier.', 
+			'fruite', 
+ 			32.90, false,
+ 			'fruit', 'diam. 24', 'plateau'),
+			('mini dolce vita', 'Conseillé pour 1-2 personnes', 
+			'1 pain au chocolat artisanal\n Pain artisanal tranché\n 3 mini crêpes vanillées (fait-maison)\n Cake vanillé (fait-maison)\n 3 gaufres emmental tomates séchées et basilic frais\n Burrata crémeuse au lait de bufflonne\n Jambon de Parme 16 mois d''affinage\n Copeaux de Pecorino DOP (fromage de brebis au lait pasteurisé)\n Fruits frais, légumes croquants et olives vertes\n Pâte à tartiner et confiture (Alain Milliat).', 
+			'mini_dolce', 
+ 			34.90, false,
+ 			'mini-dolce-vita', 'diam. 24', 'plateau'),
+			('mini apéritif', 'Conseillé pour 2-3 personnes', 
+			'Pain artisanal tranché\n Cantal entre deux AOP (lait cru)\n Fourme d''Ambert AOP (lait cru) \n Crottin de chèvre (lait cru)\n Jambon Serrano affinage 12 mois\n Pistaches séchées et figues séchées\n Fruits frais, légumes croquants et olives verte\n Confitures (Alain Milliat).', 
+			'mini_aperitif', 
+ 			42.90, false,
+ 			'mini-aperitif', 'diam. 24', 'plateau'),
+			('jus d''orange pressé', '', 
+			'Bouteille de 25cl de jus d''orange frais pressé maison.', 
+			'orange', 
+ 			3.90, false,
+ 			'jus-orange', '25cl', 'boisson'),
+			('prosecco riccadonna', '', 
+			'Bouteille de Prosecco Riccadona de 20cl pour créer un cocktail mimosas, 4cl de jus d''orange mélangé à 8cl de prosecco', 
+			'prosecco', 
+ 			6.90, false,
+ 			'prosecco', '20cl', 'boisson'),
+			('thé noir - breakfast', '', 
+			'Sachet de the noir breakfast Dammann', 
+			'the_dammann', 
+ 			0.90, false,
+ 			'the-dammann', '1 sachet', 'boisson'),
+			('noeud ruban en lin', '', 
+			'Offrez un plateau avec un joli noeud fait avec un large ruban en lin', 
+			'runban', 
+ 			3.90, false,
+ 			'ruban', '1 noeud', 'decoration'),
 
-INSERT INTO public.addon_sales(
-	name, subtitle, description, image, price)
-	VALUES ('jus d''orange pressé', '', 'Bouteille de 25cl de jus d''orange frais pressé maison', 'http://localhost:3000/images/orange.jpeg', 3.90),
-	('prosecco riccadonna', '', 'Bouteille de Prosecco Riccadona de 20cl', 'http://localhost:3000/images/prosecco.jpeg', 6.90),
-	('thé noir dammann', '', 'Sachet de the noir breakfast dammann', 'http://localhost:3000/images/the_dammann.jpeg', 0.90);
+			
 
-	INSERT INTO public.plate_has_addon_sales(
-	addon_sales_id, plate_id)
-	VALUES (1, 1),
-	(3, 1),
-	(1, 2),
-	(3, 2),
-	(1, 3),
-	(2, 3),
-	(3, 3),
-	(1, 4),
-	(2, 4),
-	(2, 5);
+-- INSERT INTO public.addon_sales(
+-- 	name, subtitle, description, image, price)
+-- 	VALUES ('jus d''orange pressé', '', 'Bouteille de 25cl de jus d''orange frais pressé maison', 'http://localhost:3000/images/orange.jpeg', 3.90),
+-- 	('prosecco riccadonna', '', 'Bouteille de Prosecco Riccadona de 20cl', 'http://localhost:3000/images/prosecco.jpeg', 6.90),
+-- 	('thé noir dammann', '', 'Sachet de the noir breakfast dammann', 'http://localhost:3000/images/the_dammann.jpeg', 0.90);
+
+-- 	INSERT INTO public.plate_has_addon_sales(
+-- 	addon_sales_id, plate_id)
+-- 	VALUES (1, 1),
+-- 	(3, 1),
+-- 	(1, 2),
+-- 	(3, 2),
+-- 	(1, 3),
+-- 	(2, 3),
+-- 	(3, 3),
+-- 	(1, 4),
+-- 	(2, 4),
+-- 	(2, 5);
 
 	INSERT INTO public.blog(
 	title, description, image, interaction, slug)

@@ -8,6 +8,6 @@ router.post('/payment/stripe', createStripeSession)
 router.post('/payment/stripe/webhook', express.raw({ type: 'application/json' }), stripeWebhook)
 router.post('/payment/create-paypal-order', createPaypalSession)
 router.post('/payment/capture-paypal-order', capturePaypalSession);
-router.post('/paypal/webhook', paypalWebhook)
+router.post('/payment/paypal/webhook', paypalWebhook)
 
 export { router };

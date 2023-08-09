@@ -3,10 +3,11 @@ import { Request, Response } from 'express';
 import { Order, OrderItems } from '../datamapper/order.js';
 import { User } from '../datamapper/user.js';
 import { Payment } from '../datamapper/payment.js';
+import { DataStripe } from '../type/stripe.js';
+import { DataPaypal } from '../type/paypal.js';
 
 // ~ DEBUG CONFIG ~ //
 import debug from 'debug';
-import { DataStripe } from '../type/stripe.js';
 const logger = debug('Controller');
 
 const getAllOrdersForCalendar = async (req: Request, res: Response) => {
@@ -22,6 +23,7 @@ const getAllOrdersForCalendar = async (req: Request, res: Response) => {
 
 
 const createOrder = async (data: DataStripe, req: Request, res: Response) => {
+  console.log('data:', data);
 
   const orderBody = {
     booking_date: data.metadata.bookingDate,
@@ -43,6 +45,9 @@ const createOrder = async (data: DataStripe, req: Request, res: Response) => {
       }
     }
   }
+
+  console.log('orderBody:', orderBody.payment_id);
+
 
   try {
     // ? 1/ verifier si user a deja un compte sinon 
@@ -72,4 +77,64 @@ const createOrder = async (data: DataStripe, req: Request, res: Response) => {
   return res.json("Order successfully created")
 }
 
-export { getAllOrdersForCalendar, createOrder }
+
+const createOrderWithPaypal = async (data: DataPaypal, req: Request, res: Response) => {
+
+  const orderBody = {
+    booking_date: req.body.bookingDate,
+    payment_status: data.payment_status,
+
+    payment_id: data.id,
+    amount: data.amount_total / 100,
+    payment_date: data.created,
+    payment_method: data.payment_method_types[0],
+    cart: JSON.parse(req.body.cart),
+    user: {
+      email: req.body.user.email,
+      lastname: data.metadata.lastname,
+      firstname: data.metadata.firstname,
+      address: {
+        name: req.body.user.address.line1,
+        complement: req.body.user.address.line2,
+        city: req.body.user.address.city,
+        postcode: req.body.user.address.postal_code,
+      }
+    }
+  }
+
+  try {
+    // ? 1/ verifier si user a deja un compte sinon 
+    const isExist = await User.findUserIdentity(data.customer_details.email)
+    // ~ si le user existe, recuperer son id : isExiste.id
+    if (isExist) {
+
+      const payment_details = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date });
+
+      const order_details = await Order.create({ user_id: isExist.id, total: orderBody.amount, booking_date: orderBody.booking_date, payment_id: payment_details.insert_payment_details })
+
+      const order_items = orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
+        await OrderItems.create({ order_id: order_details.insert_order_details, product_id: item.id, quantity: item.quantity });
+      });
+
+      await Promise.all([payment_details, order_details, order_items])
+    } else {
+      console.log("il existe pas");
+
+
+      // // create payment_details and get ID in return 
+      // const payment_details = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date })
+      // const order_details = await Order.create({ user_id: isExist.id, total: orderBody.amount, booking_date: orderBody.booking_date, payment_id: payment_details.insert_payment_details })
+
+      // const order_items = orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
+      //   await OrderItems.create({ order_id: order_details.insert_order_details, product_id: item.id, quantity: item.quantity });
+      // });
+      // await Promise.all([payment_details, order_details, order_items])
+    }
+
+  } catch (err) {
+    if (err instanceof Error) logger(err.message)
+  }
+  return res.json("Order successfully created")
+}
+
+export { getAllOrdersForCalendar, createOrder, createOrderWithPaypal }

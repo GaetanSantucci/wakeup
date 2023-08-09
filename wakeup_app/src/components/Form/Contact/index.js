@@ -76,10 +76,6 @@ export default function Contact() {
     // display modal  
     if (result) {
       setsendMailSuccess(true)
-      // setLastname('')
-      // setFirstname('')
-      // setEmail('')
-      // setPhone('')
       setMessage('')
 
       setTimeout(() => {

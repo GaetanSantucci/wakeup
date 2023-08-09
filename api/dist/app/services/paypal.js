@@ -5,10 +5,20 @@ const baseURL = {
 };
 // ? se the PayPal API to create an order
 const createPaypalOrder = async (req, res) => {
-    // ? Extract the cart array from the request body
     const { cart } = req.body;
     //  ? Calculate the total amount of the order based on the cart items
     const totalAmount = cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
+    // ? Map on cart to list all articles
+    const lineItems = cart.map((item) => ({
+        price_data: {
+            currency: "eur",
+            product_data: {
+                name: item.name,
+            },
+            unit_amount: (item.price * 100).toFixed(0),
+        },
+        quantity: item.quantity,
+    }));
     try {
         // ? Generate an access token for the PayPal API
         const accessToken = await generateAccessToken();
@@ -20,17 +30,26 @@ const createPaypalOrder = async (req, res) => {
                 {
                     amount: {
                         currency_code: "EUR",
-                        value: totalAmount
+                        value: totalAmount,
+                        breakdown: {
+                            item_total: {
+                                currency_code: "EUR",
+                                value: totalAmount
+                            },
+                        }
                     },
                     redirect_urls: {
                         return_url: `${process.env.CLIENT_URL}/checkout/success`,
                         cancel_url: `${process.env.CLIENT_URL}/checkout/cancel`
                     },
-                    item_list: cart,
-                    custom: JSON.stringify({
-                        bookingDate: req.body.bookingDate,
-                        user: req.body.user
-                    })
+                    item_list: lineItems,
+                    custom: {
+                        booking_date: req.body.bookingDate,
+                        user_firstname: req.body.user.firstname,
+                        user_lastname: req.body.user.lastname,
+                        address: req.body.user.address,
+                        cart: lineItems
+                    }
                 }
             ]
         };
@@ -44,6 +63,7 @@ const createPaypalOrder = async (req, res) => {
             body: JSON.stringify(orderBody),
         });
         const data = await response.json();
+        console.log('data:', data);
         return data;
     }
     catch (err) {
@@ -53,7 +73,7 @@ const createPaypalOrder = async (req, res) => {
 };
 // use the orders api to capture payment for an order
 const capturePaypalPayment = async (req, res) => {
-    console.log('req dasn le capture payment:', req.body);
+    console.log('req dans le capture payment:', req.body);
     try {
         // ? Call access token  function to connect to the PayPal API
         const accessToken = await generateAccessToken();
@@ -68,11 +88,6 @@ const capturePaypalPayment = async (req, res) => {
         });
         const data = await response.json();
         console.log('data:', data);
-        // const customData = JSON.parse(data.purchase_units[0].custom);
-        // const bookingDate = customData.bookingDate;
-        // console.log('bookingDate:', bookingDate);
-        // const user = customData.user;
-        // console.log('user:', user);
         return data;
     }
     catch (err) {

@@ -12,6 +12,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { //? Stripe config wi
   apiVersion: '2022-11-15',
 })
 
+import paypal from 'paypal-rest-sdk';
+// Configure the PayPal SDK
+paypal.configure({
+  mode: 'sandbox', // or 'live'
+  client_id: process.env.PAYPAL_CLIENT_ID!,
+  client_secret: process.env.PAYPAL_SECRET_KEY!
+});
+
 
 // ? Create a Stripe session for processing a payment
 const createStripeSession = async (req: Request, res: Response) => {
@@ -79,18 +87,54 @@ const createPaypalSession = async (req: Request, res: Response) => {
 // ? captures a PayPal payment for a given order ID
 const capturePaypalSession = async (req: Request, res: Response) => {
   const captureData = await capturePaypalPayment(req, res);
-  console.log('captureData:', captureData);
-  const customData = JSON.parse(captureData.purchase_units[0].custom);
-  const bookingDate = customData.bookingDate;
-  console.log('bookingDate:', bookingDate);
-  const user = customData.user;
-  console.log('user:', user);
+  console.log('captureData:', captureData.purchase_units[0]);
+  // const customData = JSON.parse(captureData.purchase_units[0].custom);
+  // const bookingDate = customData.bookingDate;
+  // console.log('bookingDate:', bookingDate);
+  // const user = customData.user;
+  // console.log('user:', user);
   res.json(captureData);
 }
 
 const paypalWebhook = async (req: Request, res: Response) => {
-  return res.status(200).json("Webhook Paypal !")
+
+  const eventType = req.body.event_type;
+  console.log('eventType:', eventType);
+  const webhookData = req.body.resource;
+  console.log('webhookData:', webhookData);
+
+  // Verify the webhook signature
+  const headers = req.headers;
+  const webhookId = '49M10291CR9800545';
+
+  try {
+    const verificationStatus = await new Promise((resolve, reject) => {
+      paypal.notification.webhookEvent.verify(headers, req.body, webhookId, (error, response) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(response.verification_status);
+        }
+      });
+    });
+
+    if (verificationStatus === 'SUCCESS') {
+      if (eventType === 'CHECKOUT.ORDER.APPROVED') {
+        // Extract necessary information from webhookData
+        // Save bookingDate and customer address to your database
+        console.log("YESSSS YESSSS YESSSSS ca passseeeeeeeeeeeeeee");
+
+      }
+    }
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
 }
 
 
 export { createStripeSession, stripeWebhook, createPaypalSession, capturePaypalSession, paypalWebhook }
+

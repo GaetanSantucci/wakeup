@@ -57,6 +57,12 @@ app.use(session({
   }
 }));
 
+// import ngrok from '@ngrok/ngrok';
+// (async function () {
+//   const url = await ngrok.connect({ authtoken: process.env.NGROK_AUTH_TOKEN! });
+//   console.log('url:', url);
+// })();
+
 
 import { router } from './app/router/index.js';
 

@@ -4,8 +4,8 @@ import pg from 'pg';
 // import debug from 'debug';
 // const logger = debug('Datamapper');
 class PlateDatamapper extends CoreDataMapper {
-    tableName = 'plate';
-    columns = `"id", "name", "subtitle", "description", "price", "image", "slug", "is_new"`;
+    tableName = 'product';
+    columns = `"id", "name", "subtitle", "description", "price", "image", "slug", "is_new", "dimension", "category"`;
     createFunctionName = 'create_plate';
     updateFunctionName = 'update_plate';
     //& If need to create specific method for LocationDataMapper

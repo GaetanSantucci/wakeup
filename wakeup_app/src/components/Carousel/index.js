@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import './carousel.scss';
@@ -56,6 +57,13 @@ const HomepageCarousel = ({ items }) => {
 };
 
 const AddonCarousel = ({ products }) => {
+  let addon = []
+  products.forEach(element => {
+    if (element.category === 'boisson' || element.category === 'decoration') {
+      addon.push(element)
+    }
+  });
+  console.log('addon:', addon);
   const [items, setItems] = useState(products);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -85,11 +93,12 @@ const AddonCarousel = ({ products }) => {
   return (
     <div className="carousel-addon">
       <div className="carousel-addon-inner">
-        {products.map((item, i) => {
+        {addon.map((item, i) => {
+
           const price = item.price.toString().replace('.', ',');
           return (
             <div key={i} className={`carousel-addon-item ${i === currentIndex ? 'active' : ''}`}>
-              <Image src={item.image} alt={item.name} width={250} height={230} priority />
+              <Image src={`/images/${item.image}.webp`} alt={item.name} width={250} height={230} priority />
               <div className='carousel-addon-item-description'>
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>

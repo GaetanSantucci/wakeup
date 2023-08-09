@@ -7,8 +7,8 @@ import pg from 'pg';
 
 class PlateDatamapper extends CoreDataMapper {
 
-  tableName = 'plate';
-  columns = `"id", "name", "subtitle", "description", "price", "image", "slug", "is_new"`
+  tableName = 'product';
+  columns = `"id", "name", "subtitle", "description", "price", "image", "slug", "is_new", "dimension", "category"`
 
   createFunctionName = 'create_plate';
   updateFunctionName = 'update_plate';

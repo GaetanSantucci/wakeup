@@ -1,5 +1,15 @@
+@media (max-width: 768px) {
+  .carousel-addon {
+    display: flex;
+  }
+  .carousel-inner {
+    height: auto;
+  }
+}
+
 .carousel,
 .carousel-addon {
+  display: none;
   position: relative;
   width: 100%; /* Set the width to 100% */
   overflow: hidden;
@@ -180,10 +190,4 @@
 .carousel-addon-item.active {
   display: flex;
   justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .carousel-inner {
-    height: auto;
-  }
 }

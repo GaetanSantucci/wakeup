@@ -7,8 +7,8 @@ import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-import { toggleCartModale, toggleProfileModale, toggleShowNavbar } from '@/src/store/reducers/Settings';
-import { setAddress, inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
+import { toggleCartModale, toggleLoginModale, toggleProfileModale, toggleShowNavbar } from '@/src/store/reducers/Settings';
+import { /* setAddress, */ inputValue, updateComplement, toggleCheckbox } from '@/src/store/reducers/User';
 
 import { getTotal } from '@/src/libs/getCartTotal';
 import { useSetupUser } from '@/src/hook/useSetUser';
@@ -20,10 +20,13 @@ const CartModale = () => {
 
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
-  const cart = useSelector((state) => state.cart.cart)
+  const { cart } = useSelector((state) => state.cart)
+  const { loginModale } = useSelector((state) => state.settings)
 
   const closeModale = () => {
     dispatch(toggleCartModale())
+    dispatch(toggleShowNavbar())
+    if (loginModale) dispatch(toggleLoginModale())
   };
   const handleRemoveItem = () => {
     dispatch(resetAllCartItems());
@@ -73,22 +76,22 @@ const ProfileModale = () => {
   const [results, setResults] = useState([]);
 
 
-  const handleSearchInput = async (event) => {
-    if (event.target.value < 3) setResults([])
-    setSearchTerm(event.target.value)
+  // const handleSearchInput = async (event) => {
+  //   if (event.target.value < 3) setResults([])
+  //   setSearchTerm(event.target.value)
 
-    if (searchTerm.length > 3) {
-      try {
-        const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${event.target.value}&type=housenumber&autocomplete=1`)
-        if (response.ok) {
-          const data = await response.json();
-          setResults(data.features)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
+  //   if (searchTerm.length > 3) {
+  //     try {
+  //       const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${event.target.value}&type=housenumber&autocomplete=1`)
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setResults(data.features)
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  // }
 
   const handleCloseProfileModale = () => {
     dispatch(toggleProfileModale())
@@ -107,7 +110,6 @@ const ProfileModale = () => {
     const { label, name, city, postcode } = elem
     dispatch(setAddress({ label, name, city, postcode }))
     // Results to undefined to close div research
-    console.log('dans le handle setAddress voici le user profile', user);
     setSearchTerm(label)
     setResults([])
   }
@@ -143,9 +145,9 @@ const ProfileModale = () => {
           <input type='text' id='firstname' placeholder='Ajouter ou modifier le prénom' value={user.firstname} onChange={handleInputChange} />
         </div>
         <div className='profile_modale_form_input'>
-          <input id='search' type='search' placeholder='Saisissez votre adresse' aria-autocomplete='list' onChange={handleSearchInput} value={searchTerm} />
+          <input id='search' type='search' placeholder='Saisissez votre adresse' aria-autocomplete='list' onChange={handleInputChange} value={user.address.name} />
         </div>
-        {
+        {/* {
           results && (
             results.map(elem => {
               return (
@@ -153,7 +155,7 @@ const ProfileModale = () => {
               )
             })
           )
-        }
+        } */}
         <div className='profile_modale_form_input'>
           <input type='text' id='complement' placeholder='Étage, bâtiment, interphone' onChange={handleInputChange} value={user.address.complement} />
         </div>

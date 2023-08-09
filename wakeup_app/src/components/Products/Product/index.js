@@ -27,7 +27,7 @@ export default async function Product({ id }) {
             return (
               <div className={styles.productId_container_card} key={product.id}>
                 <div className={styles.productId_container_card_image}>
-                  <Image src={`/images/${product.image}`} alt={product.name} width={400} height={600} />
+                  <Image src={`/images/${product.image}.webp`} alt={product.name} width={400} height={600} />
                 </div>
                 <div className={styles.productId_container_card_details}>
                   <div className={styles.productId_container_card_details_effect}></div>
@@ -50,15 +50,11 @@ export default async function Product({ id }) {
                 </div>
               </div>
             )
-            // }
           })
         }
       </div>
       <Suspense fallback={<Spinner />}>
-        {
-          fetchProduct.addon_sales[0] !== null ? <Additionnal products={fetchProduct.addon_sales} /> : null
-        }
-
+        <Additionnal />
       </Suspense>
     </>
   );

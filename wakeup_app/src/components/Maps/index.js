@@ -14,6 +14,7 @@ const areaFetch = getArea();
 export default function Maps() {
 
   const data = use(areaFetch);
+  console.log('data:', data);
 
   const [inputCityValue, setinputCityValue] = useState();
   const [isAvailable, setIsAvailable] = useState();
@@ -26,7 +27,7 @@ export default function Maps() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = data.filter(o =>
-      o.city.toLowerCase().includes(inputCityValue.toLowerCase()));
+      o.name.toLowerCase().includes(inputCityValue.toLowerCase()));
     if (result.length !== 0) {
       setNotInOurZone(false);
       setinputCityValue('')
@@ -50,7 +51,7 @@ export default function Maps() {
 
         {
           isAvailable && <div className={`${styles.container_delivery_alert} ${styles.success}`}>
-            <p>Vous êtes livrable sur {isAvailable.city} pour des frais de livraison s&apos;élevant à  {isAvailable.price} €</p>
+            <p>Vous êtes livrable sur {isAvailable.name} pour des frais de livraison s&apos;élevant à  {isAvailable.price} €</p>
           </div>
         }
         {notInOurZone &&
@@ -60,7 +61,7 @@ export default function Maps() {
             </div>
             <select>
               {data.map((option, i) => (
-                <option key={`${option.city} ${i}`} value={option.city}>{option.city}</option>
+                <option key={`${option.name} ${i}`} value={option.name}>{option.name}</option>
               ))}
             </select>
           </>
@@ -74,7 +75,7 @@ export default function Maps() {
             <ul>
               {
                 data.map((option, i) => {
-                  if (option.price === '3.50') return <li key={`${option.city} ${i}`} >{option.city}</li>
+                  if (option.price === '3.50') return <li key={`${option.name} ${i}`} >{option.name}</li>
                 })
               }
             </ul>
@@ -84,7 +85,7 @@ export default function Maps() {
             <ul>
               {
                 data.map((option, i) => {
-                  if (option.price === '5.50') return <li key={`${option.city} ${i}`} >{option.city}</li>
+                  if (option.price === '5.50') return <li key={`${option.name} ${i}`} >{option.name}</li>
                 })
               }
             </ul>

@@ -22,6 +22,7 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
+    "@ngrok/ngrok": "^0.5.2",
     "@types/stripe": "^8.0.417",
     "ajv": "^8.12.0",
     "bcrypt": "^5.1.0",

@@ -7,10 +7,9 @@ const initialState = {
     password: '',
     confirmPwd: '',
     lastname: 'Santucci',
-    firstname: 'Gaetan',
+    firstname: 'Tess',
     phone: '0629393202',
     address: {
-      label: '',
       name: '',
       complement: '',
       city: '',
@@ -30,7 +29,8 @@ const userSlice = createSlice({
   reducers: {
     inputValue: (state, action) => {
       const { inputType, value } = action.payload;
-      if (inputType === 'complement' || 'postcode ' || 'city') state.user.address[inputType] = action.payload.value;
+      console.log('inputType:', inputType);
+      if (inputType === 'complement' || 'postcode ' || 'city' || 'name') state.user.address[inputType] = action.payload.value;
       const newValue = inputType === 'newsletter_optin' ? value === 'on' : value;
       state.user[inputType] = newValue;
     },
@@ -77,24 +77,6 @@ const userSlice = createSlice({
       }
     },
 
-    setAddress: (state, action) => {
-      const { label, name, complement, city, postcode } = action.payload;
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          address: {
-            ...state.user.address,
-            label,
-            name,
-            complement,
-            city,
-            postcode
-          }
-        }
-      }
-    },
-
     updateComplement: (state, action) => {
       state.user.address.complement = action.payload;
     },
@@ -110,5 +92,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, setAddress, userUpdate, updateComplement, toggleCheckbox } = userSlice.actions;
+export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, userUpdate, updateComplement, toggleCheckbox } = userSlice.actions;
 export default userSlice.reducer;

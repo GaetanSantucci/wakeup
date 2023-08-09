@@ -79,50 +79,14 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   const [searchTerm, setSearchTerm] = useState('' || user.address.name);
   const [results, setResults] = useState(null); // to display the result of the addresses following the api data.gouv fetch
   const [isDeliverableCity, setIsDeliverableCity] = useState([]); // to display if the city is in our database
-  const [notInOurZone, setNotInOurZone] = useState(false); // to manage error if city is not in our area
+  const [notInOurZone, setNotInOurZone] = useState(true); // to manage error if city is not in our area
   const [errorCity, setErrorCity] = useState(false);
 
-  const handleSearchInput = async (event) => {
-    if (event.target.value < 4) setResults([])
-    setSearchTerm(event.target.value)
 
-    if (searchTerm.length > 4) {
-      try {
-        const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${event.target.value}&type=housenumber&autocomplete=1`)
-        if (response.ok) {
-          const data = await response.json();
-          setResults(data.features)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-
-  const handleSetAddress = (elem) => {
-    const { label, name, postcode } = elem
-    const customerCity = elem.city.toLowerCase();
-    const result = data.filter(o =>
-      o.city.toLowerCase().includes(customerCity));
-
-    if (result.length >= 1) {
-      // setIsDeliverableCity(result)
-      if (result[0].city.toLowerCase() === customerCity) {
-        dispatch(setAddress({ label, name, city: elem.city, postcode }))
-        dispatch(addDeliveryCost(result[0].price))
-        setErrorCity(false)
-      }
-
-    } else {
-      dispatch(inputValue({ inputType: 'city', value: '' }))
-      dispatch(inputValue({ inputType: 'postcode', value: '' }))
-      setErrorCity(true)
-      setNotInOurZone(true);
-    }
-
-    // Results to undefined to close div research
-    setSearchTerm(name)
-    setResults([])
+  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+  let widthElement = '45%'
+  if (isBreakpoint) {
+    widthElement = '85%' // To display calendar in middle of the page
   }
 
   const theme = createTheme({
@@ -158,40 +122,39 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
       }
     }
   });
+
   // Dynamic method for store input by type
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     let customerCity = value.toLowerCase();
     if (id === 'city') {
       const result = data.filter(o =>
-        o.city.toLowerCase().includes(customerCity));
+        o.name.toLowerCase().includes(customerCity));
+      console.log('result:', result);
       if (result.length >= 1) {
         setIsDeliverableCity(result)
-        if (result[0].city.toLowerCase() === customerCity) {
-          dispatch(addDeliveryCost(result[0].price))
-        }
+        // if (result[0].name.toLowerCase() === customerCity) {
+        //   console.log("Je passe dans le if");
+        //   dispatch(addDeliveryCost(result[0].price))
+        // }
 
       } else {
         setErrorCity(true)
         setNotInOurZone(true);
-        console.log('setNotInOurZone:', notInOurZone);
       }
     }
     dispatch(inputValue({ inputType: id, value }));
   };
 
-  const handleSetAdressManually = (elem) => {
-    dispatch(inputValue({ inputType: 'city', value: elem.city }))
-    dispatch(inputValue({ inputType: 'postcode', value: elem.zipcode }))
+  const handleSetAddress = (elem) => {
+    dispatch(inputValue({ inputType: 'city', value: elem.name }))
+    dispatch(inputValue({ inputType: 'postcode', value: elem.postcode }))
     dispatch(addDeliveryCost(elem.price))
+    setNotInOurZone(false)
     setIsDeliverableCity([])
   }
 
-  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
-  let widthElement = '45%'
-  if (isBreakpoint) {
-    widthElement = '85%' // To display calendar in middle of the page
-  }
+
 
   return (
     <>
@@ -210,24 +173,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
             <TextField id='lastname' label='Nom' value={user.lastname} onChange={handleInputChange} variant='outlined' size='small' required />
             <TextField id='firstname' label='Prénom' value={user.firstname} onChange={handleInputChange} variant='outlined' size='small' required />
             <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
-            <div className={styles.container_information}>
-              <TextField id='search' className={styles.container_information_input} label='Adresse' value={searchTerm || user.address?.name} onChange={handleSearchInput} variant='outlined' size='small' required />
-              {errorCity && <p className={styles.container_information_input_error}>Ville non livrable, retrouvez notre zone de livraison <Link href='/livraison'>ici</Link></p>}
-
-              <div className={styles.container_information_address} >
-                <div className={styles.container_information_address_block} >
-                  {
-                    results && (
-                      results.map(elem => {
-                        return (
-                          <div className={styles.container_information_address_block_result} onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}><RoomIcon fontSize='small' /> - {elem.properties.label}</div>
-                        )
-                      })
-                    )
-                  }
-                </div>
-              </div>
-            </div>
+            {/* <div className={styles.container_information}> */}
+            <TextField id='name' className={styles.container_information_input} label='Adresse' value={user.address?.name} onChange={handleInputChange} variant='outlined' autoComplete='off' size='small' required />
             <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
             <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' required />
             <div className={styles.container_information}>
@@ -239,7 +186,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
                       isDeliverableCity.map((elem, index) => {
                         if (index <= 4) {
                           return (
-                            <div className={styles.container_information_address_block_result} onClick={() => handleSetAdressManually(elem)} key={elem.id}>{elem.city}</div>
+                            <div className={styles.container_information_address_block_result} onClick={() => handleSetAddress(elem)} key={elem.id}>{elem.name}</div>
                           )
                         }
                       })
@@ -255,7 +202,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
       <div className={styles.checkout_button}>
         <button onClick={previousPage}>Précédent</button>
         {
-          !notInOurZone ? <button onClick={nextPage}>Validez</button> : null
+          !notInOurZone || user.address.city ? <button onClick={nextPage}>Validez</button> : null
         }
       </div>
     </>

@@ -42,7 +42,7 @@ export type DataStripe = {
       line1: string,
       line2: string,
       city: string,
-      postal_code: number
+      postcode: number
     }
   },
   metadata: {

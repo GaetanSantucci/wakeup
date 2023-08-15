@@ -1,23 +1,18 @@
+type PurchaseUnits = {
+  shipping: string,
+  payments: string
+}
+
 export type DataPaypal = {
   id: string,
   amount_total: number,
   created: string,
-  currency: string
   payment_method_types: Array<string>,
-  payment_status: string,
-  customer_details: {
-    email: string,
-    address: {
-      line1: string,
-      line2: string,
-      city: string,
-      postal_code: number
-    }
-  },
-  metadata: {
-    lastname: string,
-    firstname: string,
-    bookingDate: string,
-    cart: string
+  status: string,
+  payer: {
+    given_name: string,
+    surname: string,
+    email_address: string
   }
+  purchase_units: PurchaseUnits[]
 }

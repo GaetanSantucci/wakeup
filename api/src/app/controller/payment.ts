@@ -7,7 +7,7 @@ import { createStripeOrder, /* createStripeWebhook */ } from '../services/stripe
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Stripe from 'stripe';
-import { createOrder } from './order.js';
+import { createOrderWithPaypal, createOrderWithStripe } from './order.js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { //? Stripe config with actual version
   apiVersion: '2022-11-15',
 })
@@ -71,27 +71,29 @@ const stripeWebhook = async (req: Request, res: Response): Promise<void> => {
   // Handle the checkout.session.completed event
   if (eventType === "checkout.session.completed") {
     // launch createPaypalOrder to set differents data in database
-    console.log("Checkout session completed");
-    await createOrder(data, req, res);
+    await createOrderWithStripe(data, req, res)
   }
   res.status(200).end();
 }
 
 // ? creates a PayPal order for processing a payment
 const createPaypalSession = async (req: Request, res: Response) => {
+
   const order = await createPaypalOrder(req, res);
+  console.log('order:', order);
+  await createOrderWithPaypal(order, req, res)
   res.json(order);
 }
 
 // ? captures a PayPal payment for a given order ID
 const capturePaypalSession = async (req: Request, res: Response) => {
   const captureData = await capturePaypalPayment(req, res);
-  console.log('captureData:', captureData.purchase_units[0]);
-  // const customData = JSON.parse(captureData.purchase_units[0].custom);
-  // const bookingDate = customData.bookingDate;
-  // console.log('bookingDate:', bookingDate);
-  // const user = customData.user;
-  // console.log('user:', user);
+  console.log('captureData:', captureData);
+  if (captureData.status === 'COMPLETED') {
+    // todo need to create new row with payment id for stripe and paypal
+    // todo create update to validate payment success in database using payment_id to finb order and update payment status
+    // await updateOrderWithPaypal('paid', captureData.id)
+  }
   res.json(captureData);
 }
 
@@ -126,14 +128,12 @@ const paypalWebhook = async (req: Request, res: Response) => {
 
       }
     }
-
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 }
-
 
 export { createStripeSession, stripeWebhook, createPaypalSession, capturePaypalSession, paypalWebhook }
 

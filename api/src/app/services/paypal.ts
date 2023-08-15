@@ -1,3 +1,4 @@
+import { createOrderWithPaypal } from '../controller/order.js';
 import { Cart } from '../type/cart';
 import { Request, Response } from 'express';
 
@@ -9,11 +10,13 @@ const baseURL = {
 
 // ? se the PayPal API to create an order
 const createPaypalOrder = async (req: Request, res: Response) => {
-  const { cart } = req.body
-  console.log('req.body:', req.body);
+  const { cart, deliveryCost } = req.body
 
   //  ? Calculate the total amount of the order based on the cart items
   const totalAmount = cart.reduce((total: number, item: { price: string, quantity: number }) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2)
+
+
+  const totalAmountIncludeShippingCost = parseFloat(totalAmount) + parseFloat(deliveryCost)
 
   // ? Map on cart to list all articles
   const lineItems = cart.map((item: Cart) => ({
@@ -39,27 +42,14 @@ const createPaypalOrder = async (req: Request, res: Response) => {
         {
           amount: {
             currency_code: "EUR",
-            value: totalAmount,
-            breakdown: {
-              item_total: {
-                currency_code: "EUR",
-                value: totalAmount
-              },
-            }
+            value: totalAmountIncludeShippingCost
           },
+
           redirect_urls: {
             return_url: `${process.env.CLIENT_URL}/checkout/success`,
             cancel_url: `${process.env.CLIENT_URL}/checkout/cancel`
           },
-          item_list: lineItems,
-          custom: {
-            booking_date: req.body.bookingDate,
-            user_firstname: req.body.user.firstname,
-            user_lastname: req.body.user.lastname,
-            address: req.body.user.address,
-            cart: lineItems
-          }
-
+          item_list: lineItems
         }
       ]
     }
@@ -77,18 +67,18 @@ const createPaypalOrder = async (req: Request, res: Response) => {
     const data = await response.json();
     console.log('data dans le createOrder:', data);
 
-
-
+    if (data.status === 'CREATED') {
+      console.log("YOUUUUUUUUUUUUUUUUUUUUUUUU");
+      // await createOrderWithPaypal(data, req, res);
+    }
     return data;
   } catch (err) {
     if (err instanceof Error) return res.status(500).json(err.message)
   }
-
 }
 
 // use the orders api to capture payment for an order
 const capturePaypalPayment = async (req: Request, res: Response) => {
-  console.log('req dans le capture payment:', req.body);
 
   try {
     // ? Call access token  function to connect to the PayPal API
@@ -104,10 +94,10 @@ const capturePaypalPayment = async (req: Request, res: Response) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    const data = await response.json();
-    console.log('data:', data);
 
-    // todo commencer le create order 
+    const data = await response.json();
+
+
 
     return data;
 

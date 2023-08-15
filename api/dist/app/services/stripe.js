@@ -2,7 +2,6 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2022-11-15',
 });
-// const endpointSecret = process.env.STRIPE_SECRET_WEBHOOK!;
 const createStripeOrder = async (req, res) => {
     // ? Extract the cart and delivery cost from the request body
     const { cart, deliveryCost, bookingDate } = req.body.cart;
@@ -10,6 +9,7 @@ const createStripeOrder = async (req, res) => {
     const customer = await stripe.customers.create({
         name: `${user.lastname} ${user.firstname}`,
         phone: user.phone,
+        email: user.email,
         address: {
             city: user.address.city,
             line1: user.address.name,
@@ -28,7 +28,6 @@ const createStripeOrder = async (req, res) => {
         },
         quantity: item.quantity,
     }));
-    console.log('lineItems:', lineItems);
     // ? Create a new Stripe checkout session using the line items and delivery cost
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
@@ -55,7 +54,6 @@ const createStripeOrder = async (req, res) => {
             cart: JSON.stringify(cart)
         }
     });
-    console.log("session", session);
     res.json({ url: session.url });
 };
 export { createStripeOrder };

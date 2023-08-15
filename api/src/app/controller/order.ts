@@ -37,6 +37,7 @@ const createOrder = async (data: DataStripe, req: Request, res: Response) => {
       email: data.customer_details.email,
       lastname: data.metadata.lastname,
       firstname: data.metadata.firstname,
+      phone: data.metadata.phone,
       address: {
         name: data.customer_details.address.line1,
         complement: data.customer_details.address.line2,
@@ -45,9 +46,6 @@ const createOrder = async (data: DataStripe, req: Request, res: Response) => {
       }
     }
   }
-
-  console.log('orderBody:', orderBody.payment_id);
-
 
   try {
     // ? 1/ verifier si user a deja un compte sinon 
@@ -59,16 +57,23 @@ const createOrder = async (data: DataStripe, req: Request, res: Response) => {
 
       const order_details = await Order.create({ user_id: isExist.id, total: orderBody.amount, booking_date: orderBody.booking_date, payment_id: payment_details.insert_payment_details })
 
-      const order_items = orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
+      orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
         await OrderItems.create({ order_id: order_details.insert_order_details, product_id: item.id, quantity: item.quantity });
       });
 
-      await Promise.all([payment_details, order_details, order_items])
+      // await Promise.all([payment_details, order_details, order_items])
     } else {
-      console.log("il existe pas");
-      const createUser = await User.create(orderBody.user)
+      const { create_user } = await User.create(orderBody.user)
+
+      const payment_details = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date });
+
+      const order_details = await Order.create({ user_id: create_user, total: orderBody.amount, booking_date: orderBody.booking_date, payment_id: payment_details.insert_payment_details })
+
+      orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
+        await OrderItems.create({ order_id: order_details.insert_order_details, product_id: item.id, quantity: item.quantity });
+      });
       // create payment_details and get ID in return 
-      const createPayment = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date })
+      // const createPayment = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date })
     }
 
   } catch (err) {
@@ -112,14 +117,21 @@ const createOrderWithPaypal = async (data: DataPaypal, req: Request, res: Respon
 
       const order_details = await Order.create({ user_id: isExist.id, total: orderBody.amount, booking_date: orderBody.booking_date, payment_id: payment_details.insert_payment_details })
 
-      const order_items = orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
+      orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
         await OrderItems.create({ order_id: order_details.insert_order_details, product_id: item.id, quantity: item.quantity });
       });
 
-      await Promise.all([payment_details, order_details, order_items])
     } else {
       console.log("il existe pas");
+      const { create_user } = await User.create(orderBody.user)
 
+      const payment_details = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date });
+
+      const order_details = await Order.create({ user_id: create_user, total: orderBody.amount, booking_date: orderBody.booking_date, payment_id: payment_details.insert_payment_details })
+
+      orderBody.cart.forEach(async (item: { id: number; quantity: number; }) => {
+        await OrderItems.create({ order_id: order_details.insert_order_details, product_id: item.id, quantity: item.quantity });
+      });
 
       // // create payment_details and get ID in return 
       // const payment_details = await Payment.create({ amount: orderBody.amount, status: orderBody.payment_status, payment_mode: orderBody.payment_method, payment_date: orderBody.payment_date })

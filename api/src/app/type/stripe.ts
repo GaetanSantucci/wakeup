@@ -48,6 +48,7 @@ export type DataStripe = {
   metadata: {
     lastname: string,
     firstname: string,
+    phone: string,
     bookingDate: string,
     cart: string
   }

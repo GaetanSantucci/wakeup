@@ -81,7 +81,6 @@ const stripeWebhook = async (req: Request, res: Response): Promise<void> => {
 const createPaypalSession = async (req: Request, res: Response) => {
   const order = await createPaypalOrder(req, res);
   res.json(order);
-
 }
 
 // ? captures a PayPal payment for a given order ID

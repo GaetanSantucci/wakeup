@@ -60,6 +60,7 @@ const createStripeOrder = async (req: Request, res: Response) => {
     metadata: {
       lastname: user.lastname.toString(),
       firstname: user.firstname.toString(),
+      phone: user.phone.toString(),
       bookingDate: bookingDate.toString(),
       cart: JSON.stringify(cart)
     }

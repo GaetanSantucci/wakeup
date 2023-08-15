@@ -6,6 +6,7 @@ const baseURL = {
 // ? se the PayPal API to create an order
 const createPaypalOrder = async (req, res) => {
     const { cart } = req.body;
+    console.log('req.body:', req.body);
     //  ? Calculate the total amount of the order based on the cart items
     const totalAmount = cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
     // ? Map on cart to list all articles
@@ -63,7 +64,7 @@ const createPaypalOrder = async (req, res) => {
             body: JSON.stringify(orderBody),
         });
         const data = await response.json();
-        console.log('data:', data);
+        console.log('data dans le createOrder:', data);
         return data;
     }
     catch (err) {
@@ -88,6 +89,7 @@ const capturePaypalPayment = async (req, res) => {
         });
         const data = await response.json();
         console.log('data:', data);
+        // todo commencer le create order 
         return data;
     }
     catch (err) {

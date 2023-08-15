@@ -6,26 +6,23 @@ DECLARE
 BEGIN
   IF ($1 ? 'email' AND $1 ? 'password') THEN
     IF NOT EXISTS(SELECT U.email FROM "user" as U WHERE U.email = ($1->>'email')) THEN
-      INSERT INTO "user"("email", "password", "lastname", "firstname", "address", "phone", "role", "newsletter_optin")
+      INSERT INTO "user"("email", "password", "newsletter_optin")
       VALUES (
           COALESCE(($1 ->> 'email')::EMAIL, ''),
-          COALESCE(($1 ->> 'password')::TEXT, ''),
+          COALESCE(($1 ->> 'password')::PASSWORD, ''),
           COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, false))
       RETURNING id INTO user_id;
     ELSE
       RAISE NOTICE 'User already exists';
     END IF;
   ELSE
-    INSERT INTO "user"("lastname", "firstname", "address", "phone")
+    INSERT INTO "user"("email", "lastname", "firstname", "address", "phone")
     VALUES (
           COALESCE(($1 ->> 'email')::EMAIL, ''),
-          COALESCE(($1 ->> 'password')::TEXT, ''),
           COALESCE(($1 ->> 'lastname')::TEXT, ''),
           COALESCE(($1 ->> 'firstname')::TEXT, ''),
           COALESCE(($1 ->> 'address')::JSON, null),
-          COALESCE(($1 ->> 'phone')::TEXT, ''),
-          COALESCE(($1 ->> 'role')::TEXT, null),
-          COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, false)
+          COALESCE(($1 ->> 'phone')::TEXT, '')
           )
     RETURNING id INTO user_id;
   END IF;

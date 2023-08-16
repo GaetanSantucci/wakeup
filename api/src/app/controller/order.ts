@@ -8,7 +8,6 @@ import { DataPaypal } from '../type/paypal.js';
 
 // ~ DEBUG CONFIG ~ //
 import debug from 'debug';
-import { formattedPaymentDate } from '../utils/formattedDate.js';
 const logger = debug('Controller');
 
 const getAllOrdersForCalendar = async (req: Request, res: Response) => {
@@ -141,11 +140,12 @@ const getAllOrdersForCalendar = async (req: Request, res: Response) => {
 const createOrderFromData = async (orderBody: any) => {
   try {
     const isExist = await User.findUserIdentity(orderBody.user.email);
-
-    const payment_details = await Payment.create({
+    //! test modification payment_id dans l'order body pour set le payment id donne par stripe/paypal
+    /* const payment_details = */ await Payment.create({
       amount: orderBody.amount,
       status: orderBody.payment_status,
       payment_mode: orderBody.payment_method,
+      payment_id: orderBody.payment_id,
       payment_date: orderBody.payment_date
     });
 
@@ -155,7 +155,7 @@ const createOrderFromData = async (orderBody: any) => {
       user_id,
       total: orderBody.amount,
       booking_date: orderBody.booking_date,
-      payment_id: payment_details.insert_payment_details
+      payment_id: orderBody.payment_id,
     });
 
     for (const item of orderBody.cart) {
@@ -240,4 +240,4 @@ const createOrderWithPaypal = async (data: DataPaypal, req: Request, res: Respon
   console.log("Order successfully created");
 }
 
-export { getAllOrdersForCalendar, /* createOrder, */ createOrderWithStripe, createOrderWithPaypal }
+export { getAllOrdersForCalendar, createOrderWithStripe, createOrderWithPaypal }

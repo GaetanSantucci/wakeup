@@ -1,5 +1,6 @@
 import { createPaypalOrder, capturePaypalPayment } from '../services/paypal.js';
 import { createStripeOrder, /* createStripeWebhook */ } from '../services/stripe.js';
+import { Payment } from '../datamapper/payment.js';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Stripe from 'stripe';
 import { createOrderWithPaypal, createOrderWithStripe } from './order.js';
@@ -72,7 +73,8 @@ const capturePaypalSession = async (req, res) => {
     if (captureData.status === 'COMPLETED') {
         // todo need to create new row with payment id for stripe and paypal
         // todo create update to validate payment success in database using payment_id to finb order and update payment status
-        // await updateOrderWithPaypal('paid', captureData.id)
+        await Payment.findPaymentToUpdateStatus(captureData.id);
+        console.log('mise a jour du status');
     }
     res.json(captureData);
 };

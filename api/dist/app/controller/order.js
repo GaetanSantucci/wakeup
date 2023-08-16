@@ -110,10 +110,12 @@ const getAllOrdersForCalendar = async (req, res) => {
 const createOrderFromData = async (orderBody) => {
     try {
         const isExist = await User.findUserIdentity(orderBody.user.email);
-        const payment_details = await Payment.create({
+        //! test modification payment_id dans l'order body pour set le payment id donne par stripe/paypal
+        /* const payment_details = */ await Payment.create({
             amount: orderBody.amount,
             status: orderBody.payment_status,
             payment_mode: orderBody.payment_method,
+            payment_id: orderBody.payment_id,
             payment_date: orderBody.payment_date
         });
         const user_id = isExist ? isExist.id : (await User.create(orderBody.user)).create_user;
@@ -121,7 +123,7 @@ const createOrderFromData = async (orderBody) => {
             user_id,
             total: orderBody.amount,
             booking_date: orderBody.booking_date,
-            payment_id: payment_details.insert_payment_details
+            payment_id: orderBody.payment_id,
         });
         for (const item of orderBody.cart) {
             await OrderItems.create({
@@ -197,4 +199,4 @@ const createOrderWithPaypal = async (data, req, res) => {
     await createOrderFromData(orderBody);
     console.log("Order successfully created");
 };
-export { getAllOrdersForCalendar, /* createOrder, */ createOrderWithStripe, createOrderWithPaypal };
+export { getAllOrdersForCalendar, createOrderWithStripe, createOrderWithPaypal };

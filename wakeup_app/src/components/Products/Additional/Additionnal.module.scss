@@ -1,18 +1,17 @@
 @use '/public/styles/mixins';
 @use '/public/styles/vars';
 
-.container {
+.additionnal_container {
   position: relative;
   display: flex;
   width: 70%;
-  margin-top: 8rem;
 
   & span {
     font-family: var(--fontTitle);
     color: vars.$colorTitleLightTheme;
   }
 
-  &__options {
+  &_options {
     @include mixins.flex(column, flex-start);
     width: 40%;
     height: 30%;
@@ -32,10 +31,10 @@
       font-size: 0.8rem;
     }
 
-    &__input {
+    &_input {
       border: 1px solid #f3f3f3;
       padding: 0.5rem;
-      &__title {
+      &_title {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -55,18 +54,23 @@
     }
   }
 
-  &__cards {
+  &_cards {
     @include mixins.flex(column);
     width: 60%;
+    margin: 4rem 0;
 
-    &__item {
+    &_item {
       @include mixins.flex(row);
       width: 100%;
       margin: 0.5rem;
-      &__details {
+      &_details {
         width: 50%;
+        height: 100%;
         margin-left: 2rem;
-        @include mixins.flex(column, flex-start, space-between);
+        @include mixins.flex(column, flex-start, space-evenly);
+        border-top: 1px solid #1c1c1c;
+        // border-bottom: 1px solid #1c1c1c;
+        // border-right: 1px solid #1c1c1c;
 
         & span {
           font-size: 1.4rem;
@@ -80,7 +84,7 @@
           font-size: 1.4rem;
         }
       }
-      &__image {
+      &_image {
         display: flex;
 
         & img {
@@ -88,6 +92,10 @@
           height: 50%;
         }
       }
+    }
+
+    & button {
+      width: 80px !important;
     }
   }
 }
@@ -99,7 +107,7 @@
     align-items: center;
     width: 80%;
 
-    &__options {
+    &_options {
       width: 100%;
       margin-top: 2rem;
       & h3 {
@@ -107,7 +115,7 @@
         text-align: center;
       }
 
-      &__input {
+      &_input {
         margin: 0.5rem;
 
         & label {
@@ -120,18 +128,18 @@
       }
     }
 
-    &__cards {
+    &_cards {
       width: 100%;
 
-      &__item {
+      &_item {
         position: relative;
 
-        &__image {
+        &_image {
           -webkit-filter: brightness(0.5);
           filter: brightness(0.5);
         }
 
-        &__details {
+        &_details {
           width: 60%;
           height: 90%;
           position: absolute;

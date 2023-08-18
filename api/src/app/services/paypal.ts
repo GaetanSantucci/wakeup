@@ -1,4 +1,3 @@
-import { createOrderWithPaypal } from '../controller/order.js';
 import { Cart } from '../type/cart';
 import { Request, Response } from 'express';
 
@@ -65,12 +64,7 @@ const createPaypalOrder = async (req: Request, res: Response) => {
     });
 
     const data = await response.json();
-    console.log('data dans le createOrder:', data);
 
-    if (data.status === 'CREATED') {
-      console.log("YOUUUUUUUUUUUUUUUUUUUUUUUU");
-      // await createOrderWithPaypal(data, req, res);
-    }
     return data;
   } catch (err) {
     if (err instanceof Error) return res.status(500).json(err.message)

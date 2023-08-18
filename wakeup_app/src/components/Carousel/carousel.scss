@@ -7,12 +7,14 @@
   }
 }
 
-.carousel,
-.carousel-addon {
-  display: none;
+.carousel {
   position: relative;
   width: 100%; /* Set the width to 100% */
   overflow: hidden;
+}
+
+.carousel-addon {
+  display: none;
 }
 
 .carousel-inner,
@@ -190,4 +192,10 @@
 .carousel-addon-item.active {
   display: flex;
   justify-content: center;
+}
+
+@media (max-width: 764px) {
+  .carousel-addon {
+    display: flex;
+  }
 }

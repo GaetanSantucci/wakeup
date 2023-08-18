@@ -38,7 +38,7 @@ const CheckoutCart = ({ nextPage }) => {
             return (
               <div className='cart_modale_item' style={{ width: '100%' }} key={elem.name}>
                 <div className='cart_modale_item_img'>
-                  <Image src={`/images/${elem.img}`} alt={elem.name} width={50} height={75} />
+                  <Image src={`/images/${elem.img}.webp`} alt={elem.name} width={50} height={75} />
                 </div>
                 <div className='cart_modale_item_desc'>
                   <p>{elem.name}</p>
@@ -172,6 +172,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
           >
             <TextField id='lastname' label='Nom' value={user.lastname} onChange={handleInputChange} variant='outlined' size='small' required />
             <TextField id='firstname' label='Prénom' value={user.firstname} onChange={handleInputChange} variant='outlined' size='small' required />
+            <TextField id='email' label='Email' value={user.email} onChange={handleInputChange} type='email' variant='outlined' size='small' required />
             <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
             {/* <div className={styles.container_information}> */}
             <TextField id='name' className={styles.container_information_input} label='Adresse' value={user.address?.name} onChange={handleInputChange} variant='outlined' autoComplete='off' size='small' required />

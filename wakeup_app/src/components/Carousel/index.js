@@ -63,7 +63,6 @@ const AddonCarousel = ({ products }) => {
       addon.push(element)
     }
   });
-  console.log('addon:', addon);
   const [items, setItems] = useState(products);
   const [currentIndex, setCurrentIndex] = useState(0);
 

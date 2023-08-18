@@ -20,6 +20,7 @@ class OrderDatamapper extends CoreDataMapper {
           INNER JOIN payment_details pd ON od.id = pd.order_id 
         WHERE 
           pd.status = 'paid'
+          AND od.booking_date > CURRENT_DATE
         GROUP BY 
           od.booking_date
           ORDER BY 

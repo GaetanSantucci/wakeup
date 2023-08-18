@@ -21,6 +21,7 @@ const CartModale = () => {
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
   const { cart } = useSelector((state) => state.cart)
+  console.log('cart:', cart);
   const { loginModale } = useSelector((state) => state.settings)
 
   const closeModale = () => {

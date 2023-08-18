@@ -51,11 +51,6 @@ const createPaypalOrder = async (req, res) => {
             body: JSON.stringify(orderBody),
         });
         const data = await response.json();
-        console.log('data dans le createOrder:', data);
-        if (data.status === 'CREATED') {
-            console.log("YOUUUUUUUUUUUUUUUUUUUUUUUU");
-            // await createOrderWithPaypal(data, req, res);
-        }
         return data;
     }
     catch (err) {

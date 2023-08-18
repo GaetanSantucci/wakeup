@@ -78,38 +78,4 @@ const capturePaypalSession = async (req, res) => {
     }
     res.json(captureData);
 };
-const paypalWebhook = async (req, res) => {
-    const eventType = req.body.event_type;
-    console.log('eventType:', eventType);
-    const webhookData = req.body.resource;
-    console.log('webhookData:', webhookData);
-    // Verify the webhook signature
-    const headers = req.headers;
-    const webhookId = '49M10291CR9800545';
-    try {
-        const verificationStatus = await new Promise((resolve, reject) => {
-            paypal.notification.webhookEvent.verify(headers, req.body, webhookId, (error, response) => {
-                if (error) {
-                    console.error(error);
-                    reject(error);
-                }
-                else {
-                    resolve(response.verification_status);
-                }
-            });
-        });
-        if (verificationStatus === 'SUCCESS') {
-            if (eventType === 'CHECKOUT.ORDER.APPROVED') {
-                // Extract necessary information from webhookData
-                // Save bookingDate and customer address to your database
-                console.log("YESSSS YESSSS YESSSSS ca passseeeeeeeeeeeeeee");
-            }
-        }
-        res.sendStatus(200);
-    }
-    catch (error) {
-        console.error(error);
-        res.sendStatus(500);
-    }
-};
-export { createStripeSession, stripeWebhook, createPaypalSession, capturePaypalSession, paypalWebhook };
+export { createStripeSession, stripeWebhook, createPaypalSession, capturePaypalSession };

@@ -8,7 +8,6 @@ const MobileNavbar = () => {
 
   const dispatch = useDispatch();
   const { mobileNavbar, loginModale } = useSelector((state) => state.settings)
-  console.log('mobileNavbar:', mobileNavbar);
   const handleActiveMenu = () => {
     dispatch(toggleShowNavbar());
     if (loginModale) dispatch(toggleLoginModale())

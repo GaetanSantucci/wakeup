@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux';
 import { UserLogin } from '../Form';
 
 const Header = () => {
-  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+  const isBreakpoint = useMediaQuery(1024) // Custom hook to check screen size, return boolean
 
   const isLoginModale = useSelector((state) => state.settings.toggleLoginModale)
 

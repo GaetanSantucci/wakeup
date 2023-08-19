@@ -290,6 +290,26 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .productId_container {
+    &_effect {
+      left: -1rem;
+      right: -1rem;
+    }
+    &_effect_border {
+      left: -2rem;
+      bottom: 0;
+    }
+
+    &_card {
+      margin: 0;
+    }
+    & button {
+      margin-top: 3rem;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     &_title {

@@ -176,7 +176,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
             <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
             {/* <div className={styles.container_information}> */}
             <TextField id='name' className={styles.container_information_input} label='Adresse' value={user.address?.name} onChange={handleInputChange} variant='outlined' autoComplete='off' size='small' required />
-            <TextField id='complement' label='Bat. étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
+            <TextField id='complement' label='Bât., étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
             <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' required />
             <div className={styles.container_information}>
               <TextField id='city' className={styles.container_information_input} label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' required />

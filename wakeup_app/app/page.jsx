@@ -7,19 +7,10 @@ import Image from 'next/image';
 
 import { Suspense } from 'react';
 
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getStorageCart } from '@/src/store/reducers/Cart';
+import { getCartFromLocaleStorage } from '@/src/utils/getCartLocaleStorage';
 
 export default function Home() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage?.getItem('cart'));
-    if (storedCart) {
-      dispatch(getStorageCart(storedCart));
-    }
-  }, []);
+  getCartFromLocaleStorage(); // method to getCart
 
   return (
     <>

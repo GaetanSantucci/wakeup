@@ -1,7 +1,7 @@
 @use '/public/styles/mixins';
 @use '/public/styles/vars';
 
-.additionnal_container {
+.container {
   position: relative;
   display: flex;
   width: 70%;
@@ -55,19 +55,21 @@
   }
 
   &_cards {
-    @include mixins.flex(column);
-    width: 60%;
+    @include mixins.flex($direction: row, $justify: space-between);
+    flex-wrap: wrap;
+    width: 100%;
     margin: 4rem 0;
 
     &_item {
-      @include mixins.flex(row);
-      width: 100%;
+      @include mixins.flex(row, stretch);
+      width: 42%;
+      height: 280px;
       margin: 0.5rem;
       &_details {
         width: 50%;
         height: 100%;
         margin-left: 2rem;
-        @include mixins.flex(column, flex-start, space-evenly);
+        @include mixins.flex(column, flex-start, space-between);
         border-top: 1px solid #1c1c1c;
         // border-bottom: 1px solid #1c1c1c;
         // border-right: 1px solid #1c1c1c;
@@ -82,6 +84,7 @@
 
         & h3 {
           font-size: 1.4rem;
+          text-align: start;
         }
       }
       &_image {
@@ -89,7 +92,7 @@
 
         & img {
           width: 210px;
-          height: 50%;
+          height: 100%;
         }
       }
     }
@@ -103,7 +106,7 @@
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
-    margin-top: 0;
+    margin-top: 2rem;
     align-items: center;
     width: 80%;
 
@@ -130,6 +133,7 @@
 
     &_cards {
       width: 100%;
+      display: none;
 
       &_item {
         position: relative;

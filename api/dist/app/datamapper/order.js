@@ -18,13 +18,16 @@ class OrderDatamapper extends CoreDataMapper {
         ${this.tableName} od 
           INNER JOIN order_items oi ON od.id = oi.order_id 
           INNER JOIN payment_details pd ON od.id = pd.order_id 
-        WHERE 
-          pd.status = 'paid'
-          AND od.booking_date > CURRENT_DATE
-        GROUP BY 
-          od.booking_date
-          ORDER BY 
-          od.booking_date ASC;`,
+          INNER JOIN product p ON oi.product_id = p.id
+          WHERE 
+         p.category = 'plateau'        
+        AND pd.status = 'paid'
+            AND od.booking_date > CURRENT_DATE
+            
+          GROUP BY 
+            od.booking_date
+            ORDER BY 
+            od.booking_date ASC;`
             };
             const result = await this.client.query(preparedQuery);
             return result.rows;

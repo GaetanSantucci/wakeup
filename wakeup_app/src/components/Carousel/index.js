@@ -57,13 +57,14 @@ const HomepageCarousel = ({ items }) => {
 };
 
 const AddonCarousel = ({ products }) => {
-  let addon = []
+
+  let addons = []
   products.forEach(element => {
     if (element.category === 'boisson' || element.category === 'decoration') {
-      addon.push(element)
+      addons.push(element)
     }
   });
-  const [items, setItems] = useState(products);
+  const [items, setItems] = useState(addons);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goTo = (index) => {
@@ -92,7 +93,7 @@ const AddonCarousel = ({ products }) => {
   return (
     <div className="carousel-addon">
       <div className="carousel-addon-inner">
-        {addon.map((item, i) => {
+        {addons.map((item, i) => {
 
           const price = item.price.toString().replace('.', ',');
           return (

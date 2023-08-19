@@ -56,7 +56,7 @@ export default async function Product({ id }) {
         }
       </div>
       <Suspense fallback={<Spinner />}>
-        <Additionnal />
+        {/* <Additionnal /> */}
       </Suspense>
     </>
   );

@@ -1,4 +1,4 @@
-import { Product, ScrollToTop, Spinner } from '@/src/components';
+import { Additionnal, Product, ScrollToTop, Spinner } from '@/src/components';
 import { Suspense } from 'react';
 
 export default async function Post({ params }) {
@@ -7,6 +7,7 @@ export default async function Post({ params }) {
       <ScrollToTop />
       <Suspense fallback={<Spinner />} />
       <Product id={+params.id || 1} />
+      <Additionnal />
       <Suspense />
     </>
   );

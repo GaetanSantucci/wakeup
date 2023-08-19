@@ -1,13 +1,24 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getStorageCart } from '@/src/store/reducers/Cart';
+import { getCartFromLocaleStorage } from '@/src/utils/getCartLocaleStorage';
+
 export default function CheckoutSuccessPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [counter, setCounter] = useState(3);
   console.log('counter:', counter);
 
+  getCartFromLocaleStorage(); // method to getCart
+
   useEffect(() => {
+    // const storedCart = JSON.parse(localStorage?.getItem('cart'));
+    // if (storedCart) {
+    //   dispatch(getStorageCart(storedCart));
+    // }
     const timer = setInterval(() => {
       setCounter((prevCounter) => prevCounter - 1);
     }, 1000);

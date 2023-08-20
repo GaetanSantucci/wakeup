@@ -97,7 +97,7 @@ export default function Contact() {
 
   return (
     <div className={styles.container_contact}>
-      <h2 className={styles.container_contact_title}>N&apos;hésitez pas à nous contacter</h2>
+      <h2 className={styles.container_contact_title}>Contactez nous</h2>
       <div className={styles.container_contact_form}>
         <Box
           component='form'

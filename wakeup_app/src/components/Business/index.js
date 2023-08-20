@@ -6,6 +6,7 @@ const Business = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.container_title}>Nos prestations</h2>
+      <p className={styles.container_text}>Brunch de mariage, petit-déjeuner d&apos;entreprise, nous pouvons vous accompagner pour un jour spécial</p>
       <div className={styles.container_business_details}>
         <div className={styles.container_business_details_background} data-testid="business_image">
           <Image src={'/images/business.webp'} alt='photo presentation plateau entreprise' width={500} height={700} />

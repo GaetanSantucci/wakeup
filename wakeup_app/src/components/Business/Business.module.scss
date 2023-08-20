@@ -7,6 +7,11 @@
 
   &_title {
     text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  &_text {
+    text-align: center;
     margin-bottom: 3rem;
   }
 
@@ -32,7 +37,6 @@
         align-items: flex-start;
         justify-content: space-between;
         line-height: 1.2;
-        letter-spacing: 1px;
         text-align: start;
 
         &_price {
@@ -48,9 +52,18 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
     width: 100%;
+    &_business_details_background {
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    // width: 100%;
     &_title {
       font-size: calc(1.4rem + 0.6vw);
       text-align: center;

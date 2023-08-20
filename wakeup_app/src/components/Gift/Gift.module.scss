@@ -25,7 +25,6 @@
       padding: 0 2rem;
       text-align: start;
       line-height: 1.2;
-      letter-spacing: 1px;
 
       & > * {
         margin: 0.5rem;
@@ -34,9 +33,19 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
     width: 100%;
+
+    &_details_background {
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    // width: 100%;
     margin-top: 2rem;
     &_details {
       flex-direction: column;
@@ -44,6 +53,7 @@
       &_background {
         width: 100%;
         height: auto;
+        overflow: hidden;
         & img {
           width: 100%;
           height: auto;

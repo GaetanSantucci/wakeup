@@ -8,13 +8,13 @@ import { useMediaQuery } from '@/src/hook/useMediaQuery';
 
 const Navbar = ({ toggleMenu }) => {
 
-  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+  const isBreakpoint = useMediaQuery(1024) // Custom hook to check screen size, return boolean
 
   const router = usePathname();
 
   const closeMenu = () => {
     if (isBreakpoint) {
-      setTimeout(() => toggleMenu(), 400)
+      setTimeout(() => toggleMenu(), 200)
     }
   }
 

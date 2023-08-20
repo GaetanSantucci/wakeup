@@ -21,7 +21,6 @@ const CartModale = () => {
   const dispatch = useDispatch();
   const cartOpen = useSelector((state) => state.settings.cartIsOpen)
   const { cart } = useSelector((state) => state.cart)
-  console.log('cart:', cart);
   const { loginModale } = useSelector((state) => state.settings)
 
   const closeModale = () => {
@@ -76,24 +75,6 @@ const ProfileModale = () => {
   const [searchTerm, setSearchTerm] = useState(user?.address?.label || '');
   const [results, setResults] = useState([]);
 
-
-  // const handleSearchInput = async (event) => {
-  //   if (event.target.value < 3) setResults([])
-  //   setSearchTerm(event.target.value)
-
-  //   if (searchTerm.length > 3) {
-  //     try {
-  //       const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${event.target.value}&type=housenumber&autocomplete=1`)
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setResults(data.features)
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  // }
-
   const handleCloseProfileModale = () => {
     dispatch(toggleProfileModale())
   }
@@ -102,9 +83,7 @@ const ProfileModale = () => {
   const submitUserProfile = async (event) => {
     event.preventDefault();
     await update(user)
-    // console.log('updateUser dans la modale au submit: ', updateUser);
     console.log('je mets a jour le profile')
-    // dispatch(toggleProfileModale())
   }
 
   const handleSetAddress = (elem) => {
@@ -148,15 +127,6 @@ const ProfileModale = () => {
         <div className='profile_modale_form_input'>
           <input id='search' type='search' placeholder='Saisissez votre adresse' aria-autocomplete='list' onChange={handleInputChange} value={user.address.name} />
         </div>
-        {/* {
-          results && (
-            results.map(elem => {
-              return (
-                <div className='profile_modale_form_input_results' onClick={() => handleSetAddress(elem.properties)} key={elem.properties.id}>{elem.properties.label}</div>
-              )
-            })
-          )
-        } */}
         <div className='profile_modale_form_input'>
           <input type='text' id='complement' placeholder='Étage, bâtiment, interphone' onChange={handleInputChange} value={user.address.complement} />
         </div>

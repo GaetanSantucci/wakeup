@@ -13,7 +13,8 @@ import { UserLogin } from '../../Form';
 const CartNavbar = ({ toggleMenu }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
+  const isBreakpoint = useMediaQuery(1024) // Custom hook to check screen size, return boolean
+  console.log('isBreakpoint:', isBreakpoint);
 
   const { user, isLogged } = useSelector((state) => state.user)
   const cart = useSelector((state) => state.cart.cart)
@@ -34,12 +35,13 @@ const CartNavbar = ({ toggleMenu }) => {
   }
 
   const closeMenu = () => {
-    // if (isBreakpoint) { //todo a reactiver apres modifs
+    // console.log('isBreakpoint:', isBreakpoint);
+    // if (isBreakpoint) { 
     //   setTimeout(() => toggleMenu(), 400)
     // }
     console.log("Je click sur l account");
     if (isLogged) {
-      router.push('/user/profile/${user.id}')
+      router.push(`/user/profile/${user.id}`)
     } else {
       dispatch(toggleLoginModale())
     }

@@ -17,10 +17,8 @@ const MobileNavbar = () => {
     <>
       <HamburgerMenu active={mobileNavbar} toggleMenu={handleActiveMenu} />
       <div className={mobileNavbar ? `${styles.container} ${styles.active_navbar}` : `${styles.container}`}  >
-        {/* <div> */}
         <CartNavbar className={mobileNavbar ? `${styles.menu_open}` : null} toggleMenu={handleActiveMenu} />
         <Navbar toggleMenu={handleActiveMenu} />
-        {/* </div> */}
       </div>
     </>
   )

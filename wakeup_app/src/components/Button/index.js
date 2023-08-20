@@ -20,7 +20,6 @@ import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST;
 
 const AddCartButton = ({ items }) => {
-  console.log('items:', items);
 
   const [added, setAdded] = useState(false);
 
@@ -63,9 +62,8 @@ const AddOrDeleteItems = ({ cart }) => {
 }
 
 const StripeButton = ({ cart }) => {
-  console.log('cart:', cart);
+
   const { user } = useSelector((state) => state.user)
-  console.log('user:', user);
 
   const handleCheckout = async () => {
     try {
@@ -82,7 +80,6 @@ const StripeButton = ({ cart }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('data:', data);
         if (data.url) {
           window.location.replace(data.url);
         }

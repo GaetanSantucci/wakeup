@@ -16,6 +16,7 @@
   padding: 1rem 1.6rem;
   box-shadow: 2px 2px 4px lightgray;
   border-radius: vars.$border-radius;
+  z-index: 999;
 
   &_passwordStrength {
     @include mixins.flex($direction: column, $justify: space-between);

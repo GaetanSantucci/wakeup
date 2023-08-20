@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   user: {
     id: '',
-    email: 'gaetan.santucci@outlook.com',
-    password: '',
+    email: 'test@gmail.com',
+    password: 'Pappano83!',
     confirmPwd: '',
-    lastname: 'Santucci',
-    firstname: 'Tess',
-    phone: '0629393202',
+    lastname: '',
+    firstname: '',
+    phone: '',
     address: {
       name: '',
       complement: '',
@@ -37,7 +37,9 @@ const userSlice = createSlice({
 
     userUpdate: (state, action) => {
       const { id, email, lastname, firstname, phone, address, role, newsletter_optin } = action.payload;
-      const { label, name, city, complement, postcode } = address;
+      if (address) {
+        const { name, city, complement, postcode } = address;
+      }
 
       return {
         ...state,
@@ -49,14 +51,13 @@ const userSlice = createSlice({
           lastname,
           firstname,
           phone,
-          address: {
-            ...state.user.address,
-            label,
-            name,
-            complement,
-            city,
-            postcode,
-          },
+          // address: {
+          //   ...state.user.address,
+          //   name,
+          //   complement,
+          //   city,
+          //   postcode,
+          // },
           role,
           newsletter_optin
         },

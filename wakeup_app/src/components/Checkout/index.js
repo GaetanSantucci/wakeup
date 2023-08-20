@@ -76,8 +76,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user)
-  const [searchTerm, setSearchTerm] = useState('' || user.address.name);
-  const [results, setResults] = useState(null); // to display the result of the addresses following the api data.gouv fetch
+  // const [searchTerm, setSearchTerm] = useState('' || user.address.name);
+  // const [results, setResults] = useState(null); // to display the result of the addresses following the api data.gouv fetch
   const [isDeliverableCity, setIsDeliverableCity] = useState([]); // to display if the city is in our database
   const [notInOurZone, setNotInOurZone] = useState(true); // to manage error if city is not in our area
   const [errorCity, setErrorCity] = useState(false);

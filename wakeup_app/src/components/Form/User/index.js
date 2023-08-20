@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-import { openRegisterForm, handleInputFocused } from '@/src/store/reducers/Settings';
+import { openRegisterForm, handleInputFocused, toggleLoginModale } from '@/src/store/reducers/Settings';
 import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/src/store/reducers/User';
 
 import { PasswordChecker } from '@/src/utils/passwordChecker';
@@ -59,11 +59,16 @@ const UserLogin = () => {
     } else {
       try {
         const { id, errorMessage } = await login(user.email, user.password);
+        console.log('id:', id);
 
         if (errorMessage) return dispatch(setErrorMessage(errorMessage))
 
         const response = await setUser(id)
-        if (response.id === id) router.push(`/user/profile/${response.id}`)
+        console.log('response:', response);
+        if (response.id === id) {
+          dispatch(toggleLoginModale())
+          router.push(`/user/profile/${response.id}`)
+        }
 
       } catch (err) {
         console.log(err)

@@ -5,7 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCartModale, toggleLoginModale } from '@/src/store/reducers/Settings';
-import { useMediaQuery } from '@/src/hook/useMediaQuery';
+// import { useMediaQuery } from '@/src/hook/useMediaQuery';
 import { useRouter } from 'next/navigation';
 
 import { UserLogin } from '../../Form';
@@ -13,8 +13,7 @@ import { UserLogin } from '../../Form';
 const CartNavbar = ({ toggleMenu }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const isBreakpoint = useMediaQuery(1024) // Custom hook to check screen size, return boolean
-  console.log('isBreakpoint:', isBreakpoint);
+  // const isBreakpoint = useMediaQuery(1024) // Custom hook to check screen size, return boolean
 
   const { user, isLogged } = useSelector((state) => state.user)
   const cart = useSelector((state) => state.cart.cart)
@@ -39,7 +38,6 @@ const CartNavbar = ({ toggleMenu }) => {
     // if (isBreakpoint) { 
     //   setTimeout(() => toggleMenu(), 400)
     // }
-    console.log("Je click sur l account");
     if (isLogged) {
       router.push(`/user/profile/${user.id}`)
     } else {

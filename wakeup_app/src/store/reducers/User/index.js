@@ -6,7 +6,7 @@ const initialState = {
     email: 'test@gmail.com',
     password: 'Pappano83!',
     confirmPwd: '',
-    lastname: '',
+    lastname: 'Santucci',
     firstname: '',
     phone: '',
     address: {

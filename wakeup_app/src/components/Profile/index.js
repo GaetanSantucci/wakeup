@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { ProfileModale } from '@/src/components';
 
@@ -17,7 +19,8 @@ import { toggleProfileModale } from '@/src/store/reducers/Settings';
 import Pseudo from '@/src/utils/pseudoProfilePage';
 
 import { useLogout } from '@/src/hook/useLogout';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { TextField } from '@mui/material';
 
 const UserProfile = () => {
   const { push } = useRouter();
@@ -26,9 +29,20 @@ const UserProfile = () => {
 
   const { isLogged, user } = useSelector((state) => state.user);
 
+  const [isUserUpdate, toggleIsUserUpdate] = useState(true)
+  const [lastname, setLastname] = useState(user.lastname || "");
+  const [firstname, setFirstname] = useState(user.firstname || "");
+  const [line1, setLine1] = useState(user.address.name || "");
+  const [line2, setLine2] = useState(user.address.complement || "");
+  const [postcode, setPostcode] = useState(user.address.postcode || "");
+  const [city, setCity] = useState(user.address.city || "");
+  const [email, setEmail] = useState(user.email || "");
+  const [phone, setPhone] = useState(user.phone || "");
+
+
   useEffect(() => {
     if (!isLogged) {
-      push('/login')
+      push('/')
     }
   })
 
@@ -40,73 +54,142 @@ const UserProfile = () => {
     logout();
   }
 
+  // const handleInputChangeCity = () => {
+  //todo recuperer methode pour zone de livraison
+  // }
+
+  const toggleUpdateUser = () => toggleIsUserUpdate(!isUserUpdate)
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("Je modifie les donnees user");
+  }
   return (
     <>
-      <h3 style={{ marginTop: '3rem', marginBottom: '3rem' }}>Bienvenu sur votre page membre</h3>
-      <div className={styles.container}>
-        <ProfileModale />
-        <div className={styles.container_card}>
-          <div className={styles.container_card_avatar} >
-            {user.lastname && user.firstname ? <h2> {<Pseudo user={user} />} </h2> : <AccountCircleIcon /* className={styles.avatar} */ />}
-            <SettingsIcon className={styles.settings} onClick={handleInputChange} />
-          </div>
-          <div className={styles.container_card_details}>
-            <div className={styles.container_card_contact}>
-              <div className={styles.container_card_input}>
-                <p>Email : <span>{user.email}</span></p>
-              </div>
-              <div className={styles.container_card_input}>
-                <p>Télephone : {user.phone}</p>
-              </div>
-            </div>
-            <div className={styles.container_card_name}>
-              <div className={styles.container_card_input}>
-                <p>Nom : <span>{user.lastname}</span></p>
-              </div>
-              <div className={styles.container_card_input}>
-                <p>Prénom : <span>{user.firstname}</span></p>
-              </div>
-            </div>
-            {user.address !== undefined && (
-              <div className={styles.container_card_address}>
-                <div className={styles.container_card_input}>
-                  <p>Adresse : {user.address?.name}</p>
-                </div>
-                {
-                  user.address?.complement && <div className={styles.container_card_input}>
-                    <p>Complement : {user.address?.complement}</p>
-                  </div>
-                }
+      {/* <h3 style={{ marginTop: '3rem', marginBottom: '3rem' }}>Bienvenu sur votre page membre</h3> */}
+      <section className={styles.container}>
+        <aside className={styles.container_user}>
+          <div className={styles.container_user_information}>
+            <h2>Mes coordonnées</h2>
+            {
+              isUserUpdate ?
+                <form onSubmit={handleFormSubmit}>
+                  <TextField
+                    label="Email"
+                    id='email'
+                    onChange={e => setEmail(e.target.value)}
+                    type="email"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    value={email}
+                    size='small'
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Téléphone"
+                    id='phone'
+                    onChange={e => setPhone(e.target.value)}
+                    type="tel"
+                    sx={{ mb: 1.4, width: '100%', padding: '' }}
+                    size='small'
+                    value={phone}
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Nom"
+                    id='lastname'
+                    onChange={e => setLastname(e.target.value)}
+                    type="text"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    size='small'
+                    value={lastname}
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Prénom"
+                    id='firstname'
+                    onChange={e => setFirstname(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    value={firstname}
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Adresse"
+                    id='name'
+                    onChange={e => setLine1(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    value={line1}
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Complément"
+                    id='complement'
+                    onChange={e => setLine2(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    value={line2}
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Code postal"
+                    id='postcode'
+                    onChange={e => setPostcode(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    value={postcode}
+                  // error={emailError}
+                  />
+                  <TextField
+                    label="Ville"
+                    id='city'
+                    onChange={e => setCity(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 1.4, width: '100%' }}
+                    value={city}
+                  // error={emailError}
+                  />
+                </form>
+                :
+                <ul className={styles.container_user_list}>
+                  <li><span>Email</span> : {user.email}</li>
+                  <li><span>Téléphone </span>: {user.phone}</li>
+                  <li><span>Nom </span>: {user.lastname}</li>
+                  <li><span>Prénom </span>: {user.firstname}</li>
+                  <li><span>Adresse </span>:</li>
+                  <li>{user.address.name}</li>
+                  <li>{user.address.postcode}</li>
+                  {
+                    user.address?.complement ?? <li>{user.address.complement}</li>
+                  }
+                </ul>
 
-                <div className={styles.container_card_input}>
-                  <p>Code postal : <span>{user.address?.postcode}</span></p>
-                  <p><span>Ville : {user.address?.city}</span></p>
-                </div>
-              </div>
-            )}
+            }
+          </div>
 
+
+          <div className={styles.container_user_button}>
+
+            {
+              isUserUpdate ?
+                <div className={styles.container_user_button_update}>
+                  <button>Annuler</button>
+                  <button>Enregistrer</button>
+                </div>
+                :
+                <button onClick={toggleUpdateUser}>Modifier</button>
+            }
+            <LogoutIcon />
           </div>
-        </div>
-        <div className={styles.booking_card}>
-          <div className={styles.next_book}>
-            <div className={styles.all_orders_card}>
-              <div>Plateau Sunshine<div className={styles.all_orders_card_details}><p>qté: 2</p><span>33,40 €</span></div><div><p>29-03-2023</p></div></div>
-            </div>
-          </div>
-          <div className={styles.all_orders}>
-            <div className={styles.all_orders_card}>
-              <div>Plateau Sunshine<div className={styles.all_orders_card_details}><p>qté: 2</p><span>66,80 €</span></div><div><p>14-01-2023</p></div></div>
-            </div>
-            <div className={styles.all_orders_card}>
-              <div>Plateau Best-Seller<div className={styles.all_orders_card_details}><p>qté: 2</p><span>46,40 €</span></div><div><p>04-12-2022</p></div></div>
-            </div>
-            <div className={styles.all_orders_card}>
-              <div>Plateau  Dolce Vita<div className={styles.all_orders_card_details}><p>qté: 2</p><span>53,40 €</span></div><div><p>28-11-2022</p></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button className={styles.profile_logout} onClick={userLogout}>Se deconnecter</button>
+        </aside>
+        <div className={styles.container_booking}></div>
+      </section>
+      {/* <button className={styles.profile_logout} onClick={userLogout}>Se deconnecter</button> */}
     </>
   )
 }

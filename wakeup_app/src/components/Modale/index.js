@@ -73,46 +73,6 @@ const CartModale = () => {
 
 const ProfileModale = () => {
 
-  const dispatch = useDispatch();
-  const { update } = useSetupUser();
-
-  const { user } = useSelector((state) => state.user);
-  const profileOpen = useSelector((state) => state.settings.profileIsOpen);
-
-  // state of address research
-  const [searchTerm, setSearchTerm] = useState(user?.address?.label || '');
-  const [results, setResults] = useState([]);
-
-  const handleCloseProfileModale = () => {
-    dispatch(toggleProfileModale())
-  }
-
-
-  const submitUserProfile = async (event) => {
-    event.preventDefault();
-    await update(user)
-    console.log('je mets a jour le profile')
-  }
-
-  const handleSetAddress = (elem) => {
-    const { label, name, city, postcode } = elem
-    dispatch(setAddress({ label, name, city, postcode }))
-    // Results to undefined to close div research
-    setSearchTerm(label)
-    setResults([])
-  }
-
-  // Dynamic method for store input by type
-  const handleInputChange = (event) => {
-    const { id, value, checked } = event.target;
-    if (id === 'complement') {
-      dispatch(updateComplement(value));
-    } else if (id === 'newsletter_optin') {
-      dispatch(toggleCheckbox(checked));
-    } else {
-      dispatch(inputValue({ inputType: id, value }));
-    }
-  };
   const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
 
   let widthElement = '45%'
@@ -154,6 +114,55 @@ const ProfileModale = () => {
     }
   });
 
+  const dispatch = useDispatch();
+  const { update } = useSetupUser();
+
+  const { user } = useSelector((state) => state.user);
+  const profileOpen = useSelector((state) => state.settings.profileIsOpen);
+
+  // state of address research
+  const [searchTerm, setSearchTerm] = useState(user?.address?.label || '');
+  const [results, setResults] = useState([]);
+
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [city, setCity] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const handleCloseProfileModale = () => {
+    dispatch(toggleProfileModale())
+  }
+
+
+  const handleSubmitUpdateProfile = async (event) => {
+    event.preventDefault();
+    // await update(user)
+    console.log('je mets a jour le profile')
+  }
+
+  // const handleSetAddress = (elem) => {
+  //   const { label, name, city, postcode } = elem
+  //   dispatch(setAddress({ label, name, city, postcode }))
+  //   // Results to undefined to close div research
+  //   setSearchTerm(label)
+  //   setResults([])
+  // }
+
+  // Dynamic method for store input by type
+  const handleInputChange = (event) => {
+    const { id, value, checked } = event.target;
+    if (id === 'complement') {
+      dispatch(updateComplement(value));
+    } else if (id === 'newsletter_optin') {
+
+      dispatch(toggleCheckbox(checked));
+    } else {
+      dispatch(inputValue({ inputType: id, value }));
+    }
+  };
+
 
   return (
     <div className={profileOpen ? 'profile_modale open_profile_modale' : 'profile_modale'}>
@@ -163,26 +172,57 @@ const ProfileModale = () => {
 
       <h3 className={styles.container_checkout_title}>Saisie de vos informations</h3>
       <ThemeProvider theme={theme}>
-        <Box
-          component='form'
-          sx={{
-            width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', /* margin: '8rem 0 2rem 0' */
-            '& > :not(style)': { m: '0.5rem', width: widthElement, fontSize: '0.8rem' },
-          }}
-          noValidate
-          autoComplete='off'
-        >
-          <TextField id='lastname' label='Nom' value={user.lastname} onChange={handleInputChange} variant='outlined' size='small' />
-          <TextField id='firstname' label='Prénom' value={user.firstname} onChange={handleInputChange} variant='outlined' size='small' />
-          <TextField id='email' label='Email' value={user.email} onChange={handleInputChange} type='email' variant='outlined' size='small' />
-          <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' />
+        <form onSubmit={handleSubmitUpdateProfile}>
+          {/* <TextField id='lastname' label='Nom' value={user.lastname || lastname || ''} onChange={(e) => setLastname(e.target.value)} variant='outlined' size='small' />
+          <TextField id='firstname' label='Prénom' value={user.firstname || firstname || ''} onChange={(e) => setFirstname(e.target.value)} variant='outlined' size='small' />
+          <TextField id='email' label='Email' value={user.email || email || ''} onChange={(e) => setEmail(e.target.value)} type='email' variant='outlined' size='small' />
+          <TextField id='phone' label='Téléphone' value={user.phone || phone || ''} onChange={(e) => setPhone(e.target.value)} type='tel' variant='outlined' size='small' />
           {/* <div className={styles.container_information}> */}
-          <TextField id='name' className={styles.container_information_input} label='Adresse' value={user.address?.name} onChange={handleInputChange} variant='outlined' autoComplete='off' size='small' />
-          <TextField id='complement' label='Bât., étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
-          <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' />
-          <div className={styles.container_information}>
-            <TextField id='city' className={styles.container_information_input} label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' />
-            {/* <div className={styles.container_information_address} >
+          {/* <TextField id='name' className={styles.container_information_input} label='Adresse' value={user.address?.name} onChange={() => set} variant='outlined' autoComplete='off' size='small' />
+          <TextField id='complement' label='Bât., étage, interphone...' value={user.address?.complement} onChange={() => set} variant='outlined' size='small' /> */}
+          {/* <TextField id='postcode' label='Code postal' value={user.address?.postcode || postcode || ''} onChange={(e) => setPostcode(e.target.value)} variant='outlined' size='small' />
+          <TextField id='city' className={styles.container_information_input} label='Ville' value={user.address?.city || city || ''} onChange={(e) => setCity(e.target.value)} variant='outlined' size='small' /> */}
+
+          <TextField
+            label="Email"
+            id='email'
+            onChange={e => setEmail(e.target.value)}
+            type="email"
+            sx={{ mb: 2 }}
+            fullWidth
+            value={email}
+          // error={emailError}
+          />
+          <TextField
+            label="Téléphone"
+            id='phone'
+            onChange={e => setPhone(e.target.value)}
+            type="tel"
+            sx={{ mb: 2 }}
+            fullWidth
+            value={phone}
+          // error={emailError}
+          />          <TextField
+            label="Nom"
+            id='lastname'
+            onChange={e => setLastname(e.target.value)}
+            type="text"
+            sx={{ mb: 2 }}
+            fullWidth
+            value={lastname}
+          // error={emailError}
+          />          <TextField
+            label="Prénom"
+            id='firstname'
+            onChange={e => setFirstname(e.target.value)}
+            type="text"
+            sx={{ mb: 2 }}
+            fullWidth
+            value={firstname}
+          // error={emailError}
+          />
+          {/* <div className={styles.container_information}> */}
+          {/* <div className={styles.container_information_address} >
                 <div className={styles.container_information_address_block} >
                   {
                     isDeliverableCity && (
@@ -197,9 +237,9 @@ const ProfileModale = () => {
                   }
                 </div>
               </div> */}
-          </div>
-        </Box>
-
+          {/* </div> */}
+          <button type='submit' onClick={handleCloseProfileModale} onSubmit={handleSubmitUpdateProfile} >Valider</button>
+        </form>
       </ThemeProvider >
       {/* <form className='profile_modale_form' onSubmit={submitUserProfile}>
         <div className='profile_modale_form_input'>
@@ -228,7 +268,8 @@ const ProfileModale = () => {
         )}
         <p>J&apos;accepte de recevoir des emails de la part de WAKE UP, newsletter, offre promotionnelle</p>
       </div>
-      <button type='submit' onClick={handleCloseProfileModale} >Valider</button>
+      // todo set user update to database
+
       {/* </form> */}
     </div>
   )

@@ -25,6 +25,7 @@ const getCustomerProfile = async (req, res) => {
         if (!uuidRegex.test(userId))
             throw new ErrorApi(`UUID non valide`, req, res, 400);
         const user = await User.findOne(userId);
+        console.log('user:', user);
         return res.status(200).json(user);
     }
     catch (err) {
@@ -34,7 +35,7 @@ const getCustomerProfile = async (req, res) => {
 };
 //? ----------------------------------------------------------- CREATE USER
 const signUp = async (req, res) => {
-    const { email, password, /* lastname, firstname  */ } = req.body;
+    const { email, password } = req.body;
     try {
         const isExist = await User.findUserIdentity(email);
         console.log('isExist:', isExist);
@@ -98,12 +99,17 @@ const updateCustomerProfile = async (req, res) => {
     logger('updateCustomerProfile: mis a jour du profile');
     console.log('req.body: ', req.body);
     try {
-        const userId = req.params.userId;
+        // const userId: UUID = req.params.userId as UUID;
+        const { id } = req.body;
+        console.log('id:', id);
+        // if (userId === id) { console.log("Ok c'est les meme", id, userId); }
+        // console.log('userId:', typeof userId);
+        // console.log('userId:', userId);
         const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         // Check if user exist     
-        if (!uuidRegex.test(userId))
+        if (!uuidRegex.test(id))
             throw new ErrorApi(`UUID non valide`, req, res, 400);
-        const userExist = await User.findOne(userId);
+        const userExist = await User.findOne(id);
         console.log('userExist: ', userExist);
         if (!userExist)
             throw new ErrorApi(`Utilisateur non trouvé !`, req, res, 401);

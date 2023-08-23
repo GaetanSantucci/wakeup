@@ -52,6 +52,34 @@ END;
 $$
 ;
 
+CREATE OR REPLACE FUNCTION user_update(jsonb)
+RETURNS BOOLEAN AS $$
+DECLARE
+  updated_rows INTEGER;
+  BEGIN
+        -- Update user
+        UPDATE "user"
+        SET 
+            "email" = COALESCE(($1 ->> 'email')::EMAIL, "email"),
+            "password" = COALESCE(($1 ->> 'password')::TEXT, "password"),
+            "lastname" = COALESCE(($1 ->> 'lastname')::TEXT, "lastname"), 
+            "firstname" = COALESCE(($1 ->> 'firstname')::TEXT, "firstname"),
+            "address" = COALESCE(($1 ->> 'address')::JSONB, "address"),
+            "phone" = COALESCE(($1 ->> 'phone')::TEXT, "phone"),
+            "role" = COALESCE(($1 ->> 'role')::TEXT, "role"),
+            "newsletter_optin" = COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, "newsletter_optin"),
+            "update_at" = NOW()
+        WHERE "id" = ($1 ->> 'id')::UUID
+        RETURNING * INTO updated_rows;
+IF updated_rows > 0 THEN
+    RETURN TRUE;
+  ELSE
+    RETURN FALSE;
+  END IF;
+END;
+$$
+ LANGUAGE plpgsql;
+ 
 
 --?-------------------------------------------------------------
 --? FUCNTION TO CREATE payment_details, need object in args 

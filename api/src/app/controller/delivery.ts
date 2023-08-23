@@ -9,7 +9,7 @@ const logger = debug('Controller');
 
 const getAllAreas = async (req: Request, res: Response) => {
   try {
-    const allAreas = await Delivery.findAll();
+    const allAreas = await Delivery.getAllCityByName();
     if (!allAreas) throw new ErrorApi('Impossible d\'obtenir les blogs', req, res, 400);
 
     return res.status(200).json(allAreas)

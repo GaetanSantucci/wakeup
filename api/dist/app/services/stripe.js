@@ -12,8 +12,8 @@ const createStripeOrder = async (req, res) => {
         email: user.email,
         address: {
             city: user.address.city,
-            line1: user.address.name,
-            line2: user.address.complement,
+            line1: user.address.line1,
+            line2: user.address.line2,
             postal_code: user.address.postcode
         }
     });

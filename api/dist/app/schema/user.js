@@ -9,13 +9,10 @@ const userSchema = {
         address: {
             type: "object",
             properties: {
-                label: {
+                line1: {
                     type: "string"
                 },
-                name: {
-                    type: "string"
-                },
-                complement: {
+                line2: {
                     type: "string"
                 },
                 city: {
@@ -46,13 +43,10 @@ const userSchemaUpdated = {
         address: {
             type: "object",
             properties: {
-                label: {
+                lin1: {
                     type: "string"
                 },
-                name: {
-                    type: "string"
-                },
-                complement: {
+                line2: {
                     type: "string"
                 },
                 city: {

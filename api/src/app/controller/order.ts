@@ -74,8 +74,8 @@ const createOrderWithStripe = async (data: DataStripe, req: Request, res: Respon
       firstname: data.metadata.firstname,
       phone: data.metadata.phone,
       address: {
-        name: data.customer_details.address.line1,
-        complement: data.customer_details.address.line2,
+        line1: data.customer_details.address.line1,
+        line2: data.customer_details.address.line2,
         city: data.customer_details.address.city,
         postcode: data.customer_details.address.postcode,
       }
@@ -111,8 +111,8 @@ const createOrderWithPaypal = async (data: DataPaypal, req: Request) => {
       lastname: user.lastname,
       firstname: user.firstname,
       address: {
-        name: user.address.line1,
-        complement: user.address.line2,
+        line1: user.address.line1,
+        line2: user.address.line2,
         city: user.address.city,
         postcode: user.address.postcode,
       }

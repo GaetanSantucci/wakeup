@@ -1,3 +1,4 @@
+import pg from 'pg';
 import { client } from '../services/dbClient.js';
 import { CoreDataMapper } from './coreDatamapper.js';
 
@@ -11,8 +12,18 @@ class DeliveryDatamapper extends CoreDataMapper {
 
   // createFunctionName = 'create_blog';
   // updateFunctionName = 'update_blog';
-
-  //& If need to create specific method for LocationDataMapper
+  async getAllCityByName() {
+    if (this.client instanceof pg.Pool) {
+      const preparedQuery = {
+        text: `SELECT * FROM 
+    ${this.tableName} 
+    ORDER BY 
+        city ASC;`
+      };
+      const result = await this.client.query(preparedQuery);
+      return result.rows;
+    }
+  }
 
 }
 

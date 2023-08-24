@@ -6,6 +6,9 @@ import { Payment } from '../datamapper/payment.js';
 import { DataStripe } from '../type/stripe.js';
 import { DataPaypal } from '../type/paypal.js';
 
+import { UUID } from '../type/user.js';
+
+
 // ~ DEBUG CONFIG ~ //
 import debug from 'debug';
 const logger = debug('Controller');
@@ -13,6 +16,23 @@ const logger = debug('Controller');
 const getAllOrdersForCalendar = async (req: Request, res: Response) => {
   try {
     const allOrders = await Order.getAllOrders();
+    // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
+
+    return res.status(200).json(allOrders)
+  } catch (err) {
+    if (err instanceof Error) logger(err.message)
+  }
+}
+
+const getAllOrdersByUser = async (req: Request, res: Response) => {
+  const userId: UUID = req.params.userId as UUID;
+  console.log('userId:', userId);
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  // Check if user exist     
+  if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
+  try {
+    const allOrders = await Order.getOrderByUser(userId);
     // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
 
     return res.status(200).json(allOrders)
@@ -123,4 +143,4 @@ const createOrderWithPaypal = async (data: DataPaypal, req: Request) => {
   console.log("Order successfully created");
 }
 
-export { getAllOrdersForCalendar, createOrderWithStripe, createOrderWithPaypal }
+export { getAllOrdersForCalendar, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal }

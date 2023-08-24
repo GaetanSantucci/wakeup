@@ -33,6 +33,47 @@ class OrderDatamapper extends CoreDataMapper {
             return result.rows;
         }
     }
+    async getOrderByUser(userId) {
+        if (this.client instanceof pg.Pool) {
+            const preparedQuery = {
+                text: `WITH ProductSums AS (
+          SELECT
+            oi.product_id,
+            SUM(p.price * oi.quantity) AS total_product_price,
+            SUM(oi.quantity) AS total_order_quantity
+          FROM order_items oi
+          JOIN product p ON oi.product_id = p.id
+          GROUP BY oi.product_id
+        )
+        
+        SELECT
+          od.booking_date,
+          pd.status AS payment_status,
+          u.id AS user_id,
+          u.email AS user_email,
+          JSON_AGG(
+            JSON_BUILD_OBJECT(
+              'product_id', ps.product_id,
+              'product_name', p.name,
+              'total_product_price', ps.total_product_price,
+              'total_order_quantity', ps.total_order_quantity
+            )
+          ) AS products
+        FROM ${this.tableName}  od
+        JOIN payment_details pd ON od.payment_id = pd.payment_id
+        JOIN "user" u ON od.user_id = u.id
+        JOIN order_items oi ON od.id = oi.order_id
+        JOIN ProductSums ps ON oi.product_id = ps.product_id
+        JOIN product p ON oi.product_id = p.id
+        WHERE pd.status = 'paid' AND u.id = $1
+        GROUP BY od.booking_date, pd.status, u.id, u.email
+        ORDER BY od.booking_date ASC;`,
+                values: [userId]
+            };
+            const result = await this.client.query(preparedQuery);
+            return result.rows;
+        }
+    }
 }
 const Order = new OrderDatamapper(client);
 class OrderItemsDatamapper extends CoreDataMapper {

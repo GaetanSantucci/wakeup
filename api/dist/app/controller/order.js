@@ -16,6 +16,23 @@ const getAllOrdersForCalendar = async (req, res) => {
             logger(err.message);
     }
 };
+const getAllOrdersByUser = async (req, res) => {
+    const userId = req.params.userId;
+    console.log('userId:', userId);
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    // Check if user exist     
+    if (!uuidRegex.test(userId))
+        throw new ErrorApi(`UUID non valide`, req, res, 400);
+    try {
+        const allOrders = await Order.getOrderByUser(userId);
+        // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
+        return res.status(200).json(allOrders);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            logger(err.message);
+    }
+};
 const createOrderFromData = async (orderBody) => {
     try {
         const isExist = await User.findUserIdentity(orderBody.user.email);
@@ -103,4 +120,4 @@ const createOrderWithPaypal = async (data, req) => {
     await createOrderFromData(orderBody);
     console.log("Order successfully created");
 };
-export { getAllOrdersForCalendar, createOrderWithStripe, createOrderWithPaypal };
+export { getAllOrdersForCalendar, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal };

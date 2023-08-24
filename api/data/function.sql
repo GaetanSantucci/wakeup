@@ -52,10 +52,9 @@ END;
 $$
 ;
 
-CREATE OR REPLACE FUNCTION user_update(jsonb)
-RETURNS BOOLEAN AS $$
-DECLARE
-  updated_rows INTEGER;
+
+CREATE OR REPLACE FUNCTION update_user(jsonb)
+RETURNS VOID AS $$
   BEGIN
         -- Update user
         UPDATE "user"
@@ -69,13 +68,7 @@ DECLARE
             "role" = COALESCE(($1 ->> 'role')::TEXT, "role"),
             "newsletter_optin" = COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, "newsletter_optin"),
             "update_at" = NOW()
-        WHERE "id" = ($1 ->> 'id')::UUID
-        RETURNING * INTO updated_rows;
-IF updated_rows > 0 THEN
-    RETURN TRUE;
-  ELSE
-    RETURN FALSE;
-  END IF;
+        WHERE "id" = ($1 ->> 'id')::UUID;
 END;
 $$
  LANGUAGE plpgsql;
@@ -205,6 +198,41 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+
+-- View for get All order by user 
+
+WITH ProductSums AS (
+  SELECT
+    oi.product_id,
+    SUM(p.price * oi.quantity) AS total_product_price,
+    SUM(oi.quantity) AS total_order_quantity
+  FROM order_items oi
+  JOIN product p ON oi.product_id = p.id
+  GROUP BY oi.product_id
+)
+
+SELECT
+  od.booking_date,
+  pd.status AS payment_status,
+  u.id AS user_id,
+  u.email AS user_email,
+  JSON_AGG(
+    JSON_BUILD_OBJECT(
+      'product_id', ps.product_id,
+      'product_name', p.name,
+      'total_product_price', ps.total_product_price,
+      'total_order_quantity', ps.total_order_quantity
+    )
+  ) AS products
+FROM order_details od
+JOIN payment_details pd ON od.payment_id = pd.payment_id
+JOIN "user" u ON od.user_id = u.id
+JOIN order_items oi ON od.id = oi.order_id
+JOIN ProductSums ps ON oi.product_id = ps.product_id
+JOIN product p ON oi.product_id = p.id
+WHERE pd.status = 'paid' AND u.id = '1c2aeaba-daa3-4e6b-b505-ef15bf9416d4'
+GROUP BY od.booking_date, pd.status, u.id, u.email
+ORDER BY od.booking_date ASC;
 
 DROP FUNCTION IF EXISTS create_user();
 DROP FUNCTION IF EXISTS insert_payment_details();

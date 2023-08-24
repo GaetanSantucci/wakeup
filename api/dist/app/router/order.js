@@ -1,5 +1,6 @@
 import { Router } from 'express';
 const router = Router();
-import { getAllOrdersForCalendar } from '../controller/order.js';
+import { getAllOrdersForCalendar, getAllOrdersByUser } from '../controller/order.js';
 router.get('/orders', getAllOrdersForCalendar);
+router.get('/orders/:userId', getAllOrdersByUser);
 export { router };

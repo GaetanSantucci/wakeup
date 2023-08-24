@@ -176,15 +176,18 @@ const UserProfile = () => {
                 <ul className={styles.container_user_list}>
                   <li><EmailIcon /> {user.email}</li>
                   <li><PhoneIcon /> {user.phone}</li>
-                  <li><AccountBoxIcon /> </li>
-                  <li>Nom : {user.lastname}</li>
-                  <li>Prénom : {user.firstname}</li>
-                  <li>Adresse :</li>
-                  <li>{user.address.name}</li>
-                  <li>{user.address.postcode}</li>
-                  {
-                    user.address?.complement ?? <li>{user.address.complement}</li>
-                  }
+                  <li><AccountBoxIcon /><span>Nom : </span>{user.lastname}</li>
+                  {/* <li>Nom : {user.lastname}</li> */}
+                  <li className={styles.container_user_list_firstname}><span>Prénom : </span>{user.firstname}</li>
+                  <li className={styles.container_user_list_address}>Adresse :</li>
+                  <div className={styles.container_user_list_address_block}>
+                    <li><span>Rue : </span> {user.address.line1}</li>
+                    {
+                      user.address?.line2 ?? <li>{user.address.line2}</li>
+                    }
+                    <li><span>Code postal : </span> {user.address.postcode}</li>
+                    <li><span>Ville : </span>{user.address.city}</li>
+                  </div>
                 </ul>
 
             }
@@ -202,7 +205,10 @@ const UserProfile = () => {
                 :
                 <button onClick={toggleUpdateUser}>Modifier</button>
             }
-            <LogoutIcon />
+            <div onClick={userLogout} className={styles.container_user_logout}>
+              <LogoutIcon />
+              <div className={styles.container_user_logout_info}>Se déconnecter</div>
+            </div>
           </div>
         </aside>
         <div className={styles.container_booking}></div>

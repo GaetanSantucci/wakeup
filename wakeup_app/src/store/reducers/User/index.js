@@ -55,9 +55,7 @@ const userSlice = createSlice({
 
     userUpdate: (state, action) => {
       const { id, email, lastname, firstname, phone, address, role, newsletter_optin } = action.payload;
-      // if (address) {
-      //   const { line1, line2, city, postcode } = address;
-      // }
+      console.log('action.payload:', action.payload);
 
       return {
         ...state,
@@ -65,17 +63,14 @@ const userSlice = createSlice({
           ...state.user,
           id,
           email,
-          password: state.user.password,
+          // password: state.user.password,
           lastname,
           firstname,
           phone,
-          // address: {
-          //   ...state.user.address,
-          //   line1,
-          //   line2,
-          //   city,
-          //   postcode,
-          // },
+          address: {
+            ...state.user.address,
+            ...address
+          },
           role,
           newsletter_optin
         },
@@ -114,3 +109,4 @@ const userSlice = createSlice({
 
 export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, userUpdate, userUpdateProfile, toggleCheckbox } = userSlice.actions;
 export default userSlice.reducer;
+

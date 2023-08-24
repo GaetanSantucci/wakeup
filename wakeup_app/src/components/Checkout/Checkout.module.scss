@@ -19,6 +19,20 @@
       margin-bottom: 2rem;
     }
 
+    &_form {
+      width: 100%;
+      @include mixins.flex(column);
+
+      &_50 {
+        width: 100%;
+        @include mixins.flex(row, $justify: space-evenly);
+      }
+      &_100 {
+        width: 100%;
+        @include mixins.flex(row, $justify: center);
+      }
+    }
+
     &_desc {
       margin: 1.6rem 0 0 0;
     }
@@ -48,7 +62,7 @@
 
   &_information {
     &_input {
-      width: 100%;
+      // width: 100%;
       position: relative;
       &_error {
         position: absolute;

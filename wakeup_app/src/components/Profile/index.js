@@ -1,39 +1,37 @@
 'use client';
 import styles from './Profile.module.scss';
 
-import Cookies from 'js-cookie';
-
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import EditIcon from '@mui/icons-material/Edit';
-
-import { ProfileModale } from '@/src/components';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import { toggleProfileModale } from '@/src/store/reducers/Settings';
-
-import Pseudo from '@/src/utils/pseudoProfilePage';
 
 import { useLogout } from '@/src/hook/useLogout';
 import { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
+import { useSetupUser } from '@/src/hook/useSetUser';
+import { userUpdateProfile } from '@/src/store/reducers/User';
 
 const UserProfile = () => {
-  const { push } = useRouter();
   const dispatch = useDispatch();
+  const { push } = useRouter();
   const { logout } = useLogout();
+  const { update } = useSetupUser();
 
   const { isLogged, user } = useSelector((state) => state.user);
+  console.log('user:', user.id);
 
   const [isUserUpdate, toggleIsUserUpdate] = useState(true)
   const [lastname, setLastname] = useState(user.lastname || "");
   const [firstname, setFirstname] = useState(user.firstname || "");
-  const [line1, setLine1] = useState(user.address.name || "");
-  const [line2, setLine2] = useState(user.address.complement || "");
+  const [line1, setLine1] = useState(user.address.line1 || "");
+  const [line2, setLine2] = useState(user.address.line2 || "");
   const [postcode, setPostcode] = useState(user.address.postcode || "");
   const [city, setCity] = useState(user.address.city || "");
   const [email, setEmail] = useState(user.email || "");
@@ -60,9 +58,28 @@ const UserProfile = () => {
 
   const toggleUpdateUser = () => toggleIsUserUpdate(!isUserUpdate)
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log("Je modifie les donnees user");
+    const data = {
+      id: user.id,
+      email,
+      lastname,
+      firstname,
+      phone,
+      address: {
+        line1,
+        line2,
+        postcode,
+        city
+      }
+    }
+    dispatch(userUpdateProfile(data));
+
+    toggleIsUserUpdate(false)
+
+    const updateUser = await update(data)
+    console.log('updateUser:', updateUser);
   }
   return (
     <>
@@ -73,7 +90,7 @@ const UserProfile = () => {
             <h2>Mes coordonnées</h2>
             {
               isUserUpdate ?
-                <form onSubmit={handleFormSubmit}>
+                <form >
                   <TextField
                     label="Email"
                     id='email'
@@ -116,7 +133,7 @@ const UserProfile = () => {
                   />
                   <TextField
                     label="Adresse"
-                    id='name'
+                    id='line1'
                     onChange={e => setLine1(e.target.value)}
                     size='small'
                     type="text"
@@ -126,7 +143,7 @@ const UserProfile = () => {
                   />
                   <TextField
                     label="Complément"
-                    id='complement'
+                    id='line2'
                     onChange={e => setLine2(e.target.value)}
                     size='small'
                     type="text"
@@ -157,11 +174,12 @@ const UserProfile = () => {
                 </form>
                 :
                 <ul className={styles.container_user_list}>
-                  <li><span>Email</span> : {user.email}</li>
-                  <li><span>Téléphone </span>: {user.phone}</li>
-                  <li><span>Nom </span>: {user.lastname}</li>
-                  <li><span>Prénom </span>: {user.firstname}</li>
-                  <li><span>Adresse </span>:</li>
+                  <li><EmailIcon /> {user.email}</li>
+                  <li><PhoneIcon /> {user.phone}</li>
+                  <li><AccountBoxIcon /> </li>
+                  <li>Nom : {user.lastname}</li>
+                  <li>Prénom : {user.firstname}</li>
+                  <li>Adresse :</li>
                   <li>{user.address.name}</li>
                   <li>{user.address.postcode}</li>
                   {
@@ -178,8 +196,8 @@ const UserProfile = () => {
             {
               isUserUpdate ?
                 <div className={styles.container_user_button_update}>
-                  <button>Annuler</button>
-                  <button>Enregistrer</button>
+                  <button onClick={toggleUpdateUser}>Annuler</button>
+                  <button type='submit ' onClick={handleFormSubmit}>Enregistrer</button>
                 </div>
                 :
                 <button onClick={toggleUpdateUser}>Modifier</button>

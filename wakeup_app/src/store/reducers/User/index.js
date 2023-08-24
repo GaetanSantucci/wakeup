@@ -10,8 +10,8 @@ const initialState = {
     firstname: '',
     phone: '',
     address: {
-      name: '',
-      complement: '',
+      line1: '',
+      line2: '',
       city: '',
       postcode: '',
     },
@@ -30,16 +30,34 @@ const userSlice = createSlice({
     inputValue: (state, action) => {
       const { inputType, value } = action.payload;
       console.log('inputType:', inputType);
-      if (inputType === 'complement' || 'postcode ' || 'city' || 'name') state.user.address[inputType] = action.payload.value;
-      const newValue = inputType === 'newsletter_optin' ? value === 'on' : value;
-      state.user[inputType] = newValue;
+      switch (inputType) {
+        case 'line1':
+        case 'line2':
+        case 'postcode':
+        case 'city':
+          state.user.address[inputType] = value;
+          break;
+        case 'newsletter_optin':
+          state.user[inputType] = value === 'on';
+          break;
+        default:
+          state.user[inputType] = value;
+          break;
+      }
+    },
+
+    userUpdateProfile: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
 
     userUpdate: (state, action) => {
       const { id, email, lastname, firstname, phone, address, role, newsletter_optin } = action.payload;
-      if (address) {
-        const { name, city, complement, postcode } = address;
-      }
+      // if (address) {
+      //   const { line1, line2, city, postcode } = address;
+      // }
 
       return {
         ...state,
@@ -53,8 +71,8 @@ const userSlice = createSlice({
           phone,
           // address: {
           //   ...state.user.address,
-          //   name,
-          //   complement,
+          //   line1,
+          //   line2,
           //   city,
           //   postcode,
           // },
@@ -78,9 +96,10 @@ const userSlice = createSlice({
       }
     },
 
-    updateComplement: (state, action) => {
-      state.user.address.complement = action.payload;
-    },
+
+    // updateComplement: (state, action) => {
+    //   state.user.address.complement = action.payload;
+    // },
     setSuccessMessage: (state, action) => {
       state.isSuccess = action.payload;
     },
@@ -93,5 +112,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, userUpdate, updateComplement, toggleCheckbox } = userSlice.actions;
+export const { inputValue, setSuccessMessage, setErrorMessage, resetUser, userUpdate, userUpdateProfile, toggleCheckbox } = userSlice.actions;
 export default userSlice.reducer;

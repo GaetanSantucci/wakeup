@@ -20,6 +20,7 @@ import RoomIcon from '@mui/icons-material/Room';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
 import { useMediaQuery } from '@/src/hook/useMediaQuery';
+import { Autocomplete } from '@mui/material';
 
 
 
@@ -76,135 +77,134 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user)
-  // const [searchTerm, setSearchTerm] = useState('' || user.address.name);
-  // const [results, setResults] = useState(null); // to display the result of the addresses following the api data.gouv fetch
-  const [isDeliverableCity, setIsDeliverableCity] = useState([]); // to display if the city is in our database
-  const [notInOurZone, setNotInOurZone] = useState(true); // to manage error if city is not in our area
-  const [errorCity, setErrorCity] = useState(false);
-
-
-  const isBreakpoint = useMediaQuery(768) // Custom hook to check screen size, return boolean
-  let widthElement = '45%'
-  if (isBreakpoint) {
-    widthElement = '85%' // To display calendar in middle of the page
-  }
-
-  const theme = createTheme({
-    components: {
-      MuiPickersDay: {
-        styleOverrides: {
-          root: {
-            color: '#088519',
-            fontSize: '0.8rem',
-          },
-          daySelected: {
-            backgroundColor: '#ff00ff !important'
-          }
-        }
-      },
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: {
-          },
-          color: '#252525 !important',
-          notchedOutline: {
-            borderColor: '#252525 !important',
-          }
-        }
-      },
-      MuiFormLabel: {
-        styleOverrides: {
-          root: {
-            color: '#252525 !important',
-            fontSize: '0.9rem',
-          }
-        }
-      }
-    }
-  });
 
   // Dynamic method for store input by type
-  const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    let customerCity = value.toLowerCase();
-    if (id === 'city') {
-      const result = data.filter(o =>
-        o.name.toLowerCase().includes(customerCity));
-      console.log('result:', result);
-      if (result.length >= 1) {
-        setIsDeliverableCity(result)
-        // if (result[0].name.toLowerCase() === customerCity) {
-        //   console.log("Je passe dans le if");
-        //   dispatch(addDeliveryCost(result[0].price))
-        // }
-
-      } else {
-        setErrorCity(true)
-        setNotInOurZone(true);
-      }
-    }
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
     dispatch(inputValue({ inputType: id, value }));
   };
 
-  const handleSetAddress = (elem) => {
-    dispatch(inputValue({ inputType: 'city', value: elem.name }))
-    dispatch(inputValue({ inputType: 'postcode', value: elem.postcode }))
-    dispatch(addDeliveryCost(elem.price))
-    setNotInOurZone(false)
-    setIsDeliverableCity([])
+  // check if all my input are completed
+  const isInformationComplete = () => {
+    return (
+      user.lastname &&
+      user.firstname &&
+      user.email &&
+      user.phone &&
+      user.address.line1 &&
+      user.address.city
+    );
+  };
+
+  const handleCity = (e, value) => {
+    dispatch(inputValue({ inputType: 'city', value: value?.city }))
+    dispatch(inputValue({ inputType: 'postcode', value: value?.postcode }))
+    dispatch(addDeliveryCost(value?.price))
   }
-
-
-
   return (
     <>
       <div className={styles.container_checkout}>
         <h3 className={styles.container_checkout_title}>Saisie de vos informations</h3>
-        <ThemeProvider theme={theme}>
-          <Box
-            component='form'
-            sx={{
-              width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', /* margin: '8rem 0 2rem 0' */
-              '& > :not(style)': { m: '0.8rem', width: widthElement, fontSize: '0.8rem' },
-            }}
-            noValidate
-            autoComplete='off'
-          >
-            <TextField id='lastname' label='Nom' value={user.lastname} onChange={handleInputChange} variant='outlined' size='small' required />
-            <TextField id='firstname' label='Prénom' value={user.firstname} onChange={handleInputChange} variant='outlined' size='small' required />
-            <TextField id='email' label='Email' value={user.email} onChange={handleInputChange} type='email' variant='outlined' size='small' required />
-            <TextField id='phone' label='Téléphone' value={user.phone} onChange={handleInputChange} type='tel' variant='outlined' size='small' required />
-            {/* <div className={styles.container_information}> */}
-            <TextField id='name' className={styles.container_information_input} label='Adresse' value={user.address?.name} onChange={handleInputChange} variant='outlined' autoComplete='off' size='small' required />
-            <TextField id='complement' label='Bât., étage, interphone...' value={user.address?.complement} onChange={handleInputChange} variant='outlined' size='small' />
-            <TextField id='postcode' label='Code postal' value={user.address?.postcode} onChange={handleInputChange} variant='outlined' size='small' required />
-            <div className={styles.container_information}>
-              <TextField id='city' className={styles.container_information_input} label='Ville' value={user.address?.city} onChange={handleInputChange} variant='outlined' size='small' required />
-              <div className={styles.container_information_address} >
-                <div className={styles.container_information_address_block} >
-                  {
-                    isDeliverableCity && (
-                      isDeliverableCity.map((elem, index) => {
-                        if (index <= 4) {
-                          return (
-                            <div className={styles.container_information_address_block_result} onClick={() => handleSetAddress(elem)} key={elem.id}>{elem.name}</div>
-                          )
-                        }
-                      })
-                    )
-                  }
-                </div>
-              </div>
-            </div>
-          </Box>
+        <form className={styles.container_checkout_form}>
+          <div className={styles.container_checkout_form_50}>
+            <TextField id='lastname'
+              label='Nom'
+              value={user.lastname}
+              onChange={handleInputChange}
+              variant='outlined'
+              size='small'
+              sx={{ mb: 2, width: '45%' }}
+              required />
+            <TextField id='firstname'
+              label='Prénom'
+              value={user.firstname}
+              onChange={handleInputChange}
+              variant='outlined'
+              size='small'
+              sx={{ mb: 2, width: '45%' }}
+              required />
+          </div>
+          <div className={styles.container_checkout_form_50}>
+            <TextField id='email'
+              label='Email'
+              value={user.email}
+              onChange={handleInputChange}
+              type='email'
+              variant='outlined'
+              size='small'
+              sx={{ mb: 2, width: '45%' }}
+              required />
+            <TextField id='phone'
+              label='Téléphone'
+              value={user.phone}
+              onChange={handleInputChange}
+              type='tel'
+              variant='outlined'
+              size='small'
+              sx={{ mb: 2, width: '45%' }}
+              required />
+          </div>
+          <div className={styles.container_checkout_form_50}>
+            <TextField
+              id='line1'
+              className={styles.container_information_input}
+              label='Adresse'
+              value={user.address?.line1}
+              onChange={handleInputChange}
+              variant='outlined'
+              autoComplete='off'
+              size='small'
+              sx={{ mb: 2, width: '45%' }}
+              required />
+            <TextField id='line2'
+              label='Bât., étage, interphone...'
+              value={user.address?.line2}
+              onChange={handleInputChange}
+              variant='outlined'
+              size='small'
+              sx={{ mb: 2, width: '45%' }} />
+          </div>
 
-        </ThemeProvider >
+          <div className={styles.container_checkout_form_100}>
+            <Autocomplete
+              id="city"
+              onChange={handleCity}
+              sx={{ width: '45%' }}
+              options={data}
+              autoHighlight
+              getOptionLabel={(option) => option.city}
+              renderOption={(props, option) => (
+                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props} key={option.city}>
+                  {option.city} - {option.postcode}
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choisissez votre ville"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: 'new-password', // disable autocomplete and autofill
+                  }}
+                  size='small'
+                  onChange={handleCity}
+                  value={user.address?.city}
+                />
+              )}
+            />
+            <div className={styles.container_information}>
+
+            </div>
+          </div>
+        </form>
       </div>
       <div className={styles.checkout_button}>
         <button onClick={previousPage}>Précédent</button>
         {
-          !notInOurZone || user.address.city ? <button onClick={nextPage}>Validez</button> : null
+          isInformationComplete() ?
+            <button onClick={nextPage}>Validez</button> : null
         }
+
       </div>
     </>
   )
@@ -213,6 +213,8 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
 const CheckoutPayment = ({ previousPage }) => {
   const allCart = useSelector((state) => state.cart)
   const deliveryCost = allCart.deliveryCost.toString().replace('.', ',');
+  const { user } = useSelector((state) => state.user)
+  console.log('user:', user);
 
   const totalIncludeDelivery = Number(getTotal(allCart.cart).totalPrice.toFixed(2)) + Number(allCart.deliveryCost)
   console.log('totalIncludeDelivery:', totalIncludeDelivery);

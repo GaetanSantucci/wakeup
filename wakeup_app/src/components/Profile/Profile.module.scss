@@ -21,16 +21,15 @@
     &_information {
       & h2 {
         margin-top: 0;
-        margin-bottom: 1.4rem;
-        font-size: 1.8rem;
+        margin-bottom: 1.6rem;
+        font-size: 1.6rem;
       }
 
       & li {
+        @include mixins.flex(row, center, flex-start);
         margin-bottom: 1rem;
-        & span {
-          color: vars.$colorTitleLightTheme !important;
-          font-weight: 600;
-          font-family: var(--fontTitle);
+        & svg {
+          margin-right: 1rem;
         }
       }
     }
@@ -40,13 +39,15 @@
       row-gap: 1rem;
       width: 100%;
 
+      & button {
+        width: 48% !important;
+      }
+
       &_update {
-        display: flex;
         width: 100%;
+        display: flex;
         justify-content: space-between;
         & button {
-          width: 48% !important;
-
           &:last-child {
             background-color: vars.$backgroundAdditionnalColoredTheme;
             opacity: 0.8;
@@ -119,6 +120,12 @@
     border-radius: 5px;
   }
 }
+
+// .appears_animation {
+//   opacity: 1;
+//   transition: 2000ms;
+//   visibility: visible;
+// }
 
 .booking_card {
   width: 55%;

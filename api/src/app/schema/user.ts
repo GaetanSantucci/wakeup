@@ -1,6 +1,7 @@
 const userSchema = {
   type: "object",
   properties: {
+
     email: { type: "string", pattern: '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$' },
     password: { type: 'string', pattern: '^(?=.*[0-9])(?=.*[-a-z])(?=.*[-A-Z]).{8,}$' },
     lastname: { type: "string" },

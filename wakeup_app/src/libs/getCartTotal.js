@@ -7,3 +7,14 @@ export const getTotal = (cart) => {
   })
   return { totalPrice, totalQuantity }
 }
+
+export const getTotalPrice = (order) => {
+  console.log('order:', order);
+  let totalQuantity = 0
+  let totalPrice = 0
+  order.products.forEach(item => {
+    totalQuantity += item.total_product_quantity;
+    totalPrice += item.total_product_price * item.total_order_quantity
+  })
+  return { totalPrice, totalQuantity }
+}

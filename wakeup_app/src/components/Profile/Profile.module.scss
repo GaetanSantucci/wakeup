@@ -92,8 +92,47 @@
   }
 
   &_booking {
+    position: relative;
     flex-grow: 1;
-    background-color: aquamarine;
+    background-color: vars.$backgroundPrimaryLightTheme;
+    padding: 2rem;
+
+    & h4 {
+      // background-color: #c9c9c952;
+      padding: 1rem 2rem;
+      border-radius: 4px;
+      color: vars.$backgroundAdditionnalColoredTheme;
+      font-size: 1.2rem;
+      display: inline-block;
+      font-family: var(--fontTitle);
+      border: 1px solid vars.$backgroundAdditionnalColoredTheme;
+      margin-bottom: 1.4rem;
+    }
+
+    &_svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+    }
+
+    & svg {
+      width: 100%;
+      stroke: vars.$backgroundAdditionnalColoredTheme;
+      stroke-width: 2px;
+      fill: none;
+      stroke-opacity: 0.1;
+    }
+
+    &:first-child {
+      top: 200px;
+    }
+
+    &_next,
+    &_outdated {
+      margin-bottom: 1.4rem;
+    }
   }
   // &_logout {
   //   // width: 90%;

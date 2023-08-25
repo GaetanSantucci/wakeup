@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, use } from 'react';
-import { inputValue, setAddress } from '@/src/store/reducers/User';
+import { use } from 'react';
+import { inputValue } from '@/src/store/reducers/User';
 import { addDeliveryCost } from '@/src/store/reducers/Cart';
 
 import { AddOrDeleteItems, PayPalButtonComponent } from '../Button';
@@ -15,20 +15,16 @@ import { CustomCalendar } from '../Calendar';
 import { getTotal } from '@/src/libs/getCartTotal';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import RoomIcon from '@mui/icons-material/Room';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
-import { useMediaQuery } from '@/src/hook/useMediaQuery';
 import { Autocomplete } from '@mui/material';
-
-
 
 
 const areaFetch = getArea(); // fetch to database for delivery area
 
 const CheckoutCart = ({ nextPage }) => {
   const allCart = useSelector((state) => state.cart)
+
 
   return (
     <>

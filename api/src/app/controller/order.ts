@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-// import { ErrorApi } from '../services/errorHandler.js';
+import { ErrorApi } from '../services/errorHandler.js';
 import { Order, OrderItems } from '../datamapper/order.js';
+import { Closing } from '../datamapper/closed.js';
 import { User } from '../datamapper/user.js';
 import { Payment } from '../datamapper/payment.js';
 import { DataStripe } from '../type/stripe.js';
@@ -13,12 +14,33 @@ import { UUID } from '../type/user.js';
 import debug from 'debug';
 const logger = debug('Controller');
 
+const closedDays = async (req: Request, res: Response) => {
+  try {
+    const isClosed = await Closing.findAll();
+
+    return res.status(200).json(isClosed)
+  } catch (err) {
+    if (err instanceof Error)
+      logger(err.message);
+  }
+}
+
 const getAllOrdersForCalendar = async (req: Request, res: Response) => {
   try {
-    const allOrders = await Order.getAllOrders();
+    const allOrders = await Order.getAllOrdersByDate();
     // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
 
     return res.status(200).json(allOrders)
+  } catch (err) {
+    if (err instanceof Error) throw new ErrorApi(`UUID non valide`, req, res, 400)
+  }
+}
+
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const allOrders = await Order.getAllOrders();
+    return res.status(200).json(allOrders)
+
   } catch (err) {
     if (err instanceof Error) logger(err.message)
   }
@@ -33,7 +55,7 @@ const getAllOrdersByUser = async (req: Request, res: Response) => {
   if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
   try {
     const allOrders = await Order.getOrderByUser(userId);
-    // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
+    if (!allOrders) return null;
 
     return res.status(200).json(allOrders)
   } catch (err) {
@@ -143,4 +165,4 @@ const createOrderWithPaypal = async (data: DataPaypal, req: Request) => {
   console.log("Order successfully created");
 }
 
-export { getAllOrdersForCalendar, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal }
+export { closedDays, getAllOrdersForCalendar, getAllOrders, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal }

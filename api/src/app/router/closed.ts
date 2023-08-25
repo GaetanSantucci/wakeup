@@ -1,8 +1,8 @@
-import { Router } from 'express';
-const router = Router();
+// import { Router } from 'express';
+// const router = Router();
 
-import { closedDays } from '../controller/closed.js';
+// import { closedDays } from '../controller/closed.js';
 
-router.get('/closed', closedDays)
+// router.get('/closed', closedDays)
 
-export { router };
+// export { router };

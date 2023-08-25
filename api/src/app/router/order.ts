@@ -1,10 +1,14 @@
 import { Router } from 'express';
 const router = Router();
 
-import { getAllOrdersForCalendar, getAllOrdersByUser } from '../controller/order.js';
+import { getAllOrdersForCalendar, getAllOrdersByUser, getAllOrders } from '../controller/order.js';
+import { closedDays } from '../controller/closed.js';
 
 
-router.get('/orders', getAllOrdersForCalendar)
-router.get('/orders/:userId', getAllOrdersByUser)
+router.get('/orders', getAllOrders)
+router.get('/orders/closed', closedDays)
+router.get('/orders/availability', getAllOrdersForCalendar)
+
+router.post('/orders/:userId', getAllOrdersByUser)
 
 export { router };

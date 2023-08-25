@@ -1,14 +1,35 @@
-// import { ErrorApi } from '../services/errorHandler.js';
+import { ErrorApi } from '../services/errorHandler.js';
 import { Order, OrderItems } from '../datamapper/order.js';
+import { Closing } from '../datamapper/closed.js';
 import { User } from '../datamapper/user.js';
 import { Payment } from '../datamapper/payment.js';
 // ~ DEBUG CONFIG ~ //
 import debug from 'debug';
 const logger = debug('Controller');
+const closedDays = async (req, res) => {
+    try {
+        const isClosed = await Closing.findAll();
+        return res.status(200).json(isClosed);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            logger(err.message);
+    }
+};
 const getAllOrdersForCalendar = async (req, res) => {
     try {
-        const allOrders = await Order.getAllOrders();
+        const allOrders = await Order.getAllOrdersByDate();
         // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
+        return res.status(200).json(allOrders);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            throw new ErrorApi(`UUID non valide`, req, res, 400);
+    }
+};
+const getAllOrders = async (req, res) => {
+    try {
+        const allOrders = await Order.getAllOrders();
         return res.status(200).json(allOrders);
     }
     catch (err) {
@@ -25,7 +46,8 @@ const getAllOrdersByUser = async (req, res) => {
         throw new ErrorApi(`UUID non valide`, req, res, 400);
     try {
         const allOrders = await Order.getOrderByUser(userId);
-        // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
+        if (!allOrders)
+            return null;
         return res.status(200).json(allOrders);
     }
     catch (err) {
@@ -120,4 +142,4 @@ const createOrderWithPaypal = async (data, req) => {
     await createOrderFromData(orderBody);
     console.log("Order successfully created");
 };
-export { getAllOrdersForCalendar, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal };
+export { closedDays, getAllOrdersForCalendar, getAllOrders, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal };

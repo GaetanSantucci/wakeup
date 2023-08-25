@@ -14,7 +14,6 @@ export const useCurrentUser = () => {
 
   const setUser = async (id) => {
     const currentUser = await Auth.getMe(id)
-    console.log('currentUser:', currentUser);
     if (currentUser) {
       dispatch(userUpdate(currentUser));
 

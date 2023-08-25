@@ -46,7 +46,7 @@ const UserLogin = () => {
     setTimeout(() => {
       dispatch(setErrorMessage(''))
       dispatch(setSuccessMessage(''))
-    }, 3000)
+    }, 4000)
   }, [dispatch, isError, isSuccess])
 
 
@@ -59,12 +59,10 @@ const UserLogin = () => {
     } else {
       try {
         const { id, errorMessage } = await login(user.email, user.password);
-        console.log('id:', id);
 
         if (errorMessage) return dispatch(setErrorMessage(errorMessage))
 
         const response = await setUser(id)
-        console.log('response:', response);
         if (response.id === id) {
           dispatch(toggleLoginModale())
           router.push(`/user/profile/${response.id}`)
@@ -93,7 +91,6 @@ const UserLogin = () => {
       // dispatch(toggleShowPassword())
 
     } catch (err) {
-      dis
       console.log(err)
     }
   }

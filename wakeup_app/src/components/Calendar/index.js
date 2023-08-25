@@ -8,7 +8,6 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 import disableWeekdays from '@/src/utils/disableWeekDays';
 
-// import { fetchAvailableDate, fetchClosedDays } from '@/src/libs/getAvaiblableDate';
 
 const CustomCalendar = () => {
 
@@ -20,12 +19,12 @@ const CustomCalendar = () => {
   const [closedDays, setClosedDays] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:7777/api/v1/orders') // Fetch availability 
+    fetch('http://localhost:7777/api/v1/orders/availability') // Fetch availability 
       .then(response => response.json())
       .then(data => setAvailability(data))
       .catch(error => console.error(error));
 
-    fetch('http://localhost:7777/api/v1/closed') // Fetch closed days
+    fetch('http://localhost:7777/api/v1/orders/closed') // Fetch closed days
       .then(response => response.json())
       .then(data => {
         setClosedDays(data);

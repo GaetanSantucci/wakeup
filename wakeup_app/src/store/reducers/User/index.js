@@ -3,10 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   user: {
     id: '',
-    email: 'test@gmail.com',
+    email: 'alexia.pappano@hotmail.com',
     password: 'Pappano83!',
     confirmPwd: '',
-    lastname: 'Santucci',
+    lastname: '',
     firstname: '',
     phone: '',
     address: {
@@ -55,7 +55,6 @@ const userSlice = createSlice({
 
     userUpdate: (state, action) => {
       const { id, email, lastname, firstname, phone, address, role, newsletter_optin } = action.payload;
-      console.log('action.payload:', action.payload);
 
       return {
         ...state,

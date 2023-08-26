@@ -16,7 +16,7 @@ class OrderDatamapper extends CoreDataMapper {
   view = {
     getAllOrders: 'getAllOrders',
     getAllAvailableDates: 'getAllAvailableDates',
-    getAllOrdersByUser: 'getAllOrdersByUser'
+    getAllOrdersByUser: 'orderByUser'
   }
 
   async getAllOrdersByDate(): Promise<any> {

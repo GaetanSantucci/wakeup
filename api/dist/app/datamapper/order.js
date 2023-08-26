@@ -11,7 +11,7 @@ class OrderDatamapper extends CoreDataMapper {
     view = {
         getAllOrders: 'getAllOrders',
         getAllAvailableDates: 'getAllAvailableDates',
-        getAllOrdersByUser: 'getAllOrdersByUser'
+        getAllOrdersByUser: 'orderByUser'
     };
     async getAllOrdersByDate() {
         if (this.client instanceof pg.Pool) {

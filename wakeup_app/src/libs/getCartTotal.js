@@ -9,7 +9,6 @@ export const getTotal = (cart) => {
 }
 
 export const getTotalPrice = (order) => {
-  console.log('order:', order);
   let totalQuantity = 0
   let totalPrice = 0
   order.products.forEach(item => {

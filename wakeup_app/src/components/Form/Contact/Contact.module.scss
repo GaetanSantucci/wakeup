@@ -2,8 +2,9 @@
 @use '/public/styles/mixins';
 
 .container_contact {
-  width: 60%;
+  width: 70%;
   margin-top: 2rem;
+  @include mixins.flex(column);
 
   &_title {
     margin-bottom: 3rem;
@@ -11,6 +12,18 @@
   }
 
   &_form {
+    width: 80%;
+    @include mixins.flex(column);
+
+    &_50 {
+      width: 100%;
+      @include mixins.flex(row, $justify: space-between);
+    }
+    &_100 {
+      width: 100%;
+      @include mixins.flex(row);
+    }
+
     text-align: center;
     border: 2px solid vars.$backgroundPrimaryLightThemeGradient;
     padding: 2.4rem 1.4rem;
@@ -25,8 +38,7 @@
 
 .button_success {
   transition: all 400ms;
-  border: 1px solid #41b741;
-  background-color: #aae2aad6 !important;
+  background-color: vars.$backgroundSuccessColor !important;
 }
 
 @media (max-width: 768px) {

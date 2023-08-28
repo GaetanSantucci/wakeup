@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLogout } from '@/src/hook/useLogout';
 import { useEffect, useState } from 'react';
 
+import { useMediaQuery } from '@/src/hook/useMediaQuery';
+
 import { TextField } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -23,6 +25,9 @@ moment.locale('fr'); // set the locale to French
 
 const UserProfile = () => {
 
+  const isBreakPoint = useMediaQuery(768);
+  console.log('isBreakPoint:', isBreakPoint);
+
   const dispatch = useDispatch();
   const { push } = useRouter();
   const { logout } = useLogout();
@@ -32,7 +37,6 @@ const UserProfile = () => {
 
   const [isUserUpdate, toggleIsUserUpdate] = useState(false);
   const [orders, setOrders] = useState();
-  console.log('orders:', orders);
   const [lastname, setLastname] = useState(user.lastname || "");
   const [firstname, setFirstname] = useState(user.firstname || "");
   const [line1, setLine1] = useState(user.address.line1 || "");
@@ -41,24 +45,20 @@ const UserProfile = () => {
   const [city, setCity] = useState(user.address.city || "");
   const [email, setEmail] = useState(user.email || "");
   const [phone, setPhone] = useState(user.phone || "");
-
   const [errorEmail, setErrorEmail] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
 
   useEffect(() => {
 
-    fetchOrderByUser(user.id)
-      .then(response => {
-        console.log('response:', response);
-        setOrders(response)
-      })
-
-
-
     if (!isLogged) {
       push('/')
-    }
+    } else (
+
+      fetchOrderByUser(user.id)
+        .then(response => {
+          console.log('response:', response);
+          setOrders(response)
+        })
+    )
   }, [isLogged])
 
   const userLogout = () => {
@@ -114,7 +114,6 @@ const UserProfile = () => {
   const isModify = isUserUpdate ? { readOnly: false } : { readOnly: true }
 
   const BookingList = ({ orders, currentDateCheck }) => {
-    console.log('orders:', orders);
     const currentDate = new Date();
 
     const capitalizeFirstLetter = (str) => {
@@ -138,20 +137,24 @@ const UserProfile = () => {
               return (
                 <div className={styles.container_booking_card} key={elem.id}>
                   <p className={styles.container_booking_card_date}>{capitalizedBookingDate}</p>
-                  <ul>
-                    {elem.products.map(product => {
+                  {
+                    isBreakPoint ? null :
+                      <ul>
+                        {elem.products.map(product => {
+                          console.log('product:', product);
 
-                      const productName = product.total_order_quantity > 1
-                        ? product.product_name.replace("plateau", "plateaux")
-                        : product.product_name;
+                          const productName = product.total_order_quantity > 1
+                            ? product.product_name.replace("plateau", "plateaux")
+                            : product.product_name;
 
-                      return (
-                        <li className={styles.container_booking_card_product} key={product.id}> {product.total_order_quantity} {productName}</li>
-                      )
-                    }
-                    )}
-                  </ul>
-                  <p className={styles.container_booking_card_price}>Montant :{totalPrice.toFixed(2)} €</p>
+                          return (
+                            <li className={styles.container_booking_card_product} key={product.id}> {product.total_order_quantity} {productName}</li>
+                          )
+                        }
+                        )}
+                      </ul>
+                  }
+                  <p className={styles.container_booking_card_price}><span>{totalPrice.toFixed(2)} €</span></p>
                 </div>
               );
             })}
@@ -161,25 +164,19 @@ const UserProfile = () => {
     );
   };
 
-
-
   return (
     <>
-
       <section className={styles.container}>
         <aside className={styles.container_user}>
           <div className={styles.container_user_information}>
-            <h2>Mes coordonnées</h2>
-            {/* {
-              isUserUpdate ? */}
+            <h4>Mon profil</h4>
             <form >
-
               <TextField
                 label="Email"
                 id='email'
                 onChange={e => setEmail(e.target.value)}
                 type="email"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 size='small'
                 value={email}
                 InputProps={isModify}
@@ -191,7 +188,7 @@ const UserProfile = () => {
                 id='phone'
                 onChange={e => setPhone(e.target.value)}
                 type="tel"
-                sx={{ mb: 1.4, width: '100%', padding: '' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%', padding: '' }}
                 size='small'
                 value={phone}
                 InputProps={isModify}
@@ -201,7 +198,7 @@ const UserProfile = () => {
                 id='lastname'
                 onChange={e => setLastname(e.target.value)}
                 type="text"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 size='small'
                 value={lastname}
                 InputProps={isModify}
@@ -212,7 +209,7 @@ const UserProfile = () => {
                 onChange={e => setFirstname(e.target.value)}
                 size='small'
                 type="text"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 value={firstname}
                 InputProps={isModify}
               />
@@ -222,7 +219,7 @@ const UserProfile = () => {
                 onChange={e => setLine1(e.target.value)}
                 size='small'
                 type="text"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 value={line1}
                 InputProps={isModify}
               />
@@ -232,7 +229,7 @@ const UserProfile = () => {
                 onChange={e => setLine2(e.target.value)}
                 size='small'
                 type="text"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 value={line2}
                 InputProps={isModify}
               />
@@ -242,7 +239,7 @@ const UserProfile = () => {
                 onChange={e => setPostcode(e.target.value)}
                 size='small'
                 type="text"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 value={postcode}
                 InputProps={isModify}
               />
@@ -252,16 +249,13 @@ const UserProfile = () => {
                 onChange={e => setCity(e.target.value)}
                 size='small'
                 type="text"
-                sx={{ mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
                 value={city}
                 InputProps={isModify}
               />
             </form>
           </div>
-
-
           <div className={styles.container_user_button}>
-
             {
               isUserUpdate ?
                 <div className={styles.container_user_button_update}>
@@ -272,8 +266,12 @@ const UserProfile = () => {
                 <button onClick={toggleUpdateUser}>Modifier</button>
             }
             <div onClick={userLogout} className={styles.container_user_logout}>
-              <LogoutIcon />
-              <div className={styles.container_user_logout_info}>Se déconnecter</div>
+              {isBreakPoint ? null :
+                <>
+                  <LogoutIcon />
+                  <div className={styles.container_user_logout_info}>Se déconnecter</div>
+                </>
+              }
             </div>
           </div>
         </aside>
@@ -290,10 +288,12 @@ const UserProfile = () => {
               <BookingList orders={orders} currentDateCheck={false} />
             </>
           }
-          {/* <div className={styles.container_booking_background}>
-          </div> */}
-
         </div>
+        {isBreakPoint &&
+          <>
+            <LogoutIcon />
+            <div className={styles.container_user_logout_info}>Se déconnecter</div>
+          </>}
       </section>
     </>
   )

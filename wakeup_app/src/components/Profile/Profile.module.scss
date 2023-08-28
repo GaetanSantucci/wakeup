@@ -7,6 +7,18 @@
   height: 80vh;
   position: relative;
   justify-content: space-between;
+
+  & h4 {
+    padding: 0.8rem 1.6rem;
+    border-radius: 4px;
+    color: vars.$backgroundPrimaryLightTheme;
+    background-color: vars.$backgroundAdditionnalColoredTheme;
+    font-size: 1.2rem;
+    display: inline-block;
+    font-family: var(--fontTitle);
+    margin: 0 0 1.6rem 0;
+    // margin: 1.4rem 0 2rem 2rem;
+  }
   &_user {
     width: 320px;
     height: 100%;
@@ -14,41 +26,10 @@
     @include mixins.flex(column, flex-start, space-between);
     padding: 2rem 2rem;
 
-    &_list {
-      font-weight: 500;
-      & span {
-        color: vars.$backgroundAdditionnalColoredTheme;
-        margin-right: 5px;
-        font-weight: 300;
-      }
-      &_firstname {
-        margin-left: 2.5rem;
-      }
-      &_address {
-        font-weight: bold;
-        &_block {
-          margin-left: 2.5rem;
-        }
-      }
-    }
-
-    &_logout {
-      cursor: pointer;
-      @include mixins.flex(row);
-      gap: 1rem;
-      transition: all 200ms;
-
-      &:hover {
-        color: vars.$colorTitleLightTheme;
-        transition: all 200ms;
-      }
-    }
-
     &_information {
-      & h2 {
-        margin-top: 0;
-        margin-bottom: 1.6rem;
-        font-size: 1.6rem;
+      & h4 {
+        // width: 70%;
+        margin: 0 0 1.6rem 0;
       }
 
       & li {
@@ -76,12 +57,24 @@
         & button {
           &:last-child {
             background-color: vars.$backgroundAdditionnalColoredTheme;
-            opacity: 0.8;
+            opacity: 1;
             &:hover {
-              opacity: 1;
+              opacity: 0.8;
             }
           }
         }
+      }
+    }
+
+    &_logout {
+      cursor: pointer;
+      @include mixins.flex(row);
+      gap: 1rem;
+      transition: all 200ms;
+
+      &:hover {
+        color: vars.$colorTitleLightTheme;
+        transition: all 200ms;
       }
     }
   }
@@ -91,11 +84,12 @@
     flex-grow: 1;
     border-top: 2px solid #f3f9ff87;
     overflow: hidden;
+    padding: 2rem 2rem;
 
     &_background {
       position: absolute;
       width: 100%;
-      overflow: hidden;
+      height: 100%;
       z-index: -1;
       & svg {
         fill: none;
@@ -104,43 +98,40 @@
       }
     }
 
-    & h4 {
-      padding: 0.8rem 1.6rem;
-      border-radius: 4px;
-      color: vars.$backgroundPrimaryLightTheme;
-      background-color: vars.$backgroundAdditionnalColoredTheme;
-      font-size: 1.2rem;
-      display: inline-block;
-      font-family: var(--fontTitle);
-      margin: 2rem 0 2rem 2rem;
-    }
-
     &_next,
     &_outdated {
-      margin-left: 3rem;
+      width: 80%;
     }
 
     &_card {
-      width: 30%;
-      padding: 1rem;
+      width: 100%;
+      padding: 0.6rem;
       border-radius: 4px;
       position: relative;
+      @include mixins.flex(row, flex-start, space-evenly);
+      background-color: vars.$backgroundPrimaryLightTheme;
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.5
-        ); /* Red background with 50% opacity */
-        z-index: -1;
-        border-radius: 4px;
+      &_date {
+        font-weight: 600;
+        color: vars.$colorParagraphLightTheme;
+        margin-bottom: 0.6rem;
+      }
+      & ul {
+        margin-left: 0.6rem;
+        margin-bottom: 0.6rem;
+      }
+
+      &_product {
+        line-height: 1.2;
+      }
+
+      &_price {
+        text-align: end;
+
+        & span {
+          font-weight: 600;
+          color: vars.$backgroundAdditionnalColoredTheme;
+        }
       }
     }
   }
@@ -207,36 +198,102 @@
   margin-bottom: 0.6rem;
 }
 
+@media (max-width: 1024px) {
+  .container {
+    &_user {
+      width: 300px;
+    }
+
+    &_booking {
+      padding: 2rem 1.2rem;
+
+      &_background {
+        display: none;
+      }
+      &_next,
+      &_outdated {
+        width: 100%;
+      }
+      &_card {
+        justify-content: space-between;
+      }
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1.4fr 0.8fr 0.8fr;
-    gap: 20px 0px;
-    grid-template-areas:
-      'profile_card'
-      'booking_card';
+    @include mixins.flex(column, center);
+    height: auto;
+    margin-top: 2rem;
+
+    & h4 {
+      width: 75%;
+      text-align: center;
+      margin: 2rem 0 2rem 0;
+    }
+
+    &_user {
+      width: 100%;
+      padding: 2rem 0 1rem 0;
+      align-items: center;
+
+      &_information {
+        width: 100%;
+        @include mixins.flex(column);
+
+        & form {
+          width: 85%;
+          @include mixins.flex(column);
+        }
+      }
+
+      &_button {
+        @include mixins.flex(column);
+        margin-top: 1rem;
+
+        &_update {
+          @include mixins.flex(column, center);
+          row-gap: 1rem;
+        }
+      }
+    }
+
+    &_booking {
+      @include mixins.flex(column);
+      width: 100%;
+      padding: 0 0;
+
+      &_next,
+      &_outdated {
+        width: 95%;
+      }
+      &_card {
+        justify-content: space-between;
+        // padding: 0;
+        &_date {
+          margin-bottom: 0;
+          font-weight: normal;
+        }
+      }
+    }
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .profile_card:hover,
-  .profile_logout:hover,
-  .next_book:hover,
-  .all_orders:hover {
-    box-shadow: 0 2px 5px #757575;
-    transition: all 200ms;
-  }
+// @media (hover: hover) and (pointer: fine) {
+//   .profile_card:hover,
+//   .profile_logout:hover,
+//   .next_book:hover,
+//   .all_orders:hover {
+//     box-shadow: 0 2px 5px #757575;
+//     transition: all 200ms;
+//   }
 
-  .profile_logout:hover {
-    background-color: #1d1d1d;
-  }
-}
+//   .profile_logout:hover {
+//     background-color: #1d1d1d;
+//   }
+// }
 
-.profile_logout {
-  margin: 3rem 0;
-}
-
-// #background_svg {
-//   position: absolute;
-//   z-index: 1;
+// .profile_logout {
+//   margin: 3rem 0;
 // }

@@ -11,6 +11,7 @@ const Blogs = () => {
 
   return (
     <section className={styles.container}>
+
       {
         blogs.map((elem, i) => {
           const paragraph = elem.description.split('\\n') // to create line break

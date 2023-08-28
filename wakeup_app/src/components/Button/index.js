@@ -32,7 +32,7 @@ const AddCartButton = ({ items }) => {
     // for animate button on click event
     setAdded(true);
     // reset animation state
-    setTimeout(() => setAdded(false), 2000)
+    setTimeout(() => setAdded(false), 1000)
   }
 
   return (

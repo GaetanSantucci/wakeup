@@ -1,3 +1,5 @@
+@use '/public/styles/vars';
+
 .homepage__header__container {
   width: 100%;
   display: flex;
@@ -33,10 +35,25 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  // min-height: 100vh;
   transition: all 0.4s;
   font-family: var(--fontText);
-  // margin-bottom: 4rem;
+  position: relative;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  & svg {
+    fill: none;
+    // stroke: vars.$backgroundPrimaryLightThemeGradient;
+    // stroke-opacity: 0.7;
+    stroke: vars.$backgroundAdditionnalColoredTheme;
+    stroke-opacity: 0.1;
+  }
 }
 
 //? ----------------------------------- Media

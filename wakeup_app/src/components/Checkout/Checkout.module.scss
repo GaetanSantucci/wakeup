@@ -3,12 +3,13 @@
 
 .container {
   width: 80%;
-  min-height: 60vh;
+  // min-height: 60vh;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  margin-bottom: 4rem;
 
   &_checkout {
     width: 70%;

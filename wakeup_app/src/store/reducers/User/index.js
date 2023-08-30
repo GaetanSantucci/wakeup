@@ -16,7 +16,7 @@ const initialState = {
       postcode: '',
     },
     role: false,
-    newsletter_optin: false,
+    newsletter_optin: '',
   },
   isLogged: false,
   isSuccess: '',

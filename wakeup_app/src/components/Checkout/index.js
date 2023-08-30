@@ -25,7 +25,6 @@ const areaFetch = getArea(); // fetch to database for delivery area
 const CheckoutCart = ({ nextPage }) => {
   const allCart = useSelector((state) => state.cart)
 
-
   return (
     <>
       <div className={styles.container_checkout}>
@@ -107,7 +106,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               label='Nom'
               value={user.lastname}
               onChange={handleInputChange}
-              variant='outlined'
+              variant='standard'
               size='small'
               sx={{ mb: 2, width: '45%' }}
               required />
@@ -115,7 +114,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               label='Prénom'
               value={user.firstname}
               onChange={handleInputChange}
-              variant='outlined'
+              variant='standard'
               size='small'
               sx={{ mb: 2, width: '45%' }}
               required />
@@ -126,7 +125,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               value={user.email}
               onChange={handleInputChange}
               type='email'
-              variant='outlined'
+              variant='standard'
               size='small'
               sx={{ mb: 2, width: '45%' }}
               required />
@@ -135,7 +134,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               value={user.phone}
               onChange={handleInputChange}
               type='tel'
-              variant='outlined'
+              variant='standard'
               size='small'
               sx={{ mb: 2, width: '45%' }}
               required />
@@ -147,7 +146,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               label='Adresse'
               value={user.address?.line1}
               onChange={handleInputChange}
-              variant='outlined'
+              variant='standard'
               autoComplete='off'
               size='small'
               sx={{ mb: 2, width: '45%' }}
@@ -156,7 +155,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               label='Bât., étage, interphone...'
               value={user.address?.line2}
               onChange={handleInputChange}
-              variant='outlined'
+              variant='standard'
               size='small'
               sx={{ mb: 2, width: '45%' }} />
           </div>
@@ -185,6 +184,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
                   size='small'
                   onChange={handleCity}
                   value={user.address?.city}
+                  variant="standard"
                 />
               )}
             />
@@ -213,7 +213,6 @@ const CheckoutPayment = ({ previousPage }) => {
   console.log('user:', user);
 
   const totalIncludeDelivery = Number(getTotal(allCart.cart).totalPrice.toFixed(2)) + Number(allCart.deliveryCost)
-  console.log('totalIncludeDelivery:', totalIncludeDelivery);
 
   return (
     <>

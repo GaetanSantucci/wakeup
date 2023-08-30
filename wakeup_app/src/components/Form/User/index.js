@@ -2,13 +2,11 @@
 import styles from './User.module.scss';
 import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Input from '@mui/material/Input';
 
@@ -18,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-import { openRegisterForm, handleInputFocused, toggleLoginModale } from '@/src/store/reducers/Settings';
+import { openRegisterForm, handleInputFocused, toggleLoginModale, toggleShowNavbar } from '@/src/store/reducers/Settings';
 import { inputValue, setSuccessMessage, setErrorMessage, resetUser } from '@/src/store/reducers/User';
 
 import { PasswordChecker } from '@/src/utils/passwordChecker';
@@ -40,7 +38,7 @@ const UserLogin = () => {
 
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
-  const { isRegister } = useSelector((state) => state.settings);
+  const { isRegister, log } = useSelector((state) => state.settings);
   const [showPassword, setShowPassword] = useState(false);
 
   // Remove alert pop message 
@@ -67,6 +65,7 @@ const UserLogin = () => {
         const response = await setUser(id)
         if (response.id === id) {
           dispatch(toggleLoginModale())
+          dispatch(toggleShowNavbar())
           router.push(`/user/profile/${response.id}`)
         }
 
@@ -101,9 +100,9 @@ const UserLogin = () => {
   const handleUserRegister = () => {
     dispatch(openRegisterForm());
     dispatch(resetUser());
-    dispatch(handleInputFocused(false))
+    // dispatch(handleInputFocused(false))
   }
-  const handleFocusInput = () => dispatch(handleInputFocused(true));
+  // const handleFocusInput = () => dispatch(handleInputFocused(true));
 
   // Dynamic method for store input by type
   const handleInputChange = (event) => {
@@ -119,9 +118,9 @@ const UserLogin = () => {
   const passwordStrengthBar = pwdChecker.getPasswordStrengthBarWidth();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (e) => {
-    e.preventDefault();
-  };
+  // const handleMouseDownPassword = (e) => {
+  //   e.preventDefault();
+  // };
 
   return (
     <form className={styles.container_form} >
@@ -145,14 +144,14 @@ const UserLogin = () => {
             id="password"
             onChange={handleInputChange}
             defaultValue={user.password}
-            onFocus={handleFocusInput}
+            // onFocus={handleFocusInput}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
+                  // onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -174,14 +173,14 @@ const UserLogin = () => {
                 id="confirmPwd"
                 onChange={handleInputChange}
                 defaultValue={user.confirmPwd}
-                onFocus={handleFocusInput}
+                // onFocus={handleFocusInput}
                 type={showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
+                      // onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}

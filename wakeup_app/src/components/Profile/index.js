@@ -9,10 +9,11 @@ import { useEffect, useState } from 'react';
 import { useMediaQuery } from '@/src/hook/useMediaQuery';
 
 import { TextField } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
-import { userUpdateProfile } from '@/src/store/reducers/User';
+import { userUpdateProfile, inputValue } from '@/src/store/reducers/User';
 
 import { fetchOrderByUser } from '@/src/libs/getOrderList';
 import { getTotalPrice } from '@/src/libs/getCartTotal';
@@ -77,13 +78,16 @@ const UserProfile = () => {
         line2,
         postcode,
         city
-      }
+      },
+      newsletter_optin: user.newsletter_optin
     }
     e.preventDefault();
     if (email === user.email) {
       const { ['email']: remove, ...updateData } = data;
       try {
-        const response = await update(updateData) // & send patch request to update user in database
+        await update(updateData) // & send patch request to update user in database
+        toggleIsUserUpdate(!isUserUpdate)
+
       } catch (err) {
         console.log(err)
       }
@@ -109,6 +113,12 @@ const UserProfile = () => {
 
   }
 
+  // Dynamic method for store input by type
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+
+    dispatch(inputValue({ inputType: id, value }));
+  };
   const isModify = isUserUpdate ? { readOnly: false } : { readOnly: true }
 
   const BookingList = ({ orders, currentDateCheck }) => {
@@ -127,13 +137,14 @@ const UserProfile = () => {
       <>
         {filteredOrders.length > 0 ? (
           <div className={currentDateCheck ? styles.container_booking_next : styles.container_booking_outdated}>
-            {filteredOrders.map(elem => {
+            {filteredOrders.map((elem, index) => {
+
               const { totalPrice } = getTotalPrice(elem);
               const inputDate = moment(elem.booking_date);
               const bookingDate = inputDate.format("dddd D MMMM YYYY");
               const capitalizedBookingDate = capitalizeFirstLetter(bookingDate);
               return (
-                <div className={styles.container_booking_card} key={elem.id}>
+                <div className={styles.container_booking_card} key={index}>
                   <p className={styles.container_booking_card_date}>{capitalizedBookingDate}</p>
                   {
                     isBreakPoint ? null :
@@ -173,32 +184,35 @@ const UserProfile = () => {
                 id='email'
                 onChange={e => setEmail(e.target.value)}
                 type="email"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 size='small'
                 value={email}
                 InputProps={isModify}
                 error={errorEmail}
                 helperText={errorEmail ? "L'email existe déjà" : ''}
+                variant='standard'
               />
               <TextField
                 label="Téléphone"
                 id='phone'
                 onChange={e => setPhone(e.target.value)}
                 type="tel"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%', padding: '' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%', padding: '' }}
                 size='small'
                 value={phone}
                 InputProps={isModify}
+                variant='standard'
               />
               <TextField
                 label="Nom"
                 id='lastname'
                 onChange={e => setLastname(e.target.value)}
                 type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 size='small'
                 value={lastname}
                 InputProps={isModify}
+                variant='standard'
               />
               <TextField
                 label="Prénom"
@@ -206,9 +220,10 @@ const UserProfile = () => {
                 onChange={e => setFirstname(e.target.value)}
                 size='small'
                 type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 value={firstname}
                 InputProps={isModify}
+                variant='standard'
               />
               <TextField
                 label="Adresse"
@@ -216,29 +231,33 @@ const UserProfile = () => {
                 onChange={e => setLine1(e.target.value)}
                 size='small'
                 type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 value={line1}
                 InputProps={isModify}
+                variant='standard'
               />
-              <TextField
+              {user.address.complement || isUserUpdate ? <TextField
                 label="Complément"
                 id='line2'
                 onChange={e => setLine2(e.target.value)}
                 size='small'
                 type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 value={line2}
                 InputProps={isModify}
-              />
+                variant='standard'
+              /> : null}
               <TextField
                 label="Code postal"
                 id='postcode'
                 onChange={e => setPostcode(e.target.value)}
                 size='small'
                 type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 value={postcode}
                 InputProps={isModify}
+                variant='standard'
+
               />
               <TextField
                 label="Ville"
@@ -246,10 +265,30 @@ const UserProfile = () => {
                 onChange={e => setCity(e.target.value)}
                 size='small'
                 type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '100%' }}
+                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
                 value={city}
                 InputProps={isModify}
+                variant='standard'
               />
+              {isUserUpdate &&
+                <div className={styles.container_user_information_checkbox}>
+                  <Checkbox
+                    id='newsletter_optin'
+                    size='small'
+                    // value={user.newsletter_optin}
+                    checked={user.newsletter_optin}
+                    onChange={handleInputChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    sx={{
+                      color: '#424242',
+                      '&.Mui-checked': {
+                        color: '#202020',
+                      },
+                      '& .MuiSvgIcon-root': { fontSize: 16 }
+                    }}
+                  />
+                  <p>Recevoir newsletter de WAKE UP uniquement</p>
+                </div>}
             </form>
           </div>
           <div className={styles.container_user_button}>
@@ -287,10 +326,12 @@ const UserProfile = () => {
           }
         </div>
         {isBreakPoint &&
-          <>
+          <div onClick={userLogout} className={styles.container_user_logout}>
             <LogoutIcon />
             <div className={styles.container_user_logout_info}>Se déconnecter</div>
-          </>}
+          </div>
+
+        }
       </section>
     </>
   )

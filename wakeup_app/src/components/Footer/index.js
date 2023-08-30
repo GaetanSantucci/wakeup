@@ -21,7 +21,7 @@ const Footer = () => {
           {/* <li><Link href='/images/jeuconcourspaques.pdf' target='blank'>Conditions jeu concours</Link></li> */}
         </ul>
       </div>
-      <p className={styles.container_creator}>© 2023 WAKE UP, tous droits réservés - Site réalisé par <Link href='mailto:contact@virtualgs.fr' target='blank'>VirtualGS</Link></p>
+      <p className={styles.container_creator}>© 2023 WAKE UP, tous droits réservés - Site réalisé par <Link href='https://virtualgs.fr' target='blank'>VirtualGS</Link></p>
     </footer>
   )
 }

@@ -7,8 +7,10 @@ import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Input from '@mui/material/Input';
 
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -38,7 +40,7 @@ const UserLogin = () => {
 
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
-  const { isRegister, isPasswordInputFocused } = useSelector((state) => state.settings);
+  const { isRegister } = useSelector((state) => state.settings);
   const [showPassword, setShowPassword] = useState(false);
 
   // Remove alert pop message 
@@ -106,6 +108,8 @@ const UserLogin = () => {
   // Dynamic method for store input by type
   const handleInputChange = (event) => {
     const { id, value } = event.target;
+    console.log('id:', id);
+    console.log('value:', value);
     dispatch(inputValue({ inputType: id, value }));
   };
 
@@ -120,30 +124,24 @@ const UserLogin = () => {
   };
 
   return (
-    <div className={styles.container_form} >
-      <Box
-        component="form"
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          '& > :not(style)': { m: 1, width: '100%', },
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#252525 !important',
-          },
-          '& .MuiFormLabel-root': {
-            color: '#252525 !important',
-            fontSize: '0.9rem',
-          }
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField id="email" label="Email" variant="outlined" defaultValue={user.email} onChange={handleInputChange} />
-        <FormControl /* sx={{ m: '1rem', width: '100%' }} */ variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Mot de passe</InputLabel>
-          <OutlinedInput
+    <form className={styles.container_form} >
+      <div className={styles.container_form_input} >
+        <TextField id="email"
+          label="Email"
+          variant="standard"
+          defaultValue={user.email}
+          onChange={handleInputChange}
+          sx={{ width: '90%', mb: 2 }}
+          size='small'
+          required
+        />
+        <FormControl sx={{ width: '90%', mb: 2 }}
+          variant="standard"
+          size='small'
+          required
+        >
+          <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
+          <Input
             id="password"
             onChange={handleInputChange}
             defaultValue={user.password}
@@ -165,47 +163,73 @@ const UserLogin = () => {
           />
         </FormControl>
         {
-          isRegister &&
-          <FormControl /* sx={{ m: 1, width: '100%', display: 'flex' }} */ variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Confirmation mot de passe</InputLabel>
-            <OutlinedInput
-              id="confirmPwd"
-              onChange={handleInputChange}
-              defaultValue={user.confirmPwd}
-              onFocus={handleFocusInput}
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Confirmation mot de passe"
-            />
-          </FormControl>
-        }
-        {isRegister && <>
-          <div className={styles.container_form_password_strength}>
-            <p>le mot de passe doit contenir :</p>
-            <p className={pwdChecker.hasCapital() ? 'password_check' : null}>1 majuscule</p>
-            <p className={pwdChecker.hasLowercase() ? 'password_check' : null}>1 minuscule</p>
-            <p className={pwdChecker.hasNumber() ? 'password_check' : null}>1 chiffre</p>
-            <p className={pwdChecker.isMinLength(1) ? 'password_check' : null}>Minimum 8 caractères</p>
-          </div>
-          <div className={styles.container_form_password_strength_indicator}
-            style={{ backgroundColor: passwordColor, width: passwordStrengthBar }} >
-          </div>
-        </>
+          isRegister && <>
+            <FormControl sx={{ width: '90%', mb: 2 }}
+              variant="standard"
+              size='small'
+              required
+            >
+              <InputLabel htmlFor="standard-adornment-password">Confirmation mot de passe</InputLabel>
+              <Input
+                id="confirmPwd"
+                onChange={handleInputChange}
+                defaultValue={user.confirmPwd}
+                onFocus={handleFocusInput}
+                type={showPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Confirmation mot de passe"
+              />
+            </FormControl>
+            <div className={styles.container_form_input_checkbox}>
+              <Checkbox
+                id='newsletter_optin'
+                size='small'
+                // value={user.newsletter_optin}
+                // checked={user.newsletter_optin}
+                onChange={handleInputChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+                sx={{
+                  color: '#424242',
+                  '&.Mui-checked': {
+                    color: '#202020',
+                  },
+                  '& .MuiSvgIcon-root': { fontSize: 16 }
+                }}
+              />
+              <p>Recevoir newsletter de WAKE UP uniquement</p>
+            </div>
+          </>
         }
         {isError && <p className={styles.container_form_error}>{isError}</p>}
         {isSuccess && <p className={styles.container_form_success}>{isSuccess}</p>}
-      </Box>
+      </div>
+      {isRegister && <>
+
+        <div className={styles.container_form_password_strength}>
+          <p>Le mot de passe doit contenir :</p>
+          <p className={pwdChecker.hasCapital() ? `${styles.password_check}` : null}>1 majuscule</p>
+          <p className={pwdChecker.hasLowercase() ? `${styles.password_check}` : null}>1 minuscule</p>
+          <p className={pwdChecker.hasNumber() ? `${styles.password_check}` : null}>1 chiffre</p>
+          <p className={pwdChecker.isMinLength(1) ? `${styles.password_check}` : null}>Minimum 8 caractères</p>
+        </div>
+        <div style={{ width: '100%', textAlign: 'start' }}>
+          <div className={styles.container_form_password_strength_indicator}
+            style={{ backgroundColor: passwordColor, width: passwordStrengthBar }} >
+          </div>
+        </div>
+      </>
+      }
 
       <div className={styles.container_form_validate}>
         {
@@ -213,7 +237,7 @@ const UserLogin = () => {
             <button
               onClick={createUser}
               type='submit'>
-              inscription
+              Inscription
             </button></>
             :
             <><p>Pas encore inscrit, cliquez <span onClick={handleUserRegister}>ici</span></p>
@@ -224,82 +248,8 @@ const UserLogin = () => {
               </button></>
         }
       </div>
-    </div>
+    </form>
   )
 }
 
 export default UserLogin;
-
-{/* 
-      <form className='user_form'>
-        <div className='user_form_container'>
-          <div className='user_form_input'>
-            <input
-              id='email'
-              type='email'
-              placeholder='Email'
-              value={user.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className='user_form_input visibility'>
-            <input
-              id='password'
-              type={showPassword ? 'text' : 'password'}
-              placeholder='Mot de passe'
-              value={user.password}
-              onChange={handleInputChange}
-              onFocus={handleFocusInput}
-              title='Le mot de passe doit contenir au moins 8 caractères dont 1 chiffre, 1 lettre minuscule et 1 lettre majuscule.'
-              required
-            />
-            {showPassword ? <VisibilityOffIcon onClick={handleShowPwd} /> : <VisibilityIcon onClick={handleShowPwd} />}
-          </div>
-          {
-            isRegister && <div className='user_form_input visibility'><input
-              id='confirmPwd'
-              type={showPasswordConfirm ? 'text' : 'password'}
-              placeholder='Confirmation du mot de passe'
-              value={user.confirmPwd}
-              onChange={handleInputChange}
-              required
-            />
-              {showPasswordConfirm ? <VisibilityOffIcon onClick={handleShowPwdConfirm} /> : <VisibilityIcon onClick={handleShowPwdConfirm} />}
-            </div>
-          }
-        </div>
-
-
-        {isPasswordInputFocused && isRegister && <div className='password_strength'>
-          <label>Doit contenir :</label>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: '5px' }}>
-            <div className={pwdChecker.hasCapital() ? 'password_check' : null}>1 majuscule</div>
-            <div className={pwdChecker.hasLowercase() ? 'password_check' : null}>1 minuscule</div>
-            <div className={pwdChecker.hasNumber() ? 'password_check' : null}>1 chiffre</div>
-            <div className={pwdChecker.isMinLength(1) ? 'password_check' : null}>Minimum 8 caractères</div>
-          </div>
-          <div style={{ backgroundColor: passwordColor, marginTop: '5px', height: '4px', width: passwordStrengthBar, borderRadius: '10px' }} />
-        </div>
-        }
-        {isError && <p className='user_form_error'>{isError}</p>}
-        {isSuccess && <p className='user_form_success'>{isSuccess}</p>}
-
-        <div className='user_form_validate'>
-          {
-            isRegister ? <><p>Déjà membre, se <span onClick={handleUserRegister}>connecter</span></p>
-              <button
-                onClick={createUser}
-                type='submit'>
-                S&apos;inscrire
-              </button></>
-              :
-              <><p>Pas encore inscrit, cliquez <span onClick={handleUserRegister}>ici</span></p>
-                <button
-                  type='submit'
-                  onClick={loginUser}>
-                  Valider
-                </button></>
-          }
-        </div>
-      </form> */}

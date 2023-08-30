@@ -29,6 +29,7 @@ const userSlice = createSlice({
   reducers: {
     inputValue: (state, action) => {
       const { inputType, value } = action.payload;
+      console.log('value dans le store:', !value);
       console.log('inputType:', inputType);
       switch (inputType) {
         case 'line1':
@@ -38,7 +39,8 @@ const userSlice = createSlice({
           state.user.address[inputType] = value;
           break;
         case 'newsletter_optin':
-          state.user[inputType] = value === 'on';
+          state.user[inputType] = !state.user.newsletter_optin;
+          console.log('!state.user.newsletter_optin:', !state.user.newsletter_optin);
           break;
         default:
           state.user[inputType] = value;

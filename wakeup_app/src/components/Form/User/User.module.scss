@@ -8,19 +8,42 @@
     $align: center,
     $justify: space-between
   );
-  width: 300px;
-  height: 460px;
+  width: 320px;
+  height: 500px;
   background-color: vars.$backgroundPrimaryLightTheme;
   top: 50px;
   right: 5%;
-  padding: 1rem 1.6rem;
+  padding: 1.5rem 1rem;
   box-shadow: 2px 2px 4px lightgray;
   border-radius: vars.$border-radius;
+  border: 1px solid vars.$backgroundPrimaryLightThemeGradient;
   z-index: 999;
+
+  &_input {
+    width: 100%;
+    margin-top: 2rem;
+    text-align: center;
+
+    &_checkbox {
+      width: 100%;
+      @include mixins.flex(row, $justify: flex-start);
+      & span {
+        padding: 0;
+      }
+      & svg {
+        width: 1.2rem;
+      }
+
+      & p {
+        font-size: 0.8rem;
+        margin-left: 0.4rem;
+      }
+    }
+  }
 
   &_passwordStrength {
     @include mixins.flex($direction: column, $justify: space-between);
-    margin-top: 5px;
+    margin-top: 1rem;
   }
   &_validate {
     width: 100%;
@@ -50,15 +73,15 @@
   }
 
   &_password_strength {
-    width: 70%;
+    width: 100%;
     font-size: 0.8rem;
     line-height: 1.1;
+    margin: 0.6rem;
 
     &_indicator {
       text-align: center;
       margin-top: 5px;
-      height: 2px;
-      // border-radius: 10px;S
+      height: 3px;
     }
   }
 

@@ -81,6 +81,7 @@
 
   &_booking {
     position: relative;
+    @include mixins.flex(column, $align: flex-start, $justify: flex-start);
     flex-grow: 1;
     border-top: 2px solid #f3f9ff87;
     overflow: hidden;

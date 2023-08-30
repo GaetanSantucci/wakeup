@@ -26,7 +26,6 @@ moment.locale('fr'); // set the locale to French
 const UserProfile = () => {
 
   const isBreakPoint = useMediaQuery(768);
-  console.log('isBreakPoint:', isBreakPoint);
 
   const dispatch = useDispatch();
   const { push } = useRouter();
@@ -55,7 +54,6 @@ const UserProfile = () => {
 
       fetchOrderByUser(user.id)
         .then(response => {
-          console.log('response:', response);
           setOrders(response)
         })
     )
@@ -141,14 +139,13 @@ const UserProfile = () => {
                     isBreakPoint ? null :
                       <ul>
                         {elem.products.map(product => {
-                          console.log('product:', product);
 
                           const productName = product.total_order_quantity > 1
                             ? product.product_name.replace("plateau", "plateaux")
                             : product.product_name;
 
                           return (
-                            <li className={styles.container_booking_card_product} key={product.id}> {product.total_order_quantity} {productName}</li>
+                            <li className={styles.container_booking_card_product} key={product.product_name}> {product.total_order_quantity} {productName}</li>
                           )
                         }
                         )}

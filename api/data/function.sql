@@ -6,10 +6,11 @@ DECLARE
 BEGIN
   IF ($1 ? 'email' AND $1 ? 'password') THEN
     IF NOT EXISTS(SELECT U.email FROM "user" as U WHERE U.email = ($1->>'email')) THEN
-      INSERT INTO "user"("email", "password", "newsletter_optin")
+      INSERT INTO "user"("email", "password", "role", "newsletter_optin")
       VALUES (
           COALESCE(($1 ->> 'email')::EMAIL, ''),
           COALESCE(($1 ->> 'password')::PASSWORD, ''),
+          COALESCE(($1 ->> 'role')::TEXT)
           COALESCE(($1 ->> 'newsletter_optin')::BOOLEAN, false))
       RETURNING id INTO user_id;
     ELSE
@@ -31,6 +32,9 @@ END;
 $$
 ;
 
+
+--?-------------------------------------------------------------
+-- ? FUNCTION TO UPDATE USER WITH CONDITION  
 CREATE OR REPLACE FUNCTION create_user(jsonb) RETURNS UUID LANGUAGE plpgsql AS $$
 DECLARE
   user_id UUID;
@@ -72,6 +76,32 @@ RETURNS VOID AS $$
 END;
 $$
  LANGUAGE plpgsql;
+
+
+
+ CREATE OR REPLACE FUNCTION delete_user(user_id UUID) RETURNS BOOLEAN AS
+$$
+DECLARE
+    user_deleted BOOLEAN := false;
+BEGIN
+    -- Delete related records first
+    DELETE FROM order_details
+    WHERE user_id = user_id;
+
+    -- Delete the user
+    DELETE FROM public.user
+    WHERE id = user_id;
+
+    IF FOUND THEN
+        user_deleted := true;
+    END IF;
+
+    COMMIT;
+    RETURN user_deleted;
+END;
+$$
+
+LANGUAGE plpgsql;
  
 
 --?-------------------------------------------------------------

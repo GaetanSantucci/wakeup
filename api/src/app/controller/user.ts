@@ -154,10 +154,7 @@ const updateCustomerProfile = async (req: Request, res: Response) => {
 const deleteCustomer = async (req: Request, res: Response) => {
   try {
     const userId: UUID = req.params.userId as UUID;
-    console.log('userId:', userId);
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    console.log('req.user?.id:', req.user?.id);
-    console.log('req.user?.role:', req.user?.role);
 
     if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
 
@@ -165,12 +162,14 @@ const deleteCustomer = async (req: Request, res: Response) => {
     if (req.user?.id === userId || req.user?.role === 'admin') {
 
       const user = await User.findOne(userId);
+      console.log('user:', user);
       if (!user) throw new ErrorApi(`L'utilisateur n'existe pas`, req, res, 400);
 
       const isUser = req.user?.id;
       if (isUser === userId || req.user?.role === 'admin') {
-
+        // todo checker si mot de passe identique
         const userDeleted = await User.delete(userId);
+        console.log('userDeleted:', userDeleted);
 
         if (userDeleted) return res.status(200).json(`L'utilisateur a été supprimé !`)
 
@@ -184,5 +183,35 @@ const deleteCustomer = async (req: Request, res: Response) => {
   }
 }
 
+const resetPassword = async (req: Request, res: Response) => {
+  // on recupere mot de passe + email 
+  const { email } = req.body
 
-export { getAllCustomers, signUp, signIn, signOut, getCustomerProfile, updateCustomerProfile, deleteCustomer } 
+  try {
+    const userExist = await User.findUserIdentity(email);
+    if (!userExist) throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
+
+    // todo envoi email via nodemailer
+    // // verify if password is the same with user.password
+    // const validPassword = await bcrypt.compare(password, userExist.password);
+    // if (!validPassword) throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
+
+    // delete user password;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [`password`]: remove, ...user } = userExist;
+
+    // Create token JWT
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user, req);
+
+    const userIdentity = { ...user, accessToken, refreshToken }
+
+    return res.status(200).json(userIdentity)
+
+  } catch (err) {
+    if (err instanceof Error) logger(err.message)
+  }
+}
+
+
+export { getAllCustomers, signUp, signIn, signOut, getCustomerProfile, updateCustomerProfile, deleteCustomer, resetPassword } 

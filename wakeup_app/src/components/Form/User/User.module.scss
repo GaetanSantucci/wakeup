@@ -21,11 +21,27 @@
 
   &_input {
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1rem;
     text-align: center;
 
+    &_reset {
+      width: 95%;
+      @include mixins.flex(row, $justify: flex-end);
+      margin-top: 0.6rem;
+      & span {
+        cursor: pointer;
+        color: vars.$backgroundAdditionnalColoredTheme;
+        opacity: 0.8;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
     &_checkbox {
-      width: 90%;
+      width: 95%;
+      margin-left: 1rem;
       @include mixins.flex(row, $justify: flex-start);
       & span {
         padding: 0;
@@ -41,12 +57,8 @@
     }
   }
 
-  &_passwordStrength {
-    @include mixins.flex($direction: column, $justify: space-between);
-    margin-top: 1rem;
-  }
   &_validate {
-    width: 100%;
+    width: 90%;
     @include mixins.flex(
       $direction: column,
       $align: center,
@@ -73,9 +85,9 @@
   }
 
   &_password_strength {
-    width: 100%;
+    width: 90%;
     font-size: 0.8rem;
-    line-height: 1.1;
+    line-height: 1.2;
     margin: 0.6rem;
 
     &_indicator {
@@ -84,21 +96,25 @@
       height: 3px;
     }
   }
+  &_passwordStrength {
+    @include mixins.flex($direction: column, $justify: space-between);
+    margin-top: 1rem;
+  }
 
-  &_success {
+  &_success,
+  &_error {
+    margin-top: 2rem;
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
-    border: 1px solid #41b741;
-    background-color: #aae2aad6;
     border-radius: 5px;
   }
 
+  &_success {
+    background-color: vars.$backgroundSuccessColor;
+  }
+
   &_error {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ca2a2a;
-    background-color: #e08f8fba;
-    border-radius: 5px;
+    background-color: vars.$backgroundErrorColor;
   }
 }
 

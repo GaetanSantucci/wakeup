@@ -11,7 +11,8 @@ export class UserService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
-        password
+        password,
+        role: "member"
       }),
     }
 
@@ -32,7 +33,6 @@ export class UserService {
     }
   }
 
-  //todo WIP
   async update(userData) {
     console.log('userData dans le user services: ', userData);
 
@@ -64,12 +64,39 @@ export class UserService {
 
   async delete(userData) {
     const requestOptions = {
-      method: 'DELET',
+      method: 'DELETE',
       headers: getAuthorizationHeader(),
       body: JSON.stringify(userData)
     };
     try {
       const response = await fetch(`${this.APIEndpoint}/profile/${userData.id}`, requestOptions)
+      console.log('response:', response);
+
+      if (!response.ok) {
+        const data = await response.json();
+        const errorMessage = data.message || 'Une erreur est survenue lors de la suppression du compte, veuillez ressayer';
+
+        return errorMessage;
+      }
+      const data = await response.json();
+      return data;
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
+  async resetPassword(email) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password
+      }),
+    }
+    try {
+      const response = await fetch(`${this.APIEndpoint}/profile/reset/${userData.id}`, requestOptions)
       console.log('response:', response);
 
       if (!response.ok) {
@@ -85,5 +112,6 @@ export class UserService {
     } catch (err) {
       console.error(err.message);
     }
+
   }
 }

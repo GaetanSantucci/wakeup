@@ -133,11 +133,11 @@ const UserLogin = () => {
           variant="standard"
           defaultValue={user.email}
           onChange={handleInputChange}
-          sx={{ width: '90%', mb: 2 }}
+          sx={{ width: '90%', mb: 1 }}
           size='small'
           required
         />
-        <FormControl sx={{ width: '90%', mb: 2 }}
+        <FormControl sx={{ width: '90%', mb: 1 }}
           variant="standard"
           size='small'
           required
@@ -164,9 +164,10 @@ const UserLogin = () => {
             label="Mot de passe"
           />
         </FormControl>
+        {!isRegister && <div className={styles.container_form_input_reset} ><span>Mot de passe oublié ?</span></div>}
         {
           isRegister && <>
-            <FormControl sx={{ width: '90%', mb: 2 }}
+            <FormControl sx={{ width: '90%', mb: 3 }}
               variant="standard"
               size='small'
               required
@@ -197,19 +198,17 @@ const UserLogin = () => {
               <Checkbox
                 id='newsletter_optin'
                 size='small'
-                // value={user.newsletter_optin}
-                // checked={user.newsletter_optin}
                 onChange={handleInputChange}
                 inputProps={{ 'aria-label': 'controlled' }}
                 sx={{
                   color: '#424242',
                   '&.Mui-checked': {
                     color: '#202020',
-                  },
-                  '& .MuiSvgIcon-root': { fontSize: 16 }
+                  }
+
                 }}
               />
-              <p>Recevoir newsletter de WAKE UP uniquement</p>
+              <p>Recevoir newsletter, offres promotionnelles.</p>
             </div>
           </>
         }
@@ -225,7 +224,7 @@ const UserLogin = () => {
           <p className={pwdChecker.hasNumber() ? `${styles.password_check}` : null}>1 chiffre</p>
           <p className={pwdChecker.isMinLength(1) ? `${styles.password_check}` : null}>Minimum 8 caractères</p>
         </div>
-        <div style={{ width: '100%', textAlign: 'start' }}>
+        <div style={{ width: '90%', textAlign: 'start' }}>
           <div className={styles.container_form_password_strength_indicator}
             style={{ backgroundColor: passwordColor, width: passwordStrengthBar }} >
           </div>

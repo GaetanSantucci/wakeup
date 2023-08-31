@@ -21,7 +21,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
-import { userUpdateProfile, inputValue } from '@/src/store/reducers/User';
+import { userUpdateProfile, inputValue, resetUser } from '@/src/store/reducers/User';
 
 import { fetchOrderByUser } from '@/src/libs/getOrderList';
 import { getTotalPrice } from '@/src/libs/getCartTotal';
@@ -39,7 +39,7 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const { push } = useRouter();
   const { logout } = useLogout();
-  const { update } = useSetupUser();
+  const { update, deleted } = useSetupUser();
 
   const { isLogged, user } = useSelector((state) => state.user);
 
@@ -138,8 +138,32 @@ const UserProfile = () => {
   const handleOpenDeleteModale = () => setOpenDeleteConfirmation((openDeleteConfirmationModale) => !openDeleteConfirmationModale)
 
   const Modale = () => {
+
+    const [password, setPassword] = useState('')
+    console.log('password:', password);
+
+    const sendResetPassword = async () => {
+      console.log("envoi mail pour reset")
+      const data = {
+        id: user.id,
+        email: user.email,
+        password
+      }
+      console.log('data:', data);
+
+      try {
+        const deleteUser = await deleted(data)
+        console.log('deleteUser:', deleteUser);
+        userLogout();
+      }
+      catch (err) {
+
+      }
+    }
+
     return (
-      <div className={styles.container_user_modale}>
+      <div className={styles.container_modale}>
+        <p>Saissisez votre mot de passe pour supprimer votre compte</p>
         <FormControl sx={{ width: '90%', mb: 2 }}
           variant="standard"
           size='small'
@@ -148,8 +172,8 @@ const UserProfile = () => {
           <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
           <Input
             id="password"
-            onChange={handleInputChange}
-            defaultValue={user.password}
+            onChange={(e) => setPassword(e.target.value)}
+            defaultValue={password}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
@@ -165,6 +189,7 @@ const UserProfile = () => {
             label="Mot de passe"
           />
         </FormControl>
+        <button onClick={sendResetPassword}>Valider</button>
       </div>
     )
   }
@@ -222,174 +247,172 @@ const UserProfile = () => {
   };
 
   return (
-    <>
-      <section className={styles.container}>
-        <aside className={styles.container_user}>
-          {openDeleteConfirmationModale && <Modale />}
 
-          <div className={styles.container_user_information}>
-            <h4>Mon profil</h4>
-            <form >
-              <TextField
-                label="Email"
-                id='email'
-                onChange={e => setEmail(e.target.value)}
-                type="email"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                size='small'
-                value={email}
-                InputProps={isModify}
-                error={errorEmail}
-                helperText={errorEmail ? "L'email existe déjà" : ''}
-                variant='standard'
-              />
-              <TextField
-                label="Téléphone"
-                id='phone'
-                onChange={e => setPhone(e.target.value)}
-                type="tel"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%', padding: '' }}
-                size='small'
-                value={phone}
-                InputProps={isModify}
-                variant='standard'
-              />
-              <TextField
-                label="Nom"
-                id='lastname'
-                onChange={e => setLastname(e.target.value)}
-                type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                size='small'
-                value={lastname}
-                InputProps={isModify}
-                variant='standard'
-              />
-              <TextField
-                label="Prénom"
-                id='firstname'
-                onChange={e => setFirstname(e.target.value)}
-                size='small'
-                type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                value={firstname}
-                InputProps={isModify}
-                variant='standard'
-              />
-              <TextField
-                label="Adresse"
-                id='line1'
-                onChange={e => setLine1(e.target.value)}
-                size='small'
-                type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                value={line1}
-                InputProps={isModify}
-                variant='standard'
-              />
-              {user.address.complement || isUserUpdate ? <TextField
-                label="Complément"
-                id='line2'
-                onChange={e => setLine2(e.target.value)}
-                size='small'
-                type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                value={line2}
-                InputProps={isModify}
-                variant='standard'
-              /> : null}
-              <TextField
-                label="Code postal"
-                id='postcode'
-                onChange={e => setPostcode(e.target.value)}
-                size='small'
-                type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                value={postcode}
-                InputProps={isModify}
-                variant='standard'
+    <section className={styles.container}>
+      {openDeleteConfirmationModale && <Modale />}
+      <aside className={styles.container_user}>
 
-              />
-              <TextField
-                label="Ville"
-                id='city'
-                onChange={e => setCity(e.target.value)}
-                size='small'
-                type="text"
-                sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
-                value={city}
-                InputProps={isModify}
-                variant='standard'
-              />
-              {isUserUpdate &&
-                <div className={styles.container_user_information_checkbox}>
-                  <Checkbox
-                    id='newsletter_optin'
-                    size='small'
-                    // value={user.newsletter_optin}
-                    checked={user.newsletter_optin}
-                    onChange={handleInputChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                    sx={{
-                      color: '#424242',
-                      '&.Mui-checked': {
-                        color: '#202020',
-                      },
-                      '& .MuiSvgIcon-root': { fontSize: 16 }
-                    }}
-                  />
-                  <p>Recevoir newsletter de WAKE UP uniquement</p>
-                </div>}
-            </form>
-          </div>
-          <div className={styles.container_user_button}>
-            {
-              isUserUpdate ?
-                <>
-                  <div className={styles.container_user_button_update}>
-                    <button onClick={toggleUpdateUser}>Annuler</button>
-                    <button type='submit ' onClick={handleFormSubmit}>Enregistrer</button>
-                  </div>
-                  <div className={styles.container_user_button_delete} onClick={handleOpenDeleteModale}>
-                    <DeleteOutlineOutlinedIcon /><span>Supprimer le compte</span>
-                  </div>
-                </>
-                :
-                <button onClick={toggleUpdateUser}>Modifier</button>
-            }
-            <div onClick={userLogout} className={styles.container_user_logout}>
-              {isBreakPoint ? null :
-                <>
-                  <LogoutIcon />
-                  <div className={styles.container_user_logout_info}>Se déconnecter</div>
-                </>
-              }
-            </div>
-          </div>
-        </aside>
-        <div className={styles.container_booking}>
-          <div className={styles.container_booking_background}>
-            <ProfileBackground />
-          </div>
-          {
-            orders && <>
-              <h4>Prochaine réservation</h4>
-              <BookingList orders={orders} currentDateCheck={true} />
+        <div className={styles.container_user_information}>
+          <h4>Mon profil</h4>
+          <form >
+            <TextField
+              label="Email"
+              id='email'
+              onChange={e => setEmail(e.target.value)}
+              type="email"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              size='small'
+              value={email}
+              InputProps={isModify}
+              error={errorEmail}
+              helperText={errorEmail ? "L'email existe déjà" : ''}
+              variant='standard'
+            />
+            <TextField
+              label="Téléphone"
+              id='phone'
+              onChange={e => setPhone(e.target.value)}
+              type="tel"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%', padding: '' }}
+              size='small'
+              value={phone}
+              InputProps={isModify}
+              variant='standard'
+            />
+            <TextField
+              label="Nom"
+              id='lastname'
+              onChange={e => setLastname(e.target.value)}
+              type="text"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              size='small'
+              value={lastname}
+              InputProps={isModify}
+              variant='standard'
+            />
+            <TextField
+              label="Prénom"
+              id='firstname'
+              onChange={e => setFirstname(e.target.value)}
+              size='small'
+              type="text"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              value={firstname}
+              InputProps={isModify}
+              variant='standard'
+            />
+            <TextField
+              label="Adresse"
+              id='line1'
+              onChange={e => setLine1(e.target.value)}
+              size='small'
+              type="text"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              value={line1}
+              InputProps={isModify}
+              variant='standard'
+            />
+            {user.address.complement || isUserUpdate ? <TextField
+              label="Complément"
+              id='line2'
+              onChange={e => setLine2(e.target.value)}
+              size='small'
+              type="text"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              value={line2}
+              InputProps={isModify}
+              variant='standard'
+            /> : null}
+            <TextField
+              label="Code postal"
+              id='postcode'
+              onChange={e => setPostcode(e.target.value)}
+              size='small'
+              type="text"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              value={postcode}
+              InputProps={isModify}
+              variant='standard'
 
-              <h4>Historiques</h4>
-              <BookingList orders={orders} currentDateCheck={false} />
-            </>
-          }
+            />
+            <TextField
+              label="Ville"
+              id='city'
+              onChange={e => setCity(e.target.value)}
+              size='small'
+              type="text"
+              sx={isBreakPoint ? { mb: 2, width: '80%' } : { mb: 1.4, width: '95%' }}
+              value={city}
+              InputProps={isModify}
+              variant='standard'
+            />
+            {isUserUpdate &&
+              <div className={styles.container_user_information_checkbox}>
+                <Checkbox
+                  id='newsletter_optin'
+                  size='small'
+                  // value={user.newsletter_optin}
+                  checked={user.newsletter_optin}
+                  onChange={handleInputChange}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  sx={{
+                    color: '#424242',
+                    '&.Mui-checked': {
+                      color: '#202020',
+                    },
+                    '& .MuiSvgIcon-root': { fontSize: 16 }
+                  }}
+                />
+                <p>Recevoir newsletter de WAKE UP uniquement</p>
+              </div>}
+          </form>
         </div>
-        {isBreakPoint &&
+        <div className={styles.container_user_button}>
+          {
+            isUserUpdate ?
+              <>
+                <div className={styles.container_user_button_update}>
+                  <button onClick={toggleUpdateUser}>Annuler</button>
+                  <button type='submit ' onClick={handleFormSubmit}>Enregistrer</button>
+                </div>
+                <div className={styles.container_user_button_delete} onClick={handleOpenDeleteModale}>
+                  <DeleteOutlineOutlinedIcon /><span>Supprimer le compte</span>
+                </div>
+              </>
+              :
+              <button onClick={toggleUpdateUser}>Modifier</button>
+          }
           <div onClick={userLogout} className={styles.container_user_logout}>
-            <LogoutIcon />
-            <div className={styles.container_user_logout_info}>Se déconnecter</div>
+            {isBreakPoint ? null :
+              <>
+                <LogoutIcon />
+                <div className={styles.container_user_logout_info}>Se déconnecter</div>
+              </>
+            }
           </div>
+        </div>
+      </aside>
+      <div className={styles.container_booking}>
+        <div className={styles.container_booking_background}>
+          <ProfileBackground />
+        </div>
+        {
+          orders && <>
+            <h4>Prochaine réservation</h4>
+            <BookingList orders={orders} currentDateCheck={true} />
 
+            <h4>Historiques</h4>
+            <BookingList orders={orders} currentDateCheck={false} />
+          </>
         }
-      </section>
-    </>
+      </div>
+      {isBreakPoint &&
+        <div onClick={userLogout} className={styles.container_user_logout}>
+          <LogoutIcon />
+          <div className={styles.container_user_logout_info}>Se déconnecter</div>
+        </div>
+      }
+    </section>
   )
 }
 

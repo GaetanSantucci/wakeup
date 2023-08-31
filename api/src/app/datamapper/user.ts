@@ -8,6 +8,7 @@ class UserDataMapper extends CoreDataMapper {
 
   createFunctionName = 'create_user';
   updateFunctionName = 'update_user';
+  deleteFunctionName = 'delete_user';
   // userIdentity = 'user_identity';
 
   //& Find user by email
@@ -23,6 +24,21 @@ class UserDataMapper extends CoreDataMapper {
       return result.rows[0];
     }
   }
+
+  // async deleteUser(user_id: string) {
+  //   console.log('user_id:', user_id);
+  //   if (this.client instanceof pg.Pool) {
+  //     const preparedQuery = {
+  //       text: `SELECT * FROM "${this.deleteFunctionName}" WHERE id = ($1);`,
+  //       values: [user_id]
+  //     };
+
+  //     const result = await this.client.query(preparedQuery);
+  //     console.log('result:', result);
+  //     // if (!result.rows[0]) return null;
+  //     return result;
+  //   }
+  // }
 }
 
 const User = new UserDataMapper(client);

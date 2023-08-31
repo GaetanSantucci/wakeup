@@ -4,8 +4,25 @@
 .container {
   display: flex;
   width: 100%;
+  height: auto;
   position: relative;
   justify-content: space-between;
+
+  &_modale {
+    position: absolute;
+    @include mixins.flex(column);
+    row-gap: 1.6rem;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    // width: 400px;
+    // height: 200px;
+    padding: 3rem;
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: 1px solid vars.$backgroundPrimaryLightThemeGradient;
+  }
 
   & h4 {
     padding: 0.8rem 1.6rem;
@@ -20,7 +37,7 @@
   }
   &_user {
     width: 320px;
-    height: 100%;
+    height: auto;
     background-color: #f8f8f8ec;
     @include mixins.flex(column, flex-start, space-between);
     padding: 2rem 2rem;
@@ -75,6 +92,7 @@
       &_delete {
         @include mixins.flex(row);
         color: vars.$backgroundErrorColor;
+        cursor: pointer;
         & span {
           font-size: 0.8rem;
         }

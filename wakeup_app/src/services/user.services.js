@@ -61,4 +61,29 @@ export class UserService {
       console.error(err.message);
     }
   }
+
+  async delete(userData) {
+    const requestOptions = {
+      method: 'DELET',
+      headers: getAuthorizationHeader(),
+      body: JSON.stringify(userData)
+    };
+    try {
+      const response = await fetch(`${this.APIEndpoint}/profile/${userData.id}`, requestOptions)
+      console.log('response:', response);
+
+      if (!response.ok) {
+        const data = await response.json();
+        const errorMessage = data.message || 'Une erreur est survenue lors de la suppression du compte, veuillez ressayer';
+
+        return errorMessage;
+      }
+      const data = await response.json();
+      console.log('data:', data);
+      return data;
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 }

@@ -71,6 +71,14 @@
           }
         }
       }
+
+      &_delete {
+        @include mixins.flex(row);
+        color: vars.$backgroundErrorColor;
+        & span {
+          font-size: 0.8rem;
+        }
+      }
     }
 
     &_logout {
@@ -209,12 +217,15 @@
 
 @media (max-width: 1024px) {
   .container {
+    height: 900px;
     &_user {
-      width: 300px;
+      width: 280px;
+      height: 900px;
     }
 
     &_booking {
       padding: 2rem 1.2rem;
+      height: 900px;
 
       &_background {
         display: none;
@@ -232,8 +243,8 @@
 
 @media (max-width: 768px) {
   .container {
-    @include mixins.flex(column, center);
     height: auto;
+    @include mixins.flex(column, center);
     margin-top: 2rem;
 
     & h4 {
@@ -244,6 +255,7 @@
 
     &_user {
       width: 100%;
+      height: auto;
       padding: 2rem 0 1rem 0;
       align-items: center;
 
@@ -271,6 +283,7 @@
     &_booking {
       @include mixins.flex(column);
       width: 100%;
+      height: auto;
       padding: 0 0;
 
       &_next,

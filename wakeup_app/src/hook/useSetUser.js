@@ -13,9 +13,14 @@ export const useSetupUser = () => {
 
   const update = async (userData) => {
     const userUpdated = await User.update(userData);
-    if (userUpdated) {
-      return userUpdated;
-    }
+    if (userUpdated) return userUpdated;
+
   }
-  return { create, update };
+
+  const deleted = async (userData) => {
+    const userDeleted = await User.delete(userData);
+    if (userDeleted) return userDeleted;
+  }
+
+  return { create, update, deleted }
 }

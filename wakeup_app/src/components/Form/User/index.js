@@ -38,7 +38,7 @@ const UserLogin = () => {
 
 
   const { user, isError, isSuccess } = useSelector((state) => state.user);
-  const { isRegister, log } = useSelector((state) => state.settings);
+  const { isRegister } = useSelector((state) => state.settings);
   const [showPassword, setShowPassword] = useState(false);
 
   // Remove alert pop message 
@@ -46,7 +46,7 @@ const UserLogin = () => {
     setTimeout(() => {
       dispatch(setErrorMessage(''))
       dispatch(setSuccessMessage(''))
-    }, 4000)
+    }, 3000)
   }, [dispatch, isError, isSuccess])
 
 
@@ -63,9 +63,12 @@ const UserLogin = () => {
         if (errorMessage) return dispatch(setErrorMessage(errorMessage))
 
         const response = await setUser(id)
+        console.log('response:', response);
+        console.log('response:', response.role);
         if (response.id === id) {
           dispatch(toggleLoginModale())
           dispatch(toggleShowNavbar())
+
           router.push(`/user/profile/${response.id}`)
         }
 

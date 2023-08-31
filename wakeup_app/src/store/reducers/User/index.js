@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   user: {
     id: '',
-    email: 'alexia.pappano@hotmail.com',
+    email: 'alexia.pappano@hotmail.fr',
     password: 'Pappano83!',
     confirmPwd: '',
     lastname: '',
@@ -15,7 +15,7 @@ const initialState = {
       city: '',
       postcode: '',
     },
-    role: false,
+    role: '',
     newsletter_optin: '',
   },
   isLogged: false,

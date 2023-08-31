@@ -9,8 +9,16 @@ import { useEffect, useState } from 'react';
 import { useMediaQuery } from '@/src/hook/useMediaQuery';
 
 import { TextField } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import Input from '@mui/material/Input';
+import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
 import { userUpdateProfile, inputValue } from '@/src/store/reducers/User';
@@ -46,6 +54,9 @@ const UserProfile = () => {
   const [email, setEmail] = useState(user.email || "");
   const [phone, setPhone] = useState(user.phone || "");
   const [errorEmail, setErrorEmail] = useState(false);
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const [openDeleteConfirmationModale, setOpenDeleteConfirmation] = useState(false)
 
   useEffect(() => {
 
@@ -113,6 +124,7 @@ const UserProfile = () => {
 
   }
 
+
   // Dynamic method for store input by type
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -120,6 +132,43 @@ const UserProfile = () => {
     dispatch(inputValue({ inputType: id, value }));
   };
   const isModify = isUserUpdate ? { readOnly: false } : { readOnly: true }
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleOpenDeleteModale = () => setOpenDeleteConfirmation((openDeleteConfirmationModale) => !openDeleteConfirmationModale)
+
+  const Modale = () => {
+    return (
+      <div className={styles.container_user_modale}>
+        <FormControl sx={{ width: '90%', mb: 2 }}
+          variant="standard"
+          size='small'
+          required
+        >
+          <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
+          <Input
+            id="password"
+            onChange={handleInputChange}
+            defaultValue={user.password}
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Mot de passe"
+          />
+        </FormControl>
+      </div>
+    )
+  }
+
 
   const BookingList = ({ orders, currentDateCheck }) => {
     const currentDate = new Date();
@@ -176,6 +225,8 @@ const UserProfile = () => {
     <>
       <section className={styles.container}>
         <aside className={styles.container_user}>
+          {openDeleteConfirmationModale && <Modale />}
+
           <div className={styles.container_user_information}>
             <h4>Mon profil</h4>
             <form >
@@ -294,10 +345,15 @@ const UserProfile = () => {
           <div className={styles.container_user_button}>
             {
               isUserUpdate ?
-                <div className={styles.container_user_button_update}>
-                  <button onClick={toggleUpdateUser}>Annuler</button>
-                  <button type='submit ' onClick={handleFormSubmit}>Enregistrer</button>
-                </div>
+                <>
+                  <div className={styles.container_user_button_update}>
+                    <button onClick={toggleUpdateUser}>Annuler</button>
+                    <button type='submit ' onClick={handleFormSubmit}>Enregistrer</button>
+                  </div>
+                  <div className={styles.container_user_button_delete} onClick={handleOpenDeleteModale}>
+                    <DeleteOutlineOutlinedIcon /><span>Supprimer le compte</span>
+                  </div>
+                </>
                 :
                 <button onClick={toggleUpdateUser}>Modifier</button>
             }

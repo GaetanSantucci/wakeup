@@ -154,6 +154,8 @@ const updateCustomerProfile = async (req: Request, res: Response) => {
 const deleteCustomer = async (req: Request, res: Response) => {
   try {
     const userId: UUID = req.params.userId as UUID;
+    const { password, email } = req.body
+    console.log('password:', password);
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
     if (!uuidRegex.test(userId)) throw new ErrorApi(`UUID non valide`, req, res, 400);
@@ -161,15 +163,19 @@ const deleteCustomer = async (req: Request, res: Response) => {
     // I check different points to authorize the deletion
     if (req.user?.id === userId || req.user?.role === 'admin') {
 
-      const user = await User.findOne(userId);
+      // const user = await User.findOne(userId);
+      const user = await User.findUserIdentity(email);
       console.log('user:', user);
       if (!user) throw new ErrorApi(`L'utilisateur n'existe pas`, req, res, 400);
 
       const isUser = req.user?.id;
       if (isUser === userId || req.user?.role === 'admin') {
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        console.log('validPassword:', validPassword);
+        if (!validPassword) throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
         // todo checker si mot de passe identique
         const userDeleted = await User.delete(userId);
-        console.log('userDeleted:', userDeleted);
 
         if (userDeleted) return res.status(200).json(`L'utilisateur a été supprimé !`)
 

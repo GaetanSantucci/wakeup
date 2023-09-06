@@ -9,7 +9,7 @@
     $justify: space-between
   );
   width: 320px;
-  height: 500px;
+  // height: 500px;
   background-color: vars.$backgroundPrimaryLightTheme;
   top: 50px;
   right: 5%;
@@ -64,7 +64,7 @@
       $align: center,
       $justify: space-between
     );
-    margin: 1rem;
+    margin: 2rem 0 2rem 0;
     & span {
       font-weight: 600;
       text-decoration: underline;
@@ -88,7 +88,7 @@
     width: 90%;
     font-size: 0.8rem;
     line-height: 1.2;
-    margin: 0.6rem;
+    margin: 2rem;
 
     &_indicator {
       text-align: center;
@@ -105,7 +105,7 @@
   &_error {
     margin-top: 2rem;
     font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+    padding: 1.6rem 0.8rem;
     border-radius: 5px;
   }
 

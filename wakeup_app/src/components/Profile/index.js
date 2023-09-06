@@ -154,7 +154,13 @@ const UserProfile = () => {
       try {
         const deleteUser = await deleted(data)
         console.log('deleteUser:', deleteUser);
-        userLogout();
+        if (response.status === 403) {
+          console.log(
+            "message :", deleteUser.message
+          )
+        } else {
+          userLogout();
+        }
       }
       catch (err) {
 

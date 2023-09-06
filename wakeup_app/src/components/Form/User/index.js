@@ -69,7 +69,11 @@ const UserLogin = () => {
           dispatch(toggleLoginModale())
           dispatch(toggleShowNavbar())
 
-          router.push(`/user/profile/${response.id}`)
+          if (response.role === 'admin') {
+            router.push('/admin/dashboard')
+          } else {
+            router.push(`/user/profile/${response.id}`)
+          }
         }
 
       } catch (err) {

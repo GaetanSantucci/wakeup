@@ -8,7 +8,7 @@ import { CoreDataMapper } from './coreDatamapper.js';
 class ReviewDatamapper extends CoreDataMapper {
 
   tableName = 'review';
-  columns = `"id", "description", "author", "date", "star"`
+  columns = `"id", "description", "author", "date", "star", "source"`
 
   // createFunctionName = 'create_blog';
   // updateFunctionName = 'update_blog';

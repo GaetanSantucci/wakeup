@@ -5,7 +5,7 @@ import { CoreDataMapper } from './coreDatamapper.js';
 // const logger = debug('Datamapper');
 class ReviewDatamapper extends CoreDataMapper {
     tableName = 'review';
-    columns = `"id", "description", "author", "date", "star"`;
+    columns = `"id", "description", "author", "date", "star", "source"`;
     // createFunctionName = 'create_blog';
     // updateFunctionName = 'update_blog';
     //& If need to create specific method for LocationDataMapper

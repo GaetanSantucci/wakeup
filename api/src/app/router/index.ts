@@ -28,6 +28,8 @@ router.use(ReviewRouter);
 import { router as OrderRouter } from './order.js';
 router.use(OrderRouter);
 
+import { router as ResetPasswordRouter } from './resetPassword.js';
+router.use(ResetPasswordRouter);
 
 import { router as PaymentRouter } from './payment.js';
 router.use(PaymentRouter);

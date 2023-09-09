@@ -177,29 +177,4 @@ const deleteCustomer = async (req, res) => {
             logger(err.message);
     }
 };
-const resetPassword = async (req, res) => {
-    // on recupere mot de passe + email 
-    const { email } = req.body;
-    try {
-        const userExist = await User.findUserIdentity(email);
-        if (!userExist)
-            throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
-        // todo envoi email via nodemailer
-        // // verify if password is the same with user.password
-        // const validPassword = await bcrypt.compare(password, userExist.password);
-        // if (!validPassword) throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
-        // delete user password;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { [`password`]: remove, ...user } = userExist;
-        // Create token JWT
-        const accessToken = generateAccessToken(user);
-        const refreshToken = generateRefreshToken(user, req);
-        const userIdentity = { ...user, accessToken, refreshToken };
-        return res.status(200).json(userIdentity);
-    }
-    catch (err) {
-        if (err instanceof Error)
-            logger(err.message);
-    }
-};
-export { getAllCustomers, signUp, signIn, signOut, getCustomerProfile, updateCustomerProfile, deleteCustomer, resetPassword };
+export { getAllCustomers, signUp, signIn, signOut, getCustomerProfile, updateCustomerProfile, deleteCustomer };

@@ -83,7 +83,7 @@ const createPaypalSession = async (req: Request, res: Response) => {
 
   const order = await createPaypalOrder(req, res);
   console.log('order:', order);
-  await createOrderWithPaypal(order, req, res)
+  await createOrderWithPaypal(order, req)
   res.json(order);
 }
 

@@ -119,6 +119,10 @@ button {
   @include mixins.button();
 }
 
+.fc-event-end .fc-event-time {
+  display: none;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

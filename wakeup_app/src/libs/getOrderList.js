@@ -2,9 +2,7 @@ const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
 
 const fetchAllOrder = async () => {
   const res = await fetch(`${endpoint}/orders`)
-  if (!res.ok) {
-    throw new Error('Récupération des données liées aux commandes');
-  }
+  if (!res.ok) return undefined;
   return res.json();
 }
 

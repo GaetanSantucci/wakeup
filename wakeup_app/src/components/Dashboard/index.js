@@ -4,6 +4,7 @@ import styles from './Dashboard.module.scss';
 import { useLogout } from '@/src/hook/useLogout';
 
 import LogoutIcon from '@mui/icons-material/Logout';
+import { DashboardCalendar } from './Calendar';
 
 const Dashboard = () => {
 
@@ -43,7 +44,9 @@ const Dashboard = () => {
           <div className={styles.container_dashboard_logout}>Se déconnecter</div>
         </div>
       </aside>
-      <section></section>
+      <section>
+        <DashboardCalendar />
+      </section>
     </main>
   )
 }

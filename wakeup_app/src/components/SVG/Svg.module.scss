@@ -1,0 +1,42 @@
+@use '/public/styles/vars.scss';
+
+.croissant {
+  width: 20%;
+  fill: none;
+  stroke: vars.$backgroundPrimaryDarkTheme;
+  stroke-width: 6;
+
+  &_one,
+  &_two,
+  &_three,
+  &_four,
+  &_five {
+    stroke-dasharray: 700;
+    stroke-dashoffset: 700;
+    animation: appear 1.5s ease-in-out forwards;
+  }
+
+  &_two {
+    animation-delay: 0.5s;
+  }
+  &_three {
+    animation-delay: 1.2s;
+  }
+  &_four {
+    animation-delay: 2.1s;
+  }
+  &_five {
+    animation-delay: 2.6s;
+  }
+}
+
+.page404 {
+  width: 30%;
+  fill: vars.$backgroundPrimaryDarkTheme;
+}
+
+@keyframes appear {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

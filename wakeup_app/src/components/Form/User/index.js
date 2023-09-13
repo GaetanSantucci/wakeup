@@ -10,6 +10,10 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import Input from '@mui/material/Input';
 
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
+
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -40,6 +44,8 @@ const UserLogin = () => {
   const { user, isError, isSuccess } = useSelector((state) => state.user);
   const { isRegister } = useSelector((state) => state.settings);
   const [showPassword, setShowPassword] = useState(false);
+  const [isForgotEmail, setIsForgotEmail] = useState(false);
+  const [isSuccessfull, setIsSuccessfull] = useState(false);
 
   // Remove alert pop message 
   useEffect(() => {
@@ -114,8 +120,6 @@ const UserLogin = () => {
   // Dynamic method for store input by type
   const handleInputChange = (event) => {
     const { id, value } = event.target;
-    console.log('id:', id);
-    console.log('value:', value);
     dispatch(inputValue({ inputType: id, value }));
   };
 
@@ -125,9 +129,36 @@ const UserLogin = () => {
   const passwordStrengthBar = pwdChecker.getPasswordStrengthBarWidth();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  // const handleMouseDownPassword = (e) => {
-  //   e.preventDefault();
-  // };
+
+  const handlePasswordResetEmail = () => {
+    setIsForgotEmail(!isForgotEmail);
+  }
+
+  const sendMailResetPassword = async (event) => {
+
+    event.preventDefault();
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: user.email
+      }),
+    }
+
+    const response = await fetch('http://localhost:7777/api/v1/send_email_reset', options)
+    console.log('response:', response.ok);
+
+    if (response.ok) {
+      setIsSuccessfull(true)
+      setTimeout(() => {
+        setIsSuccessfull(false)
+
+      }, 2000)
+    }
+  }
 
   return (
     <form className={styles.container_form} >
@@ -141,34 +172,50 @@ const UserLogin = () => {
           size='small'
           required
         />
-        <FormControl sx={{ width: '90%', mb: 1 }}
-          variant="standard"
-          size='small'
-          required
-        >
-          <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
-          <Input
-            id="password"
-            onChange={handleInputChange}
-            defaultValue={user.password}
-            // onFocus={handleFocusInput}
-            type={showPassword ? 'text' : 'password'}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  // onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Mot de passe"
-          />
-        </FormControl>
-        {!isRegister && <div className={styles.container_form_input_reset} ><span>Mot de passe oublié ?</span></div>}
+        {
+          !isForgotEmail &&
+          <FormControl sx={{ width: '90%', mb: 1 }}
+            variant="standard"
+            size='small'
+            required
+          >
+            <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
+            <Input
+              id="password"
+              onChange={handleInputChange}
+              defaultValue={user.password}
+              // onFocus={handleFocusInput}
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    // onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Mot de passe"
+            />
+          </FormControl>
+        }
+        {
+          !isRegister && !isForgotEmail &&
+          <div className={styles.container_form_input_reset}
+            onClick={handlePasswordResetEmail}>
+            <span>Mot de passe oublié ?</span>
+          </div>
+        }
+        {
+          !isRegister && isForgotEmail &&
+          <div className={styles.container_form_input_reset}
+            onClick={handlePasswordResetEmail}>
+            <span>Saissisez votre email afin de réinitialiser votre mot de passe</span>
+          </div>
+        }
         {
           isRegister && <>
             <FormControl sx={{ width: '90%', mb: 3 }}
@@ -216,24 +263,35 @@ const UserLogin = () => {
             </div>
           </>
         }
-        {isError && <p className={styles.container_form_error}>{isError}</p>}
-        {isSuccess && <p className={styles.container_form_success}>{isSuccess}</p>}
+        {
+          isError &&
+          <p className={styles.container_form_error}>{isError}</p>}
+        {
+          isSuccessfull &&
+          <Stack sx={{ m: 2 }} >
+            <Alert severity="success">
+              {/* <AlertTitle>Succès</AlertTitle> */}
+              Email envoyé, vérifiez votre messagerie
+            </Alert>
+          </Stack>
+        }
       </div>
-      {isRegister && <>
-
-        <div className={styles.container_form_password_strength}>
-          <p>Le mot de passe doit contenir :</p>
-          <p className={pwdChecker.hasCapital() ? `${styles.password_check}` : null}>1 majuscule</p>
-          <p className={pwdChecker.hasLowercase() ? `${styles.password_check}` : null}>1 minuscule</p>
-          <p className={pwdChecker.hasNumber() ? `${styles.password_check}` : null}>1 chiffre</p>
-          <p className={pwdChecker.isMinLength(1) ? `${styles.password_check}` : null}>Minimum 8 caractères</p>
-        </div>
-        <div style={{ width: '90%', textAlign: 'start' }}>
-          <div className={styles.container_form_password_strength_indicator}
-            style={{ backgroundColor: passwordColor, width: passwordStrengthBar }} >
+      {
+        isRegister &&
+        <>
+          <div className={styles.container_form_password_strength}>
+            <p>Le mot de passe doit contenir :</p>
+            <p className={pwdChecker.hasCapital() ? `${styles.password_check}` : null}>1 majuscule</p>
+            <p className={pwdChecker.hasLowercase() ? `${styles.password_check}` : null}>1 minuscule</p>
+            <p className={pwdChecker.hasNumber() ? `${styles.password_check}` : null}>1 chiffre</p>
+            <p className={pwdChecker.isMinLength(1) ? `${styles.password_check}` : null}>Minimum 8 caractères</p>
           </div>
-        </div>
-      </>
+          <div style={{ width: '90%', textAlign: 'start' }}>
+            <div className={styles.container_form_password_strength_indicator}
+              style={{ backgroundColor: passwordColor, width: passwordStrengthBar }} >
+            </div>
+          </div>
+        </>
       }
 
       <div className={styles.container_form_validate}>
@@ -248,8 +306,11 @@ const UserLogin = () => {
             <><p>Pas encore inscrit, cliquez <span onClick={handleUserRegister}>ici</span></p>
               <button
                 type='submit'
-                onClick={loginUser}>
-                Identifiez-vous
+                onClick={isForgotEmail ? sendMailResetPassword : loginUser}>
+                {
+                  isForgotEmail ? "Réinitialisation du mot de passe" : "Identifiez-vous"
+                }
+
               </button></>
         }
       </div>

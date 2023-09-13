@@ -1,22 +1,15 @@
 'use client';
-import { use, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
-
-//method to fetch data reviews
-import { getReviewData } from '/src/libs/getReviewList.js';
-
-const reviewsFetch = getReviewData()
-
 
 export default function Reviews() {
 
-  const reviews = use(reviewsFetch)
-
+  const [isReviews, setReviews] = useState([]);
   const [selectedElement, setSelectedElement] = useState();
 
   const handleButtonClick = (id) => {
     setSelectedElement(id);
-  }
+  };
 
   function displayStars(rating) {
     const stars = Math.round(rating);
@@ -27,29 +20,51 @@ export default function Reviews() {
     return starDisplay;
   }
 
+  useEffect(() => {
+    // Check if we are running on the client-side
+    if (typeof window !== 'undefined') {
+      // Fetch data only on the client-side
+      async function fetchData() {
+        try {
+          const response = await fetch('http://localhost:7777/api/v1/reviews');
+          if (response.ok) {
+            const data = await response.json();
+            setReviews(data);
+          } else {
+            throw new Error('Failed to fetch data');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
+      fetchData();
+    }
+  }, []);
 
   return (
     <>
       <h3>Nos avis clients</h3>
       <div className={styles.container}>
         {
-          reviews.map((r, i) => {
-            return (
-              <div key={r.author} suppressHydrationWarning={true} className={styles.container_card}>
-                <div suppressHydrationWarning={true} >{displayStars(r.star)}</div>
-                <div suppressHydrationWarning={true} onClick={() => handleButtonClick(r.id)}>
-                  <p suppressHydrationWarning={true} className={selectedElement === r.id ? `${styles.more_line}` : null}><span suppressHydrationWarning={true} style={{ fontSize: '2rem' }}>&#8223;</span>{r.description}</p>
-                  {(r.description.length >= 95 && (selectedElement !== r.id)) ? <span style={{ color: '#000000', textDecoration: 'underline', fontSize: '0.8rem' }}>plus...</span> : null}
+          isReviews ?
+            isReviews.map((r, i) => {
+              return (
+                <div key={r.author} className={styles.container_card}>
+                  <div >{displayStars(r.star)}</div>
+                  <div onClick={() => handleButtonClick(r.id)}>
+                    <p className={selectedElement === r.id ? `${styles.more_line}` : null}><span style={{ fontSize: '2rem' }}>&#8223;</span>{r.description}</p>
+                    {(r.description.length >= 95 && (selectedElement !== r.id)) ? <span style={{ color: '#000000', textDecoration: 'underline', fontSize: '0.8rem' }}>plus...</span> : null}
+                  </div>
+                  <div className={styles.container_card_info}>
+                    <span >{r.author}</span><span >{r.date}</span><span> "{r.source}"</span>
+                  </div>
                 </div>
-                <div className={styles.container_card_info}>
-                  <span suppressHydrationWarning={true} >{r.author}</span><span suppressHydrationWarning={true} >{r.date}</span>
-                </div>
-              </div>
-            )
-          })
+              )
+            }) : null
         }
       </div>
     </>
   )
+
 }

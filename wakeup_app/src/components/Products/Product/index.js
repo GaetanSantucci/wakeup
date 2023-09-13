@@ -6,11 +6,18 @@ import { AddCartButton } from '../../Button';
 
 import { getProductById } from '/src/libs/getProductList';
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
 export default async function Product({ id }) {
 
   let plate = []
+
   const fetchProduct = await getProductById(id);
+
+  if (!fetchProduct) {
+    notFound()
+  }
+
   plate.push(fetchProduct);
 
   return (

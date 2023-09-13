@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS public.user (
   phone VARCHAR(20) NULL,
   role VARCHAR(50) NULL,
   newsletter_optin BOOLEAN NULL DEFAULT false,
+  token TEXT NULL,
+  expirationTime timestamptz NULL, 
   created_at timestamptz NOT NULL DEFAULT NOW(),
   update_at timestamptz NULL
 );

@@ -47,6 +47,7 @@ class CoreDataMapper {
     }
     //& Update
     async update(inputData) {
+        console.log('inputData:', inputData);
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
                 text: `SELECT * FROM ${this.updateFunctionName}($1);`,

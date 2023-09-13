@@ -1,8 +1,10 @@
+import { ErrorApi } from '../services/errorHandler.js';
 import { User } from '../datamapper/user.js';
 // import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
 import { sendEmail } from '../services/nodemailer.js';
 import { emailResetPassword } from '../schema/emailOption.js';
 import { randomBytes } from 'crypto';
+import bcrypt from 'bcrypt';
 import debug from 'debug';
 const logger = debug('Controller');
 const sendEmailResetPassword = async (req, res) => {
@@ -10,25 +12,19 @@ const sendEmailResetPassword = async (req, res) => {
     const { email } = req.body;
     try {
         const userExist = await User.findUserIdentity(email);
-        console.log('userExist:', userExist);
-        // if (!userExist) throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
+        if (!userExist)
+            throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
         // todo envoi email via nodemailer
-        const otp = randomBytes(32).toString("hex");
-        console.log('otp:', otp);
-        const sentEmailResetPassword = sendEmail(emailResetPassword(email, otp));
-        console.log('sentEmailResetPassword:', sentEmailResetPassword);
-        // console.log('sentEmailResetPassword:', sentEmailResetPassword);
-        // // verify if password is the same with user.password
-        // const validPassword = await bcrypt.compare(password, userExist.password);
-        // if (!validPassword) throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
-        // delete user password;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // const { [`password`]: remove, ...user } = userExist;
-        // // Create token JWT
-        // const accessToken = generateAccessToken(user);
-        // const refreshToken = generateRefreshToken(user, req);
-        // const userIdentity = { ...user, accessToken, refreshToken }
-        // return res.status(200).json(userIdentity)
+        if (userExist) {
+            const token = randomBytes(32).toString("hex");
+            const expirationTime = new Date();
+            expirationTime.setHours(expirationTime.getHours() + 1);
+            const result = await User.createResetToken(token, expirationTime, email);
+            if (result) {
+                sendEmail(emailResetPassword(email, token));
+                return res.json("email envoyé");
+            }
+        }
     }
     catch (err) {
         if (err instanceof Error)
@@ -37,15 +33,26 @@ const sendEmailResetPassword = async (req, res) => {
 };
 const resetPassword = async (req, res) => {
     try {
-        const { newPassword } = req.body;
-        const { token } = req.query;
-        if (token) {
-            //todo method to check password, find user, crypt password ans save it in database
-        }
+        const { email, token } = req.body;
+        const isTokenExist = await User.findResetToken(token);
+        if (!isTokenExist)
+            throw new ErrorApi(`Le token est invalide`, req, res, 400);
+        const currentTime = new Date();
+        if (currentTime > isTokenExist.expiration_date)
+            throw new ErrorApi(`Le token a expiré`, req, res, 400);
+        console.log('currentTime > isTokenExist.expiration_date:', currentTime > isTokenExist.expiration_date);
+        const userExist = await User.findUserIdentity(email);
+        if (!userExist)
+            throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
+        req.body.newPassword = await bcrypt.hash(req.body.newPassword, 10);
+        const userUpdated = await User.update({ id: userExist.id, password: req.body.newPassword });
+        if (userUpdated)
+            return res.status(200).json("Mot de passe mis à jour avec succès !");
     }
     catch (err) {
         if (err instanceof Error)
             logger(err.message);
+        return res.status(500).json({ error: "Internal server error" });
     }
 };
 export { sendEmailResetPassword, resetPassword };

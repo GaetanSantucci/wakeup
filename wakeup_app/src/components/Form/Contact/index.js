@@ -50,10 +50,8 @@ export default function Contact() {
       phone: user.phone,
       message: message
     }
-    console.log('data.email:', data.email);
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const isValidEmail = emailPattern.test(data.email);
-    console.log('isValidEmail:', isValidEmail);
 
     if (user.email === '' || isValidEmail === false) return setErrorEmail(true)
     // Check if the email matches the pattern using a regular expression

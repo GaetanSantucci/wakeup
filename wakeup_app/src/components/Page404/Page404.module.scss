@@ -1,0 +1,19 @@
+@use '/public/styles/vars.scss';
+@use '/public/styles/mixins';
+
+.container {
+  @include mixins.flex(column);
+  width: 100%;
+
+  &_404 {
+    font-size: 5rem;
+    font-family: var(--fontTitle);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  & a {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+}

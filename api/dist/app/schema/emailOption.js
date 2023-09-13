@@ -32,7 +32,7 @@ const emailReceived = (data) => {
         replyTo: `${data.email}`
     };
 };
-const emailResetPassword = (email, OTP) => {
+const emailResetPassword = (email, token) => {
     return {
         from: `Wake up Clermont-Fd ${process.env.NODEMAILER_ACCOUNT}`,
         to: `${email}`,
@@ -41,7 +41,7 @@ const emailResetPassword = (email, OTP) => {
     <br><div style="color: black; background-color: #e7e7e7; padding: 3rem; display: flex; flex-direction: column;">
     <h3>Vous avez effectué une demande de réinitialisation de mot de passe au de WAKE UP !</h3>
     <p>Veuillez cliquez sur le lien suivant </p>
-    <p><a href="${process.env.CLIENT_URL}/reset-password?token=${OTP}" target="blank">${process.env.CLIENT_URL}/reset-password?token=${OTP}</a></p>
+    <p><a href="${process.env.CLIENT_URL}/reset-password?token=${token}&email=${email}" target="blank">${process.env.CLIENT_URL}/reset-password?token=${token}</a></p>
     <br>
     <p>Si toutefois vous n'étiez pas à l'origine de cette demande, merci de nous contacter par mail en cliquant <a href="mailto:contact@wakeupbox.fr">ici</a></p>
     <p>Sinon vous pouvez changer votre mot de passe en cliquant sur le lien suivant</p>

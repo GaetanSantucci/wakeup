@@ -36,7 +36,7 @@ const getPlateById = async (req: Request, res: Response) => {
     // logger('product: ', plate);
 
     // if (!associatedSale) throw new ErrorApi('Article non trouvé', req, res, 400);
-    if (!oneProduct) throw new ErrorApi('Article non trouvé', req, res, 400);
+    if (!oneProduct) throw new ErrorApi('Article non trouvé', req, res, 404);
 
     return res.status(200).json(oneProduct)
     // return res.status(200).json(associatedSale)

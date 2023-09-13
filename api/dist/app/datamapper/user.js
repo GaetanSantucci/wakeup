@@ -21,6 +21,36 @@ class UserDataMapper extends CoreDataMapper {
             return result.rows[0];
         }
     }
+    //& Create reset token for password forgotten
+    async createResetToken(token, expirationTime, email) {
+        if (this.client instanceof pg.Pool) {
+            const preparedQuery = {
+                text: `UPDATE "${this.tableName}"
+                SET token = $1, expiration_time = $2
+                WHERE email = $3;`,
+                values: [token, expirationTime, email]
+            };
+            const result = await this.client.query(preparedQuery);
+            console.log('result:', result);
+            if (!result.rowCount)
+                return null;
+            return result.rowCount;
+        }
+    }
+    //& Find token for reset password
+    async findResetToken(token) {
+        if (this.client instanceof pg.Pool) {
+            const preparedQuery = {
+                text: `SELECT * FROM "${this.tableName}"
+                WHERE token = $1;`,
+                values: [token]
+            };
+            const result = await this.client.query(preparedQuery);
+            if (!result.rows[0])
+                return null;
+            return result.rows[0];
+        }
+    }
 }
 const User = new UserDataMapper(client);
 export { User };

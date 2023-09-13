@@ -1,5 +1,6 @@
 //method to get all plates products from wakeup api
 const endpoint = 'http://localhost:7777/api/v1'
+import { notFound } from 'next/navigation';
 // const endpoint = 'https://wakeupclf.fr/api/v1'
 
 
@@ -12,9 +13,10 @@ export const getProductsData = async () => {
 }
 
 export const getProductById = async (plateId) => {
+
   const res = await fetch(`${endpoint}/plates/${plateId}`);
-  if (!res.ok) {
-    throw new Error('Récupération des données liées à ce plateau impossible');
-  }
+
+  if (!res.ok) return undefined
+  // throw new Error('Récupération des données liées à ce plateau impossible');
   return res.json();
 }

@@ -60,9 +60,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='fr' suppressHydrationWarning>
+    <html lang='fr'>
       <head />
-      <body>
+      <body suppressHydrationWarning={true}>
         <Providers>
           <ScrollToTop />
           <Header />

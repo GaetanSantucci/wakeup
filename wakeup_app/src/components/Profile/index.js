@@ -64,6 +64,7 @@ const UserProfile = () => {
       push('/')
     } else (
 
+      // fetch(`http://localhost:7777/api/v1/orders/${user.id}`, { method: 'POST' })
       fetchOrderByUser(user.id)
         .then(response => {
           setOrders(response)
@@ -77,7 +78,7 @@ const UserProfile = () => {
 
   const toggleUpdateUser = () => toggleIsUserUpdate(!isUserUpdate)
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     const data = {
       id: user.id,
       email,
@@ -96,7 +97,7 @@ const UserProfile = () => {
     if (email === user.email) {
       const { ['email']: remove, ...updateData } = data;
       try {
-        await update(updateData) // & send patch request to update user in database
+        update(updateData) // & send patch request to update user in database
         toggleIsUserUpdate(!isUserUpdate)
 
       } catch (err) {
@@ -105,7 +106,7 @@ const UserProfile = () => {
     } else {
 
       try {
-        const response = await update(data) // & send patch request to update user in database
+        const response = update(data) // & send patch request to update user in database
         if (response.includes('email')) {
           setErrorEmail(true)
 

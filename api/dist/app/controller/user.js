@@ -96,8 +96,6 @@ const signOut = async (req, res) => {
 };
 //? ----------------------------------------------------------- UPDATE USER
 const updateCustomerProfile = async (req, res) => {
-    logger('updateCustomerProfile: mis a jour du profile');
-    console.log('req.body: ', req.body.email);
     const { email } = req.body;
     console.log('email:', email);
     try {
@@ -127,11 +125,9 @@ const updateCustomerProfile = async (req, res) => {
             req.body.password = await bcrypt.hash(req.body.password, 10);
         }
         // send the body to update the user after verification
-        console.log('req.body:', req.body);
         const userUpdated = await User.update(req.body);
-        console.log('userUpdated:', userUpdated);
         if (userUpdated)
-            return res.status(200).json("User successfully updated !");
+            return res.status(200).json("Utilisateur mis à jour avec succès !");
     }
     catch (err) {
         if (err instanceof Error)

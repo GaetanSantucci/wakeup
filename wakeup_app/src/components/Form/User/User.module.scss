@@ -9,7 +9,7 @@
     $justify: space-between
   );
   width: 320px;
-  // height: 500px;
+  min-height: 315px;
   background-color: vars.$backgroundPrimaryLightTheme;
   top: 50px;
   right: 5%;
@@ -22,16 +22,18 @@
   &_input {
     width: 100%;
     margin-top: 1rem;
-    text-align: center;
+    // text-align: center;
+    @include mixins.flex(column);
 
     &_reset {
-      width: 95%;
+      width: 90%;
       @include mixins.flex(row, $justify: flex-end);
       margin-top: 0.6rem;
       & span {
         cursor: pointer;
         color: vars.$backgroundAdditionnalColoredTheme;
         opacity: 0.8;
+        font-size: 0.9rem;
 
         &:hover {
           opacity: 1;

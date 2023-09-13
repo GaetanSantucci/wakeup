@@ -1,5 +1,4 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
 
@@ -25,10 +24,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {/* <Script
-            src={`https://maps.googleapis.com/maps/api/js?key=Y${this.key}&libraries=places&callback=YOUR_CALLBACK_NAME`}
-            strategy="beforeInteractive"
-          /> */}
         </Head>
         <body>
           <Main />

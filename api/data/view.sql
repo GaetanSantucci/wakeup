@@ -44,6 +44,8 @@ WITH ProductSums AS (
 
 SELECT
   u.id AS user_id,
+  u.lastname AS user_lastname,
+  u.firstname AS user_firstname,
   u.email AS user_email,
   u.phone AS user_phone,
   u.address AS user_address,

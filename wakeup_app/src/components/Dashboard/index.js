@@ -20,9 +20,6 @@ const Dashboard = () => {
         <div className={styles.container_aside_navbar}>
           <ul>
             <li>
-              Accueil
-            </li>
-            <li>
               Calendriers
             </li>
             <li>
@@ -41,7 +38,7 @@ const Dashboard = () => {
         </div>
         <div onClick={userLogout} className={styles.container_dashboard_logout}>
           <LogoutIcon />
-          <div className={styles.container_dashboard_logout}>Se déconnecter</div>
+          <span>Se déconnecter</span>
         </div>
       </aside>
       <section>

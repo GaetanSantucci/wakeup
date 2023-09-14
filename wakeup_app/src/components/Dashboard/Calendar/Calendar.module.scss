@@ -1,0 +1,108 @@
+@use '/public/styles/vars';
+@use '/public/styles/mixins';
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.background_active {
+  z-index: 2;
+  background-color: rgba(161, 161, 161, 0.322);
+}
+
+.modale {
+  min-width: 340px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  padding: 2.4rem;
+  border-radius: 5px;
+  background-color: vars.$backgroundPrimaryLightTheme;
+  filter: drop-shadow(0 2px 2px rgb(187, 187, 187));
+
+  &_close {
+    text-align: end;
+    & svg {
+      cursor: pointer;
+      fill-opacity: 0.8;
+      &:hover {
+        fill-opacity: 1;
+      }
+    }
+  }
+
+  &_title {
+    @include mixins.flex(row, $justify: space-between);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.6rem 0;
+  }
+
+  & span:not(.modale_content_delete) {
+    color: vars.$backgroundAdditionnalColoredTheme;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  &_content {
+    & > * {
+      margin-bottom: 0.6rem;
+    }
+
+    &_contact {
+      margin-top: 2rem;
+      @include mixins.flex(row, $justify: space-evenly);
+
+      & > * {
+        border: #fa3030;
+      }
+      & svg {
+        cursor: pointer;
+        fill: vars.$backgroundPrimaryDarkTheme;
+      }
+    }
+
+    &_line {
+      width: 100%;
+      height: 1px;
+      background-color: vars.$backgroundAdditionnalColoredTheme;
+      margin: 2rem 0;
+    }
+
+    &_product {
+      @include mixins.flex(row, $justify: space-between);
+      margin-bottom: 0.4rem;
+    }
+
+    &_price {
+      margin-top: 2rem;
+    }
+
+    &_delete {
+      display: inline-flex;
+      align-items: center;
+      text-align: center;
+      margin-top: 1rem;
+      cursor: pointer;
+      color: vars.$backgroundPrimaryLightTheme;
+      background-color: vars.$backgroundErrorColor;
+      padding: 0.6rem 1.2rem;
+
+      & svg {
+        fill: vars.$backgroundPrimaryLightTheme;
+        margin-right: 0.6rem;
+      }
+
+      &:hover {
+        background-color: #fa3030;
+      }
+    }
+  }
+}

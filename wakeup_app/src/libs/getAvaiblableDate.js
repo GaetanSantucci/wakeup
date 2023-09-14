@@ -9,11 +9,9 @@ const fetchAvailableDate = async () => {
 }
 
 const fetchClosedDays = async () => {
-  const response = await fetch(`${endpoint}/closed`);
+  const response = await fetch(`${endpoint}/orders/closed`);
 
-  if (!response.ok) {
-    throw new Error('Récupération des données liées aux jours fermés impossible');
-  }
+  if (!response.ok) return undefined;
 
   return response.json();
 };

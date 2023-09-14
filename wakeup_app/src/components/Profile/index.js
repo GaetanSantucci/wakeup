@@ -54,7 +54,6 @@ const UserProfile = () => {
   const [email, setEmail] = useState(user.email || "");
   const [phone, setPhone] = useState(user.phone || "");
   const [errorEmail, setErrorEmail] = useState(false);
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
   const [showPassword, setShowPassword] = useState(false);
   const [openDeleteConfirmationModale, setOpenDeleteConfirmation] = useState(false)
 

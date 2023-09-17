@@ -149,7 +149,6 @@ const UserLogin = () => {
     }
 
     const response = await fetch('http://localhost:7777/api/v1/send_email_reset', options)
-    console.log('response:', response.ok);
 
     if (response.ok) {
       setIsSuccessfull(true)

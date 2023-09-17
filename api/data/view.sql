@@ -49,7 +49,7 @@ SELECT
   u.email AS user_email,
   u.phone AS user_phone,
   u.address AS user_address,
-    od.booking_date,
+    od.booking_date AT TIME ZONE 'Europe/Paris' AS booking_date,
   pd.status AS payment_status,
   JSON_AGG(
     JSON_BUILD_OBJECT(
@@ -70,7 +70,7 @@ GROUP BY od.booking_date, pd.status, u.id, u.email
 ORDER BY od.booking_date ASC;
 
 CREATE VIEW getAllAvailableDates AS 
-SELECT od.booking_date AT TIME ZONE 'Etc/GMT+2' AS booking_date, 
+SELECT od.booking_date AT TIME ZONE 'Europe/Paris' AS booking_date, 
           SUM(oi.quantity) AS plate_quantity, 
           COUNT(od.id) AS order_count
         FROM 
@@ -87,3 +87,31 @@ SELECT od.booking_date AT TIME ZONE 'Etc/GMT+2' AS booking_date,
             od.booking_date
             ORDER BY 
             od.booking_date ASC;
+
+CREATE VIEW orderByUser AS
+WITH product_order_quantities AS (
+         SELECT oi.order_id,
+            oi.product_id,
+            sum(oi.quantity) AS total_order_quantity
+           FROM order_items oi
+          GROUP BY oi.order_id, oi.product_id
+        ), productsums AS (
+         SELECT poi.order_id,
+            poi.product_id,
+            p_1.price * poi.total_order_quantity::numeric AS total_product_price,
+            poi.total_order_quantity
+           FROM product_order_quantities poi
+             JOIN product p_1 ON poi.product_id = p_1.id
+        )
+ SELECT u.id AS user_id,
+    od.booking_date,
+    pd.status AS payment_status,
+    json_agg(json_build_object('product_id', ps.product_id, 'product_name', p.name, 'total_product_price', ps.total_product_price, 'total_order_quantity', ps.total_order_quantity)) AS products
+   FROM order_details od
+     JOIN payment_details pd ON od.payment_id = pd.payment_id::text
+     JOIN "user" u ON od.user_id = u.id
+     JOIN productsums ps ON od.id = ps.order_id
+     JOIN product p ON ps.product_id = p.id
+  WHERE pd.status::text = 'paid'::text AND u.id = od.user_id
+  GROUP BY od.booking_date, pd.status, u.id, u.email
+  ORDER BY od.booking_date;

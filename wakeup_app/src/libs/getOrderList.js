@@ -36,4 +36,22 @@ const fetchAvailability = async () => {
   return response.json();
 };
 
-export { fetchAllOrder, fetchOrderByUser, fetchClosedDays, fetchAvailability }
+const createNewClosingDay = async (date) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      closingDate: date
+    }),
+  }
+
+  const res = await fetch(`${endpoint}/orders/closed/create`, options)
+
+  if (!res.ok) return undefined;
+
+  return res.json();
+}
+
+export { fetchAllOrder, fetchOrderByUser, fetchClosedDays, fetchAvailability, createNewClosingDay }

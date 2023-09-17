@@ -39,7 +39,6 @@ const getAllOrders = async (req, res) => {
 };
 const getAllOrdersByUser = async (req, res) => {
     const userId = req.params.userId;
-    console.log('userId:', userId);
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     // Check if user exist     
     if (!uuidRegex.test(userId))

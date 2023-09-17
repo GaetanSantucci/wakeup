@@ -140,20 +140,16 @@ const UserProfile = () => {
   const Modale = () => {
 
     const [password, setPassword] = useState('')
-    console.log('password:', password);
 
     const sendResetPassword = async () => {
-      console.log("envoi mail pour reset")
       const data = {
         id: user.id,
         email: user.email,
         password
       }
-      console.log('data:', data);
 
       try {
         const deleteUser = await deleted(data)
-        console.log('deleteUser:', deleteUser);
         if (response.status === 403) {
           console.log(
             "message :", deleteUser.message

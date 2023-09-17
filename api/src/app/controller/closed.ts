@@ -8,8 +8,8 @@ const logger = debug('Controller');
 
 const closedDays = async (req: Request, res: Response) => {
   try {
-    const isClosed = await Closing.findAll();
-
+    const isClosed = await Closing.findAllClosedDays();
+    console.log('isClosed:', isClosed);
     return res.status(200).json(isClosed)
   } catch (err) {
     if (err instanceof Error)
@@ -17,4 +17,15 @@ const closedDays = async (req: Request, res: Response) => {
   }
 }
 
-export { closedDays };
+const addClosedDays = async (req: Request, res: Response) => {
+  const { closingDate } = req.body
+  try {
+    const addDate = await Closing.create(closingDate)
+    return res.status(200).json(addDate)
+  } catch (err) {
+    if (err instanceof Error)
+      logger(err.message);
+  }
+}
+
+export { closedDays, addClosedDays };

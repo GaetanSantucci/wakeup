@@ -264,8 +264,16 @@ WHERE pd.status = 'paid' AND u.id = '1c2aeaba-daa3-4e6b-b505-ef15bf9416d4'
 GROUP BY od.booking_date, pd.status, u.id, u.email
 ORDER BY od.booking_date ASC;
 
+CREATE OR REPLACE FUNCTION insert_closed_day(closing_date date)
+RETURNS void AS $$
+BEGIN 
+  INSERT INTO closed_days (closing_date) VALUES (closing_date);
+END;
+$$ LANGUAGE plpgsql;
+
 DROP FUNCTION IF EXISTS create_user();
 DROP FUNCTION IF EXISTS insert_payment_details();
 DROP FUNCTION IF EXISTS insert_order_details();
 DROP TRIGGER IF EXISTS order_details_trigger ON order_details CASCADE;
 DROP FUNCTION IF EXISTS update_payment_details();
+DROP FUNCTION IF EXISTS create_closed_day

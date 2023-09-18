@@ -21,7 +21,6 @@ import Alert from '@mui/material/Alert';
 import InputLabel from '@mui/material/InputLabel';
 
 import { createNewClosingDay, fetchAllOrder, fetchClosedDays } from '@/src/libs/getOrderList';
-import { getTotalPrice } from '@/src/libs/getCartTotal';
 import Link from 'next/link';
 
 export const DashboardCalendar = () => {
@@ -34,33 +33,28 @@ export const DashboardCalendar = () => {
   // State for modal event management
   const [choice, setChoice] = useState('');
   const [newDate, setNewDate] = useState();
+  const [refresh, setRefresh] = useState(false);
   const [data, setData] = useState([]);
 
   // Function to fetch data
   const fetchData = () => {
     Promise.all([fetchAllOrder(), fetchClosedDays()])
       .then(([ordersData, closedDaysData]) => {
-        console.log('ordersData:', ordersData);
         setEventData({ orders: ordersData, closedDays: closedDaysData });
       })
       .catch(error => console.error(error));
   };
 
-  // useEffect with an interval to refresh every 2 minutes
   useEffect(() => {
-    // Initial fetch
+    // Your code here that you want to execute when the page loads
+    // or when refresh becomes true.
     fetchData();
-
-    // Set up an interval to fetch data every 2 minutes
-    const intervalId = setInterval(() => {
+    // Example: Fetch data from an API when the page loads or when refresh is true.
+    if (refresh) {
       fetchData();
-    }, 1 * 60 * 1000); // 2 minutes in milliseconds
-
-    // Clear the interval when the component unmounts
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+      setRefresh(false);
+    }
+  }, [refresh]);
 
 
   // Transform orders data into events
@@ -95,58 +89,7 @@ export const DashboardCalendar = () => {
     }
   }
 
-  const EventModal = ({ event, onClose, onDelete }) => {
-    console.log('event:', event);
 
-    const phone = event.user_phone.slice(1);
-
-    const date = new Date(event.booking_date);
-    const frenchFormattedDate = date.toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
-    // const { totalPrice } = getTotalPrice(event);
-
-    return (
-      <div className={styles.modale}>
-        <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
-        <div className={styles.modale_title}>Commande du {frenchFormattedDate}</div>
-
-        <div className={styles.modale_content}>
-          <p><span>Nom:</span> {event.user_lastname}</p>
-          <p><span>Prénom:</span> {event.user_firstname}</p>
-          <p><span>Adresse:</span> {event.user_address.line1}</p>
-          {
-            event.user_address.line2 && <p>Compléments: {event.user_address.line2}</p>
-          }
-          <p><span>Code postal:</span> {event.user_address.postcode}</p>
-          <p><span>Ville:</span> {event.user_address.city}</p>
-          <p><span>Tél:</span> {event.user_phone}</p>
-
-          <div className={styles.modale_content_contact}>
-            <Link href={`sms://+33${phone};?&body=Réservation WAKE UP !`}><SmsIcon /></Link>
-            <Link href={`tel:+33${phone}`}><PhoneIcon /></Link>
-          </div>
-          <div className={styles.modale_content_line} />
-
-          <ul >
-            {event.products.map((product, index) => {
-              return (
-                <li key={index} className={styles.modale_content_product}>
-                  {product.product_name}: <span>{product.quantity}</span>
-                </li>)
-            })}
-          </ul>
-          <div className={styles.modale_content_price}>
-            <p>Montant de la commande: <span>{event.total_amount}€</span></p>
-          </div>
-          <span className={styles.modale_content_delete} onClick={onDelete}><DeleteOutlineOutlinedIcon /> Supprimer</span>
-        </div>
-      </div>
-    );
-  };
 
   const handleChangeChoice = (event) => {
     setChoice(event.target.value);
@@ -155,7 +98,26 @@ export const DashboardCalendar = () => {
 
   const confirmClosingDate = () => {
     createNewClosingDay(newDate)
+    setRefresh(true);
     setAddEventModal(false)
+  }
+
+
+
+  const handleDateClick = (arg) => {
+    const date = new Date(arg.date);
+    const frenchFormattedDate = date.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    setAddEventModal(true)
+    setNewDate(arg.date)
+  };
+
+  const deleteEvent = () => {
+    console.log("Je supprime l'event");
+    setIsModalOpen(false)
   }
 
   const AddEventModal = ({ onClose }) => {
@@ -207,18 +169,57 @@ export const DashboardCalendar = () => {
     )
   }
 
-  const handleDateClick = (arg) => {
-    console.log('arg:', arg.date);
-    const date = new Date(arg.date);
+  const EventModal = ({ event, onClose, onDelete }) => {
+    console.log('event:', event);
+
+    const phone = event.user_phone.slice(1);
+
+    const date = new Date(event.booking_date);
     const frenchFormattedDate = date.toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
-    console.log('frenchFormattedDate:', frenchFormattedDate);
-    setAddEventModal(true)
-    setNewDate(arg.date)
-    // createNewClosingDay(arg.date)
+
+    // todo changer refresh fetchorder au moment de l ajout d un event 
+
+    return (
+      <div className={styles.modale}>
+        <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
+        <div className={styles.modale_title}>Commande du {frenchFormattedDate}</div>
+
+        <div className={styles.modale_content}>
+          <p><span>Nom:</span> {event.user_lastname}</p>
+          <p><span>Prénom:</span> {event.user_firstname}</p>
+          <p><span>Adresse:</span> {event.user_address.line1}</p>
+          {
+            event.user_address.line2 && <p>Compléments: {event.user_address.line2}</p>
+          }
+          <p><span>Code postal:</span> {event.user_address.postcode}</p>
+          <p><span>Ville:</span> {event.user_address.city}</p>
+          <p><span>Tél:</span> {event.user_phone}</p>
+
+          <div className={styles.modale_content_contact}>
+            <Link href={`sms://+33${phone};?&body=Réservation WAKE UP !`}><SmsIcon /></Link>
+            <Link href={`tel:+33${phone}`}><PhoneIcon /></Link>
+          </div>
+          <div className={styles.modale_content_line} />
+
+          <ul >
+            {event.products.map((product, index) => {
+              return (
+                <li key={index} className={styles.modale_content_product}>
+                  {product.product_name}: <span>{product.quantity}</span>
+                </li>)
+            })}
+          </ul>
+          <div className={styles.modale_content_price}>
+            <p>Montant de la commande: <span>{event.total_amount}€</span></p>
+          </div>
+          <span className={styles.modale_content_delete} onClick={onDelete}><DeleteOutlineOutlinedIcon /> Supprimer</span>
+        </div>
+      </div>
+    );
   };
 
 
@@ -230,12 +231,7 @@ export const DashboardCalendar = () => {
         <EventModal
           event={selectedEvent}
           onClose={() => setIsModalOpen(false)}
-          onDelete={() => {
-            // Implement event deletion logic here
-            // You can use the event.user_id to identify and delete the event
-            // After deletion, close the modal and update the calendar events
-            setIsModalOpen(false);
-          }}
+          onDelete={() => { deleteEvent }}
         />
       }
       {

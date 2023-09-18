@@ -96,6 +96,7 @@ export const DashboardCalendar = () => {
   }
 
   const EventModal = ({ event, onClose, onDelete }) => {
+    console.log('event:', event);
 
     const phone = event.user_phone.slice(1);
 
@@ -106,7 +107,7 @@ export const DashboardCalendar = () => {
       day: 'numeric',
     });
 
-    const { totalPrice } = getTotalPrice(event);
+    // const { totalPrice } = getTotalPrice(event);
 
     return (
       <div className={styles.modale}>
@@ -134,12 +135,12 @@ export const DashboardCalendar = () => {
             {event.products.map((product, index) => {
               return (
                 <li key={index} className={styles.modale_content_product}>
-                  {product.product_name}: <span>{product.total_order_quantity}</span>
+                  {product.product_name}: <span>{product.quantity}</span>
                 </li>)
             })}
           </ul>
           <div className={styles.modale_content_price}>
-            <p>Montant de la commande: <span>{totalPrice.toFixed(2)}€</span></p>
+            <p>Montant de la commande: <span>{event.total_amount}€</span></p>
           </div>
           <span className={styles.modale_content_delete} onClick={onDelete}><DeleteOutlineOutlinedIcon /> Supprimer</span>
         </div>

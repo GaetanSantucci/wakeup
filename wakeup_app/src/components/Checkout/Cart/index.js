@@ -1,5 +1,5 @@
 import { CustomCalendar } from '../../Calendar';
-import { getTotal } from '@/src/libs/getCartTotal';
+import { getTotal } from '@/src/utils/getCartTotal';
 import { useSelector } from 'react-redux';
 
 const CheckoutCart = ({ nextPage }) => {

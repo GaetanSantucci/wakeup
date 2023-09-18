@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { toggleCartModale, toggleLoginModale, toggleShowNavbar } from '@/src/store/reducers/Settings';
 
-import { getTotal } from '@/src/libs/getCartTotal';
+import { getTotal } from '@/src/utils/getCartTotal';
 import { resetAllCartItems } from '@/src/store/reducers/Cart';
 import { AddOrDeleteItems } from '../Button';
 

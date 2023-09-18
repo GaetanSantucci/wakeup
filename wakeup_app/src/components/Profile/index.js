@@ -21,10 +21,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 import { useSetupUser } from '@/src/hook/useSetUser';
-import { userUpdateProfile, inputValue, resetUser } from '@/src/store/reducers/User';
+import { userUpdateProfile, inputValue } from '@/src/store/reducers/User';
 
 import { fetchOrderByUser } from '@/src/libs/getOrderList';
-import { getTotalPrice } from '@/src/libs/getCartTotal';
 
 import { ProfileBackground } from '../SVG';
 import moment from 'moment';
@@ -45,6 +44,7 @@ const UserProfile = () => {
 
   const [isUserUpdate, toggleIsUserUpdate] = useState(false);
   const [orders, setOrders] = useState();
+  console.log('orders:', orders);
   const [lastname, setLastname] = useState(user.lastname || "");
   const [firstname, setFirstname] = useState(user.firstname || "");
   const [line1, setLine1] = useState(user.address.line1 || "");
@@ -214,31 +214,34 @@ const UserProfile = () => {
         {filteredOrders.length > 0 ? (
           <div className={currentDateCheck ? styles.container_booking_next : styles.container_booking_outdated}>
             {filteredOrders.map((elem, index) => {
+              console.log('elem:', elem);
 
-              const { totalPrice } = getTotalPrice(elem);
+              // const { totalPrice } = getTotalPrice(elem);
               const inputDate = moment(elem.booking_date);
               const bookingDate = inputDate.format("dddd D MMMM YYYY");
               const capitalizedBookingDate = capitalizeFirstLetter(bookingDate);
               return (
                 <div className={styles.container_booking_card} key={index}>
                   <p className={styles.container_booking_card_date}>{capitalizedBookingDate}</p>
-                  {
-                    isBreakPoint ? null :
-                      <ul>
-                        {elem.products.map(product => {
+                  <div className={styles.container_booking_card_desc}>
+                    {
+                      isBreakPoint ? null :
+                        <ul>
+                          {elem.products.map(product => {
 
-                          const productName = product.total_order_quantity > 1
-                            ? product.product_name.replace("plateau", "plateaux")
-                            : product.product_name;
+                            const productName = product.quantity > 1
+                              ? product.product_name.replace("plateau", "plateaux")
+                              : product.product_name;
 
-                          return (
-                            <li className={styles.container_booking_card_product} key={product.product_name}> {product.total_order_quantity} {productName}</li>
-                          )
-                        }
-                        )}
-                      </ul>
-                  }
-                  <p className={styles.container_booking_card_price}><span>{totalPrice.toFixed(2)} €</span></p>
+                            return (
+                              <li className={styles.container_booking_card_desc_product} key={product.product_name}> {product.quantity} {productName}</li>
+                            )
+                          }
+                          )}
+                        </ul>
+                    }
+                    <p className={styles.container_booking_card_desc_price}><span>{elem.total_amount} €</span></p>
+                  </div>
                 </div>
               );
             })}

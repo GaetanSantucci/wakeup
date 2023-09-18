@@ -12,7 +12,7 @@ import { AddOrDeleteItems, PayPalButtonComponent } from '../Button';
 import { StripeButton } from '@/src/components/Button';
 import { CustomCalendar } from '../Calendar';
 
-import { getTotal } from '@/src/libs/getCartTotal';
+import { getTotal } from '@/src/utils/getCartTotal';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 

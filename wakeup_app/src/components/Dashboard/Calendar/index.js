@@ -28,7 +28,6 @@ export const DashboardCalendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addEventModal, setAddEventModal] = useState(false);
   const [eventData, setEventData] = useState({ orders: [], closedDays: [] });
-  console.log('eventData:', eventData);
 
   // State for modal event management
   const [choice, setChoice] = useState('');
@@ -72,7 +71,7 @@ export const DashboardCalendar = () => {
     if (elem.closing_day) {
       return ({
         title: 'Jour fermé',
-        start: elem.closing_date,
+        start: elem.special_date,
         backgroundColor: '#ff4a4a',
         borderColor: '#ff4a4a',
         padding: '4px',
@@ -83,7 +82,7 @@ export const DashboardCalendar = () => {
     } else {
       return ({
         title: `Maximum de plateau ${elem.plate_quantity}`,
-        start: elem.closing_date,
+        start: elem.special_date,
         backgroundColor: '#ff8b50',
         borderColor: '#ff8b50',
         padding: '4px',
@@ -97,6 +96,7 @@ export const DashboardCalendar = () => {
 
   // Merge the two arrays into one
   const allEvents = [...orderEvents, ...closedDayEvents];
+  console.log('allEvents:', allEvents);
 
   const handleEventClick = (eventClickInfo) => {
     if (eventClickInfo.event.extendedProps.orderInfo.user_id) {

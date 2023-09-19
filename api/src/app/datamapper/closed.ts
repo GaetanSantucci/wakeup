@@ -13,7 +13,7 @@ class ClosingDatamapper extends CoreDataMapper {
   async findAllClosedDays() {
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
-        text: `SELECT id, date AT TIME ZONE 'GMT-4' AS closing_date, plate_quantity, closing_day FROM
+        text: `SELECT date AT TIME ZONE 'GMT-4' AS special_date, plate_quantity, closing_day FROM
     ${this.tableName} 
     ORDER BY 
         id ASC;`

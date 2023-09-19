@@ -27,7 +27,6 @@ const areaFetch = getArea(); // fetch to database for delivery area
 const CheckoutCart = ({ nextPage }) => {
   const allCart = useSelector((state) => state.cart)
   const { isDateDisable } = useSelector((state) => state.settings)
-  console.log('isDateDisable:', isDateDisable);
 
   return (
     <>

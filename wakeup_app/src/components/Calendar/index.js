@@ -1,19 +1,19 @@
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { addBookingDate } from '@/src/store/reducers/Cart';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 import disableWeekdays from '@/src/utils/disableWeekDays';
+import { setIsDateIsDisable } from '@/src/store/reducers/Settings';
 
 
 const CustomCalendar = () => {
 
   const dispatch = useDispatch();
 
-  const { bookingDate } = useSelector((state) => state.cart)
   const [selectedDate, setSelectedDate] = useState(null);
   const [availabilityData, setAvailability] = useState([]);
   const [closedDays, setClosedDays] = useState([]);
@@ -65,10 +65,28 @@ const CustomCalendar = () => {
     }
   });
 
+  // const handleSelectBookingDate = (newValue) => {
+  //   const date = newValue.format(('DD-MM-YYYY'))
+
+  //   //~ je recupere la date entree par le client, 
+  //   //~ je dois comparer la date avec mon disableWeekDays pour voir si true or false  
+  //   console.log('date:', date);
+  //   dispatch(addBookingDate(date))
+  // }
+
   const handleSelectBookingDate = (newValue) => {
-    const date = newValue.format(('DD-MM-YYYY'))
-    dispatch(addBookingDate(date))
-  }
+    const selectedDate = newValue.toDate(); // Convert newValue to a JavaScript Date object
+    const isDateDisabled = disableWeekdays(availabilityData, closedDays)(selectedDate);
+    dispatch(setIsDateIsDisable(false))
+    if (isDateDisabled) {
+      // Display an error or take appropriate action
+      dispatch(setIsDateIsDisable(true))
+      // You can set an error state and display it to the user, or show a message, etc.
+    } else {
+      const date = newValue.format('DD-MM-YYYY');
+      dispatch(addBookingDate(date));
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>

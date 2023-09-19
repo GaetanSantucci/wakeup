@@ -8,6 +8,7 @@ const initialState = {
   profileIsOpen: false,
   scrollYPosition: null,
   isRegister: false,
+  isDateDisable: false,
   // showPassword: false,
   // showPasswordConfirm: false,
   isPasswordInputFocused: false,
@@ -63,18 +64,12 @@ const settingsSlice = createSlice({
         isRegister: !state.isRegister
       }
     },
-    // toggleShowPassword: (state) => {
-    //   return {
-    //     ...state,
-    //     showPassword: !state.showPassword
-    //   }
-    // },
-    // toggleShowPasswordConfirm: (state) => {
-    //   return {
-    //     ...state,
-    //     showPasswordConfirm: !state.showPasswordConfirm
-    //   }
-    // },
+    setIsDateIsDisable: (state, action) => {
+      return {
+        ...state,
+        isDateDisable: action.payload
+      }
+    },
 
     handleInputFocused: (state, action) => {
       return {
@@ -86,5 +81,5 @@ const settingsSlice = createSlice({
   }
 });
 
-export const { toggleLoginModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, handleInputFocused, toggleProfileModale, toggleShowNavbar } = settingsSlice.actions;
+export const { toggleLoginModale, handleChangeMenu, toggleCartModale, changeScrollYPosition, openRegisterForm, handleInputFocused, toggleProfileModale, toggleShowNavbar, setIsDateIsDisable } = settingsSlice.actions;
 export default settingsSlice.reducer;

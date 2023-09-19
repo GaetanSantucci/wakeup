@@ -5,7 +5,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import frLocale from '@fullcalendar/core/locales/fr';
-import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 
 import { useEffect, useState } from 'react';
 
@@ -29,6 +28,7 @@ export const DashboardCalendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addEventModal, setAddEventModal] = useState(false);
   const [eventData, setEventData] = useState({ orders: [], closedDays: [] });
+  console.log('eventData:', eventData);
 
   // State for modal event management
   const [choice, setChoice] = useState('');
@@ -67,16 +67,33 @@ export const DashboardCalendar = () => {
   }));
 
   // Transform closed days data into events
-  const closedDayEvents = eventData.closedDays.map(elem => ({
-    title: 'Jour fermé',
-    start: elem.closing_date,
-    backgroundColor: 'red',
-    borderColor: 'red',
-    padding: '4px',
-    extendedProps: {
-      orderInfo: elem
+  const closedDayEvents = eventData.closedDays.map(elem => {
+    console.log('elem:', elem);
+    if (elem.closing_day) {
+      return ({
+        title: 'Jour fermé',
+        start: elem.closing_date,
+        backgroundColor: '#ff4a4a',
+        borderColor: '#ff4a4a',
+        padding: '4px',
+        extendedProps: {
+          orderInfo: elem
+        }
+      })
+    } else {
+      return ({
+        title: `Maximum de plateau ${elem.plate_quantity}`,
+        start: elem.closing_date,
+        backgroundColor: '#ff8b50',
+        borderColor: '#ff8b50',
+        padding: '4px',
+        extendedProps: {
+          orderInfo: elem
+        }
+      })
     }
-  }));
+  }
+  );
 
   // Merge the two arrays into one
   const allEvents = [...orderEvents, ...closedDayEvents];
@@ -97,6 +114,13 @@ export const DashboardCalendar = () => {
   };
 
   const confirmClosingDate = () => {
+    createNewClosingDay(newDate)
+    setRefresh(true);
+    setAddEventModal(false)
+  }
+
+  const modifySpecialDate = () => {
+    // todo Modifier la function pour creer un nouveau jour special
     createNewClosingDay(newDate)
     setRefresh(true);
     setAddEventModal(false)
@@ -144,13 +168,14 @@ export const DashboardCalendar = () => {
           >
             <MenuItem value={1}>Ajouter une fermeture</MenuItem>
             <MenuItem value={2}>Créer une réservation</MenuItem>
+            <MenuItem value={3}>Modifier le nombre de plateau</MenuItem>
           </Select>
         </FormControl>
         <div className={styles.modale_content}>
           {
             choice === 1 ?
               <>
-                <Alert severity="warning" sx={{ mb: 2 }}>Tu souhaites fermer le {frenchFormattedDate} ?</Alert>
+                <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir fermer le {frenchFormattedDate} ?</Alert>
                 <button onClick={confirmClosingDate}>Oui</button>
               </>
               :
@@ -161,6 +186,14 @@ export const DashboardCalendar = () => {
               <>
                 <p>plusieurs inputs</p>
               </>
+              :
+              null
+          }
+          {
+            choice === 3 ? <>
+              <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir modifier le nombre de plateau pour le {frenchFormattedDate} ?</Alert>
+              <button onClick={modifySpecialDate}>Oui</button>
+            </>
               :
               null
           }

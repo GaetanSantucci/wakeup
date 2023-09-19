@@ -13,17 +13,21 @@ import { StripeButton } from '@/src/components/Button';
 import { CustomCalendar } from '../Calendar';
 
 import { getTotal } from '@/src/utils/getCartTotal';
+
 import TextField from '@mui/material/TextField';
+import { Autocomplete } from '@mui/material';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
-import { Autocomplete } from '@mui/material';
 
 
 const areaFetch = getArea(); // fetch to database for delivery area
 
 const CheckoutCart = ({ nextPage }) => {
   const allCart = useSelector((state) => state.cart)
+  const { isDateDisable } = useSelector((state) => state.settings)
+  console.log('isDateDisable:', isDateDisable);
 
   return (
     <>
@@ -56,8 +60,9 @@ const CheckoutCart = ({ nextPage }) => {
             </>
         }
       </div>
+      {isDateDisable && <Alert severity="error" sx={{ m: 2 }}>Date non valide, merci de choisir une date disponible dans le calendrier</Alert>}
       <div className={styles.checkout_button}>
-        {allCart.bookingDate && <button onClick={nextPage}>Validez</button>}
+        {allCart.bookingDate && !isDateDisable ? <button onClick={nextPage}>Validez</button> : null}
 
       </div>
     </>

@@ -229,47 +229,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- View for get All order by user 
 
-WITH ProductSums AS (
-  SELECT
-    oi.product_id,
-    SUM(p.price * oi.quantity) AS total_product_price,
-    SUM(oi.quantity) AS total_order_quantity
-  FROM order_items oi
-  JOIN product p ON oi.product_id = p.id
-  GROUP BY oi.product_id
-)
 
-SELECT
-  od.booking_date,
-  pd.status AS payment_status,
-  u.id AS user_id,
-  u.email AS user_email,
-  JSON_AGG(
-    JSON_BUILD_OBJECT(
-      'product_id', ps.product_id,
-      'product_name', p.name,
-      'total_product_price', ps.total_product_price,
-      'total_order_quantity', ps.total_order_quantity
-    )
-  ) AS products
-FROM order_details od
-JOIN payment_details pd ON od.payment_id = pd.payment_id
-JOIN "user" u ON od.user_id = u.id
-JOIN order_items oi ON od.id = oi.order_id
-JOIN ProductSums ps ON oi.product_id = ps.product_id
-JOIN product p ON oi.product_id = p.id
-WHERE pd.status = 'paid' AND u.id = '1c2aeaba-daa3-4e6b-b505-ef15bf9416d4'
-GROUP BY od.booking_date, pd.status, u.id, u.email
-ORDER BY od.booking_date ASC;
-
-CREATE OR REPLACE FUNCTION insert_closed_day(closing_date date)
-RETURNS void AS $$
-BEGIN 
-  INSERT INTO closed_days (closing_date) VALUES (closing_date);
+CREATE OR REPLACE FUNCTION create_special_day(jsonb)
+RETURNS INTEGER
+AS $$
+DECLARE
+  new_id INTEGER;
+BEGIN
+  INSERT INTO special_day("date", "plate_quantity", "closing_day")
+  VALUES (
+    ($1 ->> 'date')::timestamptz,
+    COALESCE(($1 ->> 'plate_quantity')::INT, 10),
+    COALESCE(($1 ->> 'closing_day')::BOOLEAN, false)
+  )
+  RETURNING id INTO new_id;
+  
+  RETURN new_id;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
+
+SELECT create_special_day('{"date": "2023-10-08 00:00:00+01", "plate_quantity": 8}')
+SELECT create_special_day('{"date": "2023-10-14 00:00:00+01", "closing_day": true}')
 
 DROP FUNCTION IF EXISTS create_user();
 DROP FUNCTION IF EXISTS insert_payment_details();

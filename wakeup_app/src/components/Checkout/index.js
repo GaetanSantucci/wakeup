@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { use } from 'react';
+import { use, useState } from 'react';
 import { inputValue } from '@/src/store/reducers/User';
 import { addDeliveryCost } from '@/src/store/reducers/Cart';
 
@@ -18,6 +18,10 @@ import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
 
@@ -210,14 +214,46 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   )
 }
 
+
+
 const CheckoutPayment = ({ previousPage }) => {
-  const allCart = useSelector((state) => state.cart)
-  const deliveryCost = allCart.deliveryCost.toString().replace('.', ',');
-  const { user } = useSelector((state) => state.user)
-  console.log('user:', user);
+  const allCart = useSelector((state) => state.cart);
+  const [voucher, setVoucher] = useState('');
+  const [voucherAmount, setVoucherAmount] = useState('');
+  console.log('voucherAmount:', voucherAmount);
+
+  // Dynamic method for store input by type
+  const handleInputChange = (e) => {
+    setVoucher(e.target.value)
+  };
+
+  const submitVoucherResearch = async () => {
+    const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+    console.log('endpoint:', endpoint);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ voucherId: voucher })
+    }
+    try {
+      const res = await fetch(`${endpoint}vouchers`, options)
+      const result = await res.json()
+      if (result) {
+        const price = (totalIncludeDelivery - result.initial_amount).toFixed(2);
+        setVoucherAmount(price)
+        setVoucher('')
+      }
+      console.log('result:', result);
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   const totalIncludeDelivery = Number(getTotal(allCart.cart).totalPrice.toFixed(2)) + Number(allCart.deliveryCost)
-
+  console.log("voucher", voucher);
   return (
     <>
       <div className={styles.container_checkout}>
@@ -230,15 +266,32 @@ const CheckoutPayment = ({ previousPage }) => {
               {
                 allCart.cart.map(item => {
                   const totalPrice = (item.quantity * item.price).toFixed(2);
-                  const price = totalPrice.toString().replace('.', ',');
+                  // const price = totalPrice.toString().replace('.', ',');
                   return (
-                    <li key={item.name}>{item.quantity} {item.name} <span> total : {price} €</span></li>
+                    <li key={item.name}>{item.quantity} {item.name} :<span>{totalPrice} €</span></li>
                   )
                 })
               }
             </ul>
-            <p>Frais de livraison : {deliveryCost} €</p>
-            <p>Montant total : {totalIncludeDelivery} €</p>
+            <p>Frais de livraison : {allCart.deliveryCost} €</p>
+            <p>Montant {voucherAmount ? 'restant après déduction du bon' : 'total'}: {voucherAmount ? voucherAmount : totalIncludeDelivery} €</p>
+            <div className={styles.container_checkout_payment_resume_100}>
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', mb: 2, display: 'flex', alignItems: 'center', width: '100%' }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Avez-vous un bon cadeau"
+                  value={voucher}
+                  onChange={handleInputChange}
+                  inputProps={{ 'aria-label': 'bon cadeau' }}
+                />
+                <IconButton onClick={submitVoucherResearch} type="button" sx={{ p: '10px' }} aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </div>
           </div>
           <div className={styles.container_checkout_payment_resume_button}>
             <StripeButton cart={allCart} />

@@ -40,16 +40,23 @@
 
     &_payment {
       width: 100%;
-      min-height: 300px;
+      min-height: 350px;
       display: flex;
       align-items: center;
       justify-content: space-around;
       &_resume {
+        width: 60%;
         border: 1px solid vars.$backgroundPrimaryLightThemeGradient;
         padding: 1rem;
         border-radius: 4px;
         & > * {
           margin-bottom: 1rem;
+        }
+
+        &_button {
+          & > * {
+            border-radius: 5px;
+          }
         }
       }
     }

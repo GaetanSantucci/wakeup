@@ -10,6 +10,8 @@ class ClosingDatamapper extends CoreDataMapper {
   tableName = 'special_day';
   columns = '"id", "date", "plate_quantity", "closing_day"';
 
+  createFunctionName = 'insert_closed_day';
+
   async findAllClosedDays() {
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
@@ -23,20 +25,6 @@ class ClosingDatamapper extends CoreDataMapper {
     }
   }
 
-  createFunctionName = 'insert_closed_day';
-
-  // async findAllClosedDays() {
-  //   if (this.client instanceof pg.Pool) {
-  //     const preparedQuery = {
-  //       text: `SELECT id, closing_date AT TIME ZONE 'GMT-4' AS closing_date FROM
-  //   ${this.tableName} 
-  //   ORDER BY 
-  //       id ASC;`
-  //     };
-  //     const result = await this.client.query(preparedQuery);
-  //     return result.rows;
-  //   }
-  // }
 }
 
 const Closing = new ClosingDatamapper(client);

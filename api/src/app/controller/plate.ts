@@ -25,21 +25,14 @@ const getPlateById = async (req: Request, res: Response) => {
 
     const plateId = +req.params.plateId;
     console.log('plateId:', plateId);
-    // console.log('plateId: ', plateId);
-    // const plate = await Plate.findOne(plateId);
+
     //todo utiliser uniquement la deuxieme requete
     const oneProduct = await Plate.findOne(plateId)
-    console.log('oneProduct:', oneProduct);
-    // const associatedSale = await Plate.findByPlateId(plateId);
-    // console.log('associatedSale:', associatedSale);
-    // logger('associatedSale: ', associatedSale);
-    // logger('product: ', plate);
 
-    // if (!associatedSale) throw new ErrorApi('Article non trouvé', req, res, 400);
+
     if (!oneProduct) throw new ErrorApi('Article non trouvé', req, res, 404);
 
     return res.status(200).json(oneProduct)
-    // return res.status(200).json(associatedSale)
   } catch (err) {
     if (err instanceof Error) logger(err.message)
   }
@@ -48,7 +41,6 @@ const getPlateById = async (req: Request, res: Response) => {
 const createNewPlate = async (req: Request, res: Response) => {
 
   try {
-    // const { name, description, image, price } = req.body
     const newPlate = await Plate.create(req.body)
 
     if (newPlate) return res.status(200).json('L\'article a bien été crée');

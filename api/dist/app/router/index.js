@@ -22,4 +22,6 @@ import { router as ResetPasswordRouter } from './resetPassword.js';
 router.use(ResetPasswordRouter);
 import { router as PaymentRouter } from './payment.js';
 router.use(PaymentRouter);
+import { router as VoucherRouter } from './voucher.js';
+router.use(VoucherRouter);
 export { router };

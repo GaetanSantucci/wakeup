@@ -6,6 +6,7 @@ class ClosingDatamapper extends CoreDataMapper {
     // columns = `"id", "closing_date"`;
     tableName = 'special_day';
     columns = '"id", "date", "plate_quantity", "closing_day"';
+    createFunctionName = 'insert_closed_day';
     async findAllClosedDays() {
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
@@ -18,7 +19,6 @@ class ClosingDatamapper extends CoreDataMapper {
             return result.rows;
         }
     }
-    createFunctionName = 'insert_closed_day';
 }
 const Closing = new ClosingDatamapper(client);
 export { Closing };

@@ -239,9 +239,9 @@ DECLARE
 BEGIN
   INSERT INTO special_day("date", "plate_quantity", "closing_day")
   VALUES (
-    ($1 ->> 'date')::timestamptz,
-    COALESCE(($1 ->> 'plate_quantity')::INT, 10),
-    COALESCE(($1 ->> 'closing_day')::BOOLEAN, false)
+    COALESCE(($1 ->> 'date')::timestamptz),
+    COALESCE(($1 ->> 'plate_quantity')::INT),
+    COALESCE(($1 ->> 'closing_day')::BOOLEAN)
   )
   RETURNING id INTO new_id;
   

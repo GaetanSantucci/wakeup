@@ -5,6 +5,7 @@ class CoreDataMapper {
     }
     //& Create
     async create(inputData) {
+        console.log('inputData:', inputData);
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
                 text: `SELECT ${this.createFunctionName}($1);`,

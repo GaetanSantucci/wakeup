@@ -5,7 +5,6 @@ const logger = debug('Controller');
 const closedDays = async (req, res) => {
     try {
         const isClosed = await Closing.findAllClosedDays();
-        console.log('isClosed:', isClosed);
         return res.status(200).json(isClosed);
     }
     catch (err) {
@@ -13,10 +12,11 @@ const closedDays = async (req, res) => {
             logger(err.message);
     }
 };
-const addClosedDays = async (req, res) => {
-    const { closingDate } = req.body;
+const addSpecialDay = async (req, res) => {
+    // const { closingDate } = req.body
+    // console.log('req.body addSpecialDay:', req.body);
     try {
-        const addDate = await Closing.create(closingDate);
+        const addDate = await Closing.create(req.body);
         return res.status(200).json(addDate);
     }
     catch (err) {
@@ -24,4 +24,4 @@ const addClosedDays = async (req, res) => {
             logger(err.message);
     }
 };
-export { closedDays, addClosedDays };
+export { closedDays, addSpecialDay };

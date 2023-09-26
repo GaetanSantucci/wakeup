@@ -30,7 +30,6 @@ const getAllOrdersForCalendar = async (req, res) => {
 const getAllOrders = async (req, res) => {
     try {
         const allOrders = await Order.getAllOrders();
-        console.log('allOrders:', allOrders[5].products);
         return res.status(200).json(allOrders);
     }
     catch (err) {
@@ -46,7 +45,6 @@ const getAllOrdersByUser = async (req, res) => {
         throw new ErrorApi(`UUID non valide`, req, res, 400);
     try {
         const allOrders = await Order.getOrderByUser(userId);
-        console.log('allOrders:', allOrders);
         if (!allOrders)
             return null;
         return res.status(200).json(allOrders);

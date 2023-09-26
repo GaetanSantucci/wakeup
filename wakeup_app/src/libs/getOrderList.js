@@ -1,4 +1,5 @@
 const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+console.log('endpoint:', endpoint);
 
 const fetchAllOrder = async () => {
   const res = await fetch(`${endpoint}/orders`)
@@ -36,14 +37,17 @@ const fetchAvailability = async () => {
   return response.json();
 };
 
-const createNewClosingDay = async (date) => {
+const createSpecialDay = async (inputData) => {
+  console.log('inputData:', inputData);
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      closingDate: date
+      date: inputData.date,
+      plate_quantity: inputData.plateQuantity,
+      closing_day: inputData.closingDay
     }),
   }
 
@@ -54,4 +58,4 @@ const createNewClosingDay = async (date) => {
   return res.json();
 }
 
-export { fetchAllOrder, fetchOrderByUser, fetchClosedDays, fetchAvailability, createNewClosingDay }
+export { fetchAllOrder, fetchOrderByUser, fetchClosedDays, fetchAvailability, createSpecialDay }

@@ -19,8 +19,9 @@ import Select from '@mui/material/Select';
 import Alert from '@mui/material/Alert';
 import InputLabel from '@mui/material/InputLabel';
 
-import { createNewClosingDay, fetchAllOrder, fetchClosedDays } from '@/src/libs/getOrderList';
+import { createSpecialDay, fetchAllOrder, fetchClosedDays } from '@/src/libs/getOrderList';
 import Link from 'next/link';
+import { FlashOnOutlined } from '@mui/icons-material';
 
 export const DashboardCalendar = () => {
 
@@ -33,6 +34,7 @@ export const DashboardCalendar = () => {
   const [choice, setChoice] = useState('');
   const [newDate, setNewDate] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [numberOfPlates, setNumberOfPlates] = useState('')
   const [data, setData] = useState([]);
 
   // Function to fetch data
@@ -67,7 +69,6 @@ export const DashboardCalendar = () => {
 
   // Transform closed days data into events
   const closedDayEvents = eventData.closedDays.map(elem => {
-    console.log('elem:', elem);
     if (elem.closing_day) {
       return ({
         title: 'Jour fermé',
@@ -96,7 +97,6 @@ export const DashboardCalendar = () => {
 
   // Merge the two arrays into one
   const allEvents = [...orderEvents, ...closedDayEvents];
-  console.log('allEvents:', allEvents);
 
   const handleEventClick = (eventClickInfo) => {
     if (eventClickInfo.event.extendedProps.orderInfo.user_id) {
@@ -114,18 +114,30 @@ export const DashboardCalendar = () => {
   };
 
   const confirmClosingDate = () => {
-    createNewClosingDay(newDate)
+    const data = {
+      date: newDate,
+      plateQuantity: null,
+      closingDay: true
+    }
+    createSpecialDay(data)
     setRefresh(true);
     setAddEventModal(false)
   }
 
   const modifySpecialDate = () => {
+    const data = {
+      date: newDate,
+      plateQuantity: numberOfPlates
+    }
     // todo Modifier la function pour creer un nouveau jour special
-    createNewClosingDay(newDate)
+    createSpecialDay(data)
     setRefresh(true);
     setAddEventModal(false)
   }
 
+  const handleChangeNumberOfPlates = (event) => {
+    setNumberOfPlates(event.target.value)
+  }
 
 
   const handleDateClick = (arg) => {
@@ -140,7 +152,6 @@ export const DashboardCalendar = () => {
   };
 
   const deleteEvent = () => {
-    console.log("Je supprime l'event");
     setIsModalOpen(false)
   }
 
@@ -184,13 +195,33 @@ export const DashboardCalendar = () => {
           {
             choice === 2 ?
               <>
-                <p>plusieurs inputs</p>
+
               </>
               :
               null
           }
           {
             choice === 3 ? <>
+              <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
+                <InputLabel id="demo-simple-select-label">Nombre de plateaux maximum</InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={numberOfPlates}
+                  onChange={handleChangeNumberOfPlates}
+                  inputProps={{ MenuProps: { disableScrollLock: true } }}
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={7}>7</MenuItem>
+                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={9}>9</MenuItem>
+                </Select>
+              </FormControl>
               <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir modifier le nombre de plateau pour le {frenchFormattedDate} ?</Alert>
               <button onClick={modifySpecialDate}>Oui</button>
             </>
@@ -203,7 +234,6 @@ export const DashboardCalendar = () => {
   }
 
   const EventModal = ({ event, onClose, onDelete }) => {
-    console.log('event:', event);
 
     const phone = event.user_phone.slice(1);
 

@@ -7,10 +7,10 @@ import Image from 'next/image';
 
 import { Suspense } from 'react';
 
-import { getCartFromLocaleStorage } from '@/src/utils/getCartLocaleStorage';
+// import { getCartFromLocaleStorage } from '@/src/utils/getCartLocaleStorage';
 
 export default function Home() {
-  getCartFromLocaleStorage(); // method to getCart
+  // getCartFromLocaleStorage(); // method to getCart
 
   return (
     <>

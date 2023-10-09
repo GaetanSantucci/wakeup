@@ -1,9 +1,10 @@
+const localEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+// const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
+
 // method to fetch all blogs from wakeup api
 export const getBlogs = async () => {
 
-  const endpoint = 'http://localhost:7777/api/v1'
-
-  const res = await fetch(`${endpoint}/blogs`);
+  const res = await fetch(`${localEndpoint}/blogs`);
   if (!res.ok) {
     throw new Error('Récupération des données liées aux blogs impossible');
   }

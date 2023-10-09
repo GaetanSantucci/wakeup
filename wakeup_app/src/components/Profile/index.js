@@ -20,6 +20,9 @@ import Checkbox from '@mui/material/Checkbox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+
+
 import { useSetupUser } from '@/src/hook/useSetUser';
 import { userUpdateProfile, inputValue } from '@/src/store/reducers/User';
 
@@ -44,7 +47,7 @@ const UserProfile = () => {
 
   const [isUserUpdate, toggleIsUserUpdate] = useState(false);
   const [orders, setOrders] = useState();
-  console.log('orders:', orders);
+
   const [lastname, setLastname] = useState(user.lastname || "");
   const [firstname, setFirstname] = useState(user.firstname || "");
   const [line1, setLine1] = useState(user.address.line1 || "");
@@ -55,7 +58,10 @@ const UserProfile = () => {
   const [phone, setPhone] = useState(user.phone || "");
   const [errorEmail, setErrorEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [openDeleteConfirmationModale, setOpenDeleteConfirmation] = useState(false)
+  const [openDeleteConfirmationModale, setOpenDeleteConfirmation] = useState(false);
+  const [addEventModal, setAddEventModal] = useState(false);
+
+  console.log('openDeleteConfirmationModale:', openDeleteConfirmationModale);
 
   useEffect(() => {
 
@@ -137,9 +143,10 @@ const UserProfile = () => {
 
   const handleOpenDeleteModale = () => setOpenDeleteConfirmation((openDeleteConfirmationModale) => !openDeleteConfirmationModale)
 
-  const Modale = () => {
+  const Modale = ({ onClose }) => {
 
     const [password, setPassword] = useState('')
+
 
     const sendResetPassword = async () => {
       const data = {
@@ -150,6 +157,7 @@ const UserProfile = () => {
 
       try {
         const deleteUser = await deleted(data)
+        console.log('deleteUser:', deleteUser);
         if (response.status === 403) {
           console.log(
             "message :", deleteUser.message
@@ -164,19 +172,21 @@ const UserProfile = () => {
     }
 
     return (
-      <div className={styles.container_modale}>
-        <p>Saissisez votre mot de passe pour supprimer votre compte</p>
-        <FormControl sx={{ width: '90%', mb: 2 }}
-          variant="standard"
-          size='small'
-          required
-        >
+
+      <Dialog open={openDeleteConfirmationModale} onClose={onClose} sx={{ p: '2rem' }}>
+        <DialogContent sx={{ display: 'flex', minWidth: '350px', flexDirection: "column", gap: "0.5rem" }}>
+          <p >Saissisez votre mot de passe pour confirmer la suppression de votre compte</p>
+          {/* <FormControl sx={{ width: '90%', mb: 2 }}
+            variant="standard"
+            size='small'
+            required
+          > */}
           <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
           <Input
             id="password"
             onChange={(e) => setPassword(e.target.value)}
             defaultValue={password}
-            type={showPassword ? 'text' : 'password'}
+            type='password'
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -184,15 +194,45 @@ const UserProfile = () => {
                   onClick={handleClickShowPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
                 </IconButton>
               </InputAdornment>
             }
             label="Mot de passe"
           />
-        </FormControl>
-        <button onClick={sendResetPassword}>Valider</button>
-      </div>
+          {/* </FormControl> */}
+          <button onClick={sendResetPassword}>Valider</button>
+        </DialogContent>
+      </Dialog>
+      // <div className={styles.container_modale}>
+      //   <p>Saissisez votre mot de passe pour supprimer votre compte</p>
+      //   <FormControl sx={{ width: '90%', mb: 2 }}
+      //     variant="standard"
+      //     size='small'
+      //     required
+      //   >
+      //     <InputLabel htmlFor="standard-adornment-password">Mot de passe</InputLabel>
+      //     <Input
+      //       id="password"
+      //       onChange={(e) => setPassword(e.target.value)}
+      //       defaultValue={password}
+      //       type={showPassword ? 'text' : 'password'}
+      //       endAdornment={
+      //         <InputAdornment position="end">
+      //           <IconButton
+      //             aria-label="toggle password visibility"
+      //             onClick={handleClickShowPassword}
+      //             edge="end"
+      //           >
+      //             {showPassword ? <VisibilityOff /> : <Visibility />}
+      //           </IconButton>
+      //         </InputAdornment>
+      //       }
+      //       label="Mot de passe"
+      //     />
+      //   </FormControl>
+      //   <button onClick={sendResetPassword}>Valider</button>
+      // </div>
     )
   }
 
@@ -214,9 +254,7 @@ const UserProfile = () => {
         {filteredOrders.length > 0 ? (
           <div className={currentDateCheck ? styles.container_booking_next : styles.container_booking_outdated}>
             {filteredOrders.map((elem, index) => {
-              console.log('elem:', elem);
 
-              // const { totalPrice } = getTotalPrice(elem);
               const inputDate = moment(elem.booking_date);
               const bookingDate = inputDate.format("dddd D MMMM YYYY");
               const capitalizedBookingDate = capitalizeFirstLetter(bookingDate);
@@ -254,7 +292,8 @@ const UserProfile = () => {
   return (
 
     <section className={styles.container}>
-      {openDeleteConfirmationModale && <Modale />}
+      {openDeleteConfirmationModale &&
+        <Modale onClose={() => setOpenDeleteConfirmation(false)} />}
       <aside className={styles.container_user}>
 
         <div className={styles.container_user_information}>

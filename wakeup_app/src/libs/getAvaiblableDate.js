@@ -1,7 +1,9 @@
-const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+const localEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+// const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
+
 
 const fetchAvailableDate = async () => {
-  const res = await fetch(`${endpoint}/orders`)
+  const res = await fetch(`${localEndpoint}/orders`)
   if (!res.ok) {
     throw new Error('Récupération des données liées aux disponibilités impossible');
   }
@@ -9,7 +11,7 @@ const fetchAvailableDate = async () => {
 }
 
 const fetchClosedDays = async () => {
-  const response = await fetch(`${endpoint}/orders/closed`);
+  const response = await fetch(`${localEndpoint}/orders/closed`);
 
   if (!response.ok) return undefined;
 

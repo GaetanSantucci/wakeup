@@ -79,18 +79,19 @@ $$
 
 
 
- CREATE OR REPLACE FUNCTION delete_user(user_id UUID) RETURNS BOOLEAN AS
+ CREATE OR REPLACE FUNCTION delete_user(userId UUID) RETURNS BOOLEAN AS
 $$
 DECLARE
     user_deleted BOOLEAN := false;
 BEGIN
     -- Delete related records first
-    DELETE FROM order_details
-    WHERE user_id = user_id;
+    UPDATE order_details 
+    SET user_id = NULL
+    WHERE user_id = userId;
 
     -- Delete the user
     DELETE FROM public.user
-    WHERE id = user_id;
+    WHERE id = userId;
 
     IF FOUND THEN
         user_deleted := true;
@@ -253,9 +254,26 @@ LANGUAGE plpgsql;
 SELECT create_special_day('{"date": "2023-10-08 00:00:00+01", "plate_quantity": 8}')
 SELECT create_special_day('{"date": "2023-10-14 00:00:00+01", "closing_day": true}')
 
+CREATE OR REPLACE FUNCTION update_special_day(jsonb)
+RETURNS VOID AS $$
+  BEGIN
+        -- Update special_day
+        UPDATE "special_day"
+        SET 
+            "plate_quantity" = COALESCE(($1 ->> 'plate_quantity')::INT, "plate_quantity")
+            "closing_day" = COALESCE(($1 ->> 'closing_day')::BOOLEAN, "closing_day"),
+        WHERE "date" = ($1 ->> 'date')::timestamptz;
+END;
+$$
+ LANGUAGE plpgsql;
+
+SELECT update_special_day('{"date": "2023-10-21T00:00:00.000Z", "closing_day": true}')
+
 DROP FUNCTION IF EXISTS create_user();
 DROP FUNCTION IF EXISTS insert_payment_details();
 DROP FUNCTION IF EXISTS insert_order_details();
 DROP TRIGGER IF EXISTS order_details_trigger ON order_details CASCADE;
 DROP FUNCTION IF EXISTS update_payment_details();
 DROP FUNCTION IF EXISTS create_closed_day
+
+ 

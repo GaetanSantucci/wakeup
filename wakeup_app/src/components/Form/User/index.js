@@ -45,7 +45,8 @@ const UserLogin = () => {
   const { isRegister } = useSelector((state) => state.settings);
   const [showPassword, setShowPassword] = useState(false);
   const [isForgotEmail, setIsForgotEmail] = useState(false);
-  const [isSuccessfull, setIsSuccessfull] = useState(false);
+  const [isSenduserEmail, setSenduserEmail] = useState(false);
+  // const [isCreateUser, setIsCreateUser] = useState(false);
 
   // Remove alert pop message 
   useEffect(() => {
@@ -151,11 +152,11 @@ const UserLogin = () => {
     const response = await fetch('http://localhost:7777/api/v1/send_email_reset', options)
 
     if (response.ok) {
-      setIsSuccessfull(true)
+      setSenduserEmail(true)
       setTimeout(() => {
-        setIsSuccessfull(false)
+        setSenduserEmail(false)
 
-      }, 2000)
+      }, 2500)
     }
   }
 
@@ -264,9 +265,13 @@ const UserLogin = () => {
         }
         {
           isError &&
-          <p className={styles.container_form_error}>{isError}</p>}
+          <Stack sx={{ m: 2 }} >
+            <Alert severity="error">
+              {isError}
+            </Alert>
+          </Stack>}
         {
-          isSuccessfull &&
+          isSenduserEmail &&
           <Stack sx={{ m: 2 }} >
             <Alert severity="success">
               {/* <AlertTitle>Succès</AlertTitle> */}

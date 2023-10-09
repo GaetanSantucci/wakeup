@@ -37,7 +37,6 @@ const stripeWebhook = async (req, res) => {
         }
         catch (err) {
             if (err instanceof Error) {
-                console.log(`⚠️  Webhook signature verification failed:  ${err}`);
                 res.sendStatus(400);
             }
             return;
@@ -69,12 +68,10 @@ const createPaypalSession = async (req, res) => {
 // ? captures a PayPal payment for a given order ID
 const capturePaypalSession = async (req, res) => {
     const captureData = await capturePaypalPayment(req, res);
-    console.log('captureData:', captureData);
     if (captureData.status === 'COMPLETED') {
         // todo need to create new row with payment id for stripe and paypal
         // todo create update to validate payment success in database using payment_id to finb order and update payment status
         await Payment.findPaymentToUpdateStatus(captureData.id);
-        console.log('mise a jour du status');
     }
     res.json(captureData);
 };

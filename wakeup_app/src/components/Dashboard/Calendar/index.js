@@ -7,6 +7,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import frLocale from '@fullcalendar/core/locales/fr';
 
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { TextField, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,13 +24,13 @@ import InputLabel from '@mui/material/InputLabel';
 
 import { createSpecialDay, fetchAllOrder, fetchClosedDays } from '@/src/libs/getOrderList';
 import Link from 'next/link';
-import { FlashOnOutlined } from '@mui/icons-material';
 
 export const DashboardCalendar = () => {
 
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addEventModal, setAddEventModal] = useState(false);
+
   const [eventData, setEventData] = useState({ orders: [], closedDays: [] });
 
   // State for modal event management
@@ -36,6 +39,18 @@ export const DashboardCalendar = () => {
   const [refresh, setRefresh] = useState(false);
   const [numberOfPlates, setNumberOfPlates] = useState('')
   const [data, setData] = useState([]);
+
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [line1, setLine1] = useState("");
+  const [line2, setLine2] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [city, setCity] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const { register, handleSubmit } = useForm();
+  // const onSubmit = (data) => console.log("les datas a submit sont ", data)
 
   // Function to fetch data
   const fetchData = () => {
@@ -59,8 +74,9 @@ export const DashboardCalendar = () => {
 
 
   // Transform orders data into events
-  const orderEvents = eventData.orders.map(elem => ({
-    title: `${elem.user_lastname} ${elem.user_firstname} - ${elem.user_address.city}`,
+  const orderEvents = eventData.orders.map(elem =>
+  ({
+    title: `${elem.user_lastname} ${elem.user_firstname} - ${elem.user_address?.city}`,
     start: elem.booking_date,
     extendedProps: {
       orderInfo: elem
@@ -127,12 +143,17 @@ export const DashboardCalendar = () => {
   const modifySpecialDate = () => {
     const data = {
       date: newDate,
-      plateQuantity: numberOfPlates
+      plateQuantity: numberOfPlates,
+      closingDay: false
     }
     // todo Modifier la function pour creer un nouveau jour special
     createSpecialDay(data)
     setRefresh(true);
     setAddEventModal(false)
+  }
+
+  const createNewBooking = () => {
+
   }
 
   const handleChangeNumberOfPlates = (event) => {
@@ -165,71 +186,153 @@ export const DashboardCalendar = () => {
     });
 
     return (
-      <div className={styles.modale}>
-        <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
-        <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
-          <InputLabel id="demo-simple-select-label">Que souhaites-tu faire ?</InputLabel>
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            value={choice}
-            onChange={handleChangeChoice}
-            label="Que veux-tu faire ?"
-            inputProps={{ MenuProps: { disableScrollLock: true } }}
-          >
-            <MenuItem value={1}>Ajouter une fermeture</MenuItem>
-            <MenuItem value={2}>Créer une réservation</MenuItem>
-            <MenuItem value={3}>Modifier le nombre de plateau</MenuItem>
-          </Select>
-        </FormControl>
-        <div className={styles.modale_content}>
-          {
-            choice === 1 ?
-              <>
-                <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir fermer le {frenchFormattedDate} ?</Alert>
-                <button onClick={confirmClosingDate}>Oui</button>
-              </>
-              :
-              null
-          }
-          {
-            choice === 2 ?
-              <>
+      // <div className={styles.modale}>
+      //   <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
+      <Dialog open={addEventModal} onClose={onClose} sx={{ p: '2rem' }}>
+        {/* <DialogTitle>Que souhaites-tu faire ?</DialogTitle> */}
+        <DialogContent sx={{ display: 'flex', minWidth: '350px', flexDirection: "column", gap: "0.5rem" }}>
+          <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
+          <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
+            <InputLabel id="demo-simple-select-label">Sélectionner une action</InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={choice}
+              onChange={handleChangeChoice}
+              label="Que veux-tu faire ?"
+              inputProps={{ MenuProps: { disableScrollLock: true } }}
+            >
+              <MenuItem value={1}>Ajouter une fermeture</MenuItem>
+              <MenuItem value={2}>Modifier le nombre de plateau</MenuItem>
+              {/* <MenuItem value={3}>Créer une réservation</MenuItem> */}
+            </Select>
+          </FormControl>
+          <div className={styles.modale_content}>
+            {
+              choice === 1 ?
+                <>
+                  <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir fermer le {frenchFormattedDate} ?</Alert>
+                  <button onClick={confirmClosingDate}>Oui</button>
+                </>
+                :
+                null
+            }
+            {/* {
+              choice === 3 ?
 
+                <form onSubmit={createNewBooking}>
+                  <TextField
+                    label="Email"
+                    onChange={e => setEmail(e.target.value)}
+                    type="email"
+                    sx={{ mb: 2, width: '80%' }}
+                    size='small'
+                    value={email}
+                    variant='standard'
+                  />
+                  <TextField
+                    label="Téléphone"
+                    onChange={e => setPhone(e.target.value)}
+                    type="tel"
+                    sx={{ mb: 2, width: '80%' }}
+                    size='small'
+                    value={phone}
+                    variant='standard'
+                  />
+                  <TextField
+                    label="Nom"
+                    onChange={e => setLastname(e.target.value)}
+                    type="text"
+                    sx={{ mb: 2, width: '80%' }}
+                    size='small'
+                    value={lastname}
+                    variant='standard'
+                  />
+                  <TextField
+                    label="Prénom"
+                    onChange={e => setFirstname(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 2, width: '80%' }}
+                    value={firstname}
+                    variant='standard'
+                  />
+                  <TextField
+                    label="Adresse"
+                    onChange={e => setLine1(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 2, width: '80%' }}
+                    value={line1}
+                    variant='standard'
+                  />
+                  <TextField
+                    label="Complément"
+                    onChange={e => setLine2(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 2, width: '80%' }}
+                    value={line2}
+                    variant='standard'
+                  />
+                  <TextField
+                    label="Code postal"
+                    onChange={e => setPostcode(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 2, width: '80%' }}
+                    value={postcode}
+                    variant='standard'
+
+                  />
+                  <TextField
+                    label="Ville"
+                    id='city'
+                    onChange={e => setCity(e.target.value)}
+                    size='small'
+                    type="text"
+                    sx={{ mb: 2, width: '80%' }}
+                    value={city}
+                    variant='standard'
+                  />
+                  <button type='submit'>Oui</button>
+                </form>
+
+                :
+                null
+            } */}
+            {
+              choice === 2 ? <>
+                <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
+                  <InputLabel id="demo-simple-select-label">Nombre de plateaux maximum</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={numberOfPlates}
+                    onChange={handleChangeNumberOfPlates}
+                    inputProps={{ MenuProps: { disableScrollLock: true } }}
+                  >
+                    <MenuItem value={1}>1</MenuItem>
+                    <MenuItem value={2}>2</MenuItem>
+                    <MenuItem value={3}>3</MenuItem>
+                    <MenuItem value={4}>4</MenuItem>
+                    <MenuItem value={5}>5</MenuItem>
+                    <MenuItem value={6}>6</MenuItem>
+                    <MenuItem value={7}>7</MenuItem>
+                    <MenuItem value={8}>8</MenuItem>
+                    <MenuItem value={9}>9</MenuItem>
+                  </Select>
+                </FormControl>
+                <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir modifier le nombre de plateau pour le {frenchFormattedDate} ?</Alert>
+                <button onClick={modifySpecialDate}>Oui</button>
               </>
-              :
-              null
-          }
-          {
-            choice === 3 ? <>
-              <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
-                <InputLabel id="demo-simple-select-label">Nombre de plateaux maximum</InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={numberOfPlates}
-                  onChange={handleChangeNumberOfPlates}
-                  inputProps={{ MenuProps: { disableScrollLock: true } }}
-                >
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
-                  <MenuItem value={7}>7</MenuItem>
-                  <MenuItem value={8}>8</MenuItem>
-                  <MenuItem value={9}>9</MenuItem>
-                </Select>
-              </FormControl>
-              <Alert severity="warning" sx={{ mb: 2 }}>Es-tu sûre de vouloir modifier le nombre de plateau pour le {frenchFormattedDate} ?</Alert>
-              <button onClick={modifySpecialDate}>Oui</button>
-            </>
-              :
-              null
-          }
-        </div>
-      </div>
+                :
+                null
+            }
+          </div>
+        </DialogContent>
+
+      </Dialog>
     )
   }
 
@@ -244,51 +347,54 @@ export const DashboardCalendar = () => {
       day: 'numeric',
     });
 
-    // todo changer refresh fetchorder au moment de l ajout d un event 
-
     return (
-      <div className={styles.modale}>
-        <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
-        <div className={styles.modale_title}>Commande du {frenchFormattedDate}</div>
+      <Dialog open={isModalOpen} onClose={onClose} ><DialogContent sx={{ p: '0 0' }}>
+        <div className={styles.modale}>
+          <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
+          <div className={styles.modale_title}>Commande du {frenchFormattedDate}</div>
 
-        <div className={styles.modale_content}>
-          <p><span>Nom:</span> {event.user_lastname}</p>
-          <p><span>Prénom:</span> {event.user_firstname}</p>
-          <p><span>Adresse:</span> {event.user_address.line1}</p>
-          {
-            event.user_address.line2 && <p>Compléments: {event.user_address.line2}</p>
-          }
-          <p><span>Code postal:</span> {event.user_address.postcode}</p>
-          <p><span>Ville:</span> {event.user_address.city}</p>
-          <p><span>Tél:</span> {event.user_phone}</p>
+          <div className={styles.modale_content}>
+            <p><span>Nom:</span> {event.user_lastname}</p>
+            <p><span>Prénom:</span> {event.user_firstname}</p>
+            <p><span>Adresse:</span> {event.user_address.line1}</p>
+            {
+              event.user_address.line2 && <p>Compléments: {event.user_address.line2}</p>
+            }
+            <p><span>Code postal:</span> {event.user_address.postcode}</p>
+            <p><span>Ville:</span> {event.user_address.city}</p>
+            <p><span>Tél:</span> {event.user_phone}</p>
 
-          <div className={styles.modale_content_contact}>
-            <Link href={`sms://+33${phone};?&body=Réservation WAKE UP !`}><SmsIcon /></Link>
-            <Link href={`tel:+33${phone}`}><PhoneIcon /></Link>
+            <div className={styles.modale_content_contact}>
+              <Link href={`sms://+33${phone};?&body=Réservation WAKE UP !`}><SmsIcon /></Link>
+              <Link href={`tel:+33${phone}`}><PhoneIcon /></Link>
+            </div>
+            <div className={styles.modale_content_line} />
+
+            <ul >
+              {event.products.map((product, index) => {
+                return (
+                  <li key={index} className={styles.modale_content_product}>
+                    {product.product_name}: <span>{product.quantity}</span>
+                  </li>)
+              })}
+            </ul>
+            <div className={styles.modale_content_price}>
+              <p>Montant de la commande: <span>{event.total_amount}€</span></p>
+            </div>
+            <span className={styles.modale_content_delete} onClick={onDelete}><DeleteOutlineOutlinedIcon /> Supprimer</span>
           </div>
-          <div className={styles.modale_content_line} />
 
-          <ul >
-            {event.products.map((product, index) => {
-              return (
-                <li key={index} className={styles.modale_content_product}>
-                  {product.product_name}: <span>{product.quantity}</span>
-                </li>)
-            })}
-          </ul>
-          <div className={styles.modale_content_price}>
-            <p>Montant de la commande: <span>{event.total_amount}€</span></p>
-          </div>
-          <span className={styles.modale_content_delete} onClick={onDelete}><DeleteOutlineOutlinedIcon /> Supprimer</span>
         </div>
-      </div>
+      </DialogContent></Dialog>
+      // <div className={styles.modale}>
+      // </div>
     );
   };
 
 
   return (
     <>
-      <div className={isModalOpen ? `${styles.background} ${styles.background_active}` : styles.background} />
+
       {
         isModalOpen &&
         <EventModal
@@ -311,7 +417,7 @@ export const DashboardCalendar = () => {
         plugins={[dayGridPlugin, interactionPlugin]}
         timeZone='UTC'
         initialView='dayGridMonth'
-        themeSystem={'lux'}
+        // themeSystem={'lux'}
         firstDay={1}
         events={allEvents}
         editable={true}

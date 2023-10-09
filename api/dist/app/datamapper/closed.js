@@ -7,6 +7,7 @@ class ClosingDatamapper extends CoreDataMapper {
     tableName = 'special_day';
     columns = '"id", "date", "plate_quantity", "closing_day"';
     createFunctionName = 'create_special_day';
+    updateFunctionName = 'update_special_day';
     async findAllClosedDays() {
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
@@ -14,6 +15,26 @@ class ClosingDatamapper extends CoreDataMapper {
     ${this.tableName} 
     ORDER BY 
         id ASC;`
+            };
+            const result = await this.client.query(preparedQuery);
+            return result.rows;
+        }
+    }
+    async findSpecialDayByDate(date) {
+        if (this.client instanceof pg.Pool) {
+            const preparedQuery = {
+                text: `SELECT * FROM ${this.tableName} WHERE date = $1;`,
+                values: [date]
+            };
+            const result = await this.client.query(preparedQuery);
+            return result.rows;
+        }
+    }
+    async updateSpecialDate(inputData) {
+        if (this.client instanceof pg.Pool) {
+            const preparedQuery = {
+                text: `SELECT ${this.updateFunctionName} ($1);`,
+                values: [inputData]
             };
             const result = await this.client.query(preparedQuery);
             return result.rows;

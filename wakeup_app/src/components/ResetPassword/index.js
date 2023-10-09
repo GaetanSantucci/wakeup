@@ -20,7 +20,7 @@ import Stack from '@mui/material/Stack';
 import { PasswordChecker } from '@/src/utils/passwordChecker';
 
 const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
-
+// const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 export const ResetPassword = () => {
 
@@ -31,7 +31,6 @@ export const ResetPassword = () => {
   // Extract the 'token' query parameter from the URL
   const token = searchParams.get('token')
   const email = searchParams.get('email')
-  console.log('email:', email);
 
 
   const [newPassword, setNewPassword] = useState('');

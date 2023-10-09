@@ -1,6 +1,8 @@
 import pg from 'pg';
 import { client } from '../services/dbClient.js';
 import { CoreDataMapper } from './coreDatamapper.js';
+import { UUID } from '../type/user.js';
+
 
 class UserDataMapper extends CoreDataMapper {
   tableName = 'user';
@@ -9,6 +11,11 @@ class UserDataMapper extends CoreDataMapper {
   createFunctionName = 'create_user';
   updateFunctionName = 'update_user';
   deleteFunctionName = 'delete_user';
+
+  view = {
+    getAllUsersView: 'getAllUsers'
+  }
+
   // userIdentity = 'user_identity';
 
   //& Find user by email
@@ -56,20 +63,34 @@ class UserDataMapper extends CoreDataMapper {
     }
   }
 
-  // async deleteUser(user_id: string) {
-  //   console.log('user_id:', user_id);
-  //   if (this.client instanceof pg.Pool) {
-  //     const preparedQuery = {
-  //       text: `SELECT * FROM "${this.deleteFunctionName}" WHERE id = ($1);`,
-  //       values: [user_id]
-  //     };
+  async getAllUsers() {
+    console.log('getAllUsersView:', this.view.getAllUsersView);
+    if (this.client instanceof pg.Pool) {
+      const preparedQuery = {
+        text: `SELECT * FROM "${this.view.getAllUsersView}"`
+      };
 
-  //     const result = await this.client.query(preparedQuery);
-  //     console.log('result:', result);
-  //     // if (!result.rows[0]) return null;
-  //     return result;
-  //   }
-  // }
+      const result = await this.client.query(preparedQuery);
+      console.log('result.rows:', result.rows);
+      if (!result.rows) return null;
+      return result.rows;
+    }
+  }
+
+  async deleteUser(userId: number | UUID) {
+    console.log('id:', userId);
+    if (this.client instanceof pg.Pool) {
+      const preparedQuery = {
+        text: `SELECT ${this.deleteFunctionName}($1)`,
+        values: [userId]
+      };
+
+      const result = await this.client.query(preparedQuery);
+      console.log('result.rows:', result.rows);
+      // if (!result.rows) return null;
+      return result.rowCount
+    }
+  }
 }
 
 const User = new UserDataMapper(client);

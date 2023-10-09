@@ -7,7 +7,8 @@ import bcrypt from 'bcrypt';
 //? ----------------------------------------------------------- GET ALL USERS
 const getAllCustomers = async (req, res) => {
     try {
-        const userList = await User.findAll();
+        const userList = await User.getAllUsers();
+        console.log('userList:', userList);
         if (!userList)
             throw new ErrorApi('No users found', req, res, 400);
         return res.status(200).json(userList);
@@ -157,7 +158,7 @@ const deleteCustomer = async (req, res) => {
                 if (!validPassword)
                     throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
                 // todo checker si mot de passe identique
-                const userDeleted = await User.delete(userId);
+                const userDeleted = await User.deleteUser(userId);
                 if (userDeleted)
                     return res.status(200).json(`L'utilisateur a été supprimé !`);
             }

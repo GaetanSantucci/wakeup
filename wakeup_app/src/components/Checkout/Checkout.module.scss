@@ -47,8 +47,10 @@
       &_resume {
         width: 60%;
         border: 1px solid vars.$backgroundPrimaryLightThemeGradient;
-        padding: 1rem;
+        padding: 1.4rem;
         border-radius: 4px;
+        // font-family: var(--fontTitle);
+
         & > * {
           margin-bottom: 1rem;
         }
@@ -56,6 +58,38 @@
         &_button {
           & > * {
             border-radius: 5px;
+          }
+        }
+
+        & li {
+          margin-left: 1rem;
+          @include mixins.flex(row, $justify: flex-start);
+
+          & span {
+            color: vars.$backgroundAdditionnalColoredTheme;
+            margin-left: 4px;
+          }
+        }
+
+        &_voucher {
+          font-size: 0.8rem;
+          & span {
+            border-radius: 2px;
+            padding: 4px;
+            text-decoration: underline;
+            font-weight: 600;
+            letter-spacing: 1px;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          &_input {
+            margin-top: 1rem;
+            visibility: hidden;
+            opacity: 0;
+            transition: 400ms;
           }
         }
       }
@@ -70,7 +104,6 @@
 
   &_information {
     &_input {
-      // width: 100%;
       position: relative;
       &_error {
         position: absolute;
@@ -108,6 +141,12 @@
       }
     }
   }
+}
+
+.input_active {
+  visibility: visible;
+  opacity: 1;
+  transition: 600ms;
 }
 
 .checkout_button {

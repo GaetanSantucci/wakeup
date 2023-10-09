@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { use, useState } from 'react';
-import { inputValue } from '@/src/store/reducers/User';
+import { inputValue, setErrorMessage } from '@/src/store/reducers/User';
 import { addDeliveryCost } from '@/src/store/reducers/Cart';
 
 import { AddOrDeleteItems, PayPalButtonComponent } from '../Button';
@@ -14,14 +14,13 @@ import { CustomCalendar } from '../Calendar';
 
 import { getTotal } from '@/src/utils/getCartTotal';
 
-import TextField from '@mui/material/TextField';
-import { Autocomplete } from '@mui/material';
-import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
+// import TextField from '@mui/material/TextField';
+// import { Autocomplete } from '@mui/material';
+// import Box from '@mui/material/Box';
+import { Alert, Stack, Paper, InputBase, IconButton, Box, Autocomplete, TextField } from '@mui/material';
+
 import SearchIcon from '@mui/icons-material/Search';
+import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
 
@@ -80,6 +79,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user)
+  console.log('user:', user);
 
   // Dynamic method for store input by type
   const handleInputChange = (e) => {
@@ -184,14 +184,13 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Choisissez votre ville"
+                  label={user.address?.city || "Choisissez votre ville"}
                   inputProps={{
                     ...params.inputProps,
                     autoComplete: 'new-password', // disable autocomplete and autofill
                   }}
                   size='small'
                   onChange={handleCity}
-                  value={user.address?.city}
                   variant="standard"
                 />
               )}
@@ -218,42 +217,67 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
 
 const CheckoutPayment = ({ previousPage }) => {
   const allCart = useSelector((state) => state.cart);
-  const [voucher, setVoucher] = useState('');
+  const [voucherInput, setVoucherInput] = useState('');
   const [voucherAmount, setVoucherAmount] = useState('');
   console.log('voucherAmount:', voucherAmount);
+  const [voucherMessage, setVoucherMessage] = useState('');
+  console.log('voucherMessage:', voucherMessage);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isInputVisible, setIsInputVisible] = useState(false);
+  const [cartAmount, setCartAmount] = useState('')
+  console.log('cartAmount:', cartAmount);
 
   // Dynamic method for store input by type
   const handleInputChange = (e) => {
-    setVoucher(e.target.value)
+    setVoucherInput(e.target.value)
   };
 
   const submitVoucherResearch = async () => {
     const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
     console.log('endpoint:', endpoint);
 
+    setVoucherMessage('')
+    setErrorMessage('')
+    setVoucherAmount('')
+
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ voucherId: voucher })
+      body: JSON.stringify({ voucherId: voucherInput })
     }
     try {
       const res = await fetch(`${endpoint}vouchers`, options)
       const result = await res.json()
-      if (result) {
-        const price = (totalIncludeDelivery - result.initial_amount).toFixed(2);
-        setVoucherAmount(price)
-        setVoucher('')
+
+      if (result.id) {
+        setVoucherAmount(result.initial_amount - result.amount_used);
+
+        if (voucherAmount <= 0) {
+          setVoucherMessage(`Fonds insuffisants, bon utilisé le ${result.date_use.split('T')[0]}`)
+        }
+        const price = (totalIncludeDelivery - voucherAmount).toFixed(2)
+        setCartAmount(price);
+
+
+      } else {
+        setErrorMessage(result.message)
+        setTimeout(() => {
+          setErrorMessage('')
+
+        }, 2500)
       }
-      console.log('result:', result);
     } catch (err) {
       console.error(err)
     }
   }
 
+  const openVoucherInput = () => {
+    setIsInputVisible(!isInputVisible)
+  }
+
   const totalIncludeDelivery = Number(getTotal(allCart.cart).totalPrice.toFixed(2)) + Number(allCart.deliveryCost)
-  console.log("voucher", voucher);
   return (
     <>
       <div className={styles.container_checkout}>
@@ -261,36 +285,64 @@ const CheckoutPayment = ({ previousPage }) => {
         <div className={styles.container_checkout_payment} >
           <div className={styles.container_checkout_payment_resume}>
             <p>Résumé :</p>
-            <p>Livraison le {allCart.bookingDate}</p>
+            <p>Livraison de votre petit déjeune le : {allCart.bookingDate}</p>
             <ul>
               {
                 allCart.cart.map(item => {
                   const totalPrice = (item.quantity * item.price).toFixed(2);
                   // const price = totalPrice.toString().replace('.', ',');
                   return (
-                    <li key={item.name}>{item.quantity} {item.name} :<span>{totalPrice} €</span></li>
+                    <li key={item.name}><BakeryDiningIcon /> {item.quantity} {item.name} : <span> {totalPrice} €</span></li>
                   )
                 })
               }
             </ul>
             <p>Frais de livraison : {allCart.deliveryCost} €</p>
-            <p>Montant {voucherAmount ? 'restant après déduction du bon' : 'total'}: {voucherAmount ? voucherAmount : totalIncludeDelivery} €</p>
+
+            <p>Montant {cartAmount ? 'restant après déduction du bon' : 'total'}: {cartAmount ? cartAmount : totalIncludeDelivery} €</p>
             <div className={styles.container_checkout_payment_resume_100}>
-              <Paper
-                component="form"
-                sx={{ p: '2px 4px', mb: 2, display: 'flex', alignItems: 'center', width: '100%' }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Avez-vous un bon cadeau"
-                  value={voucher}
-                  onChange={handleInputChange}
-                  inputProps={{ 'aria-label': 'bon cadeau' }}
-                />
-                <IconButton onClick={submitVoucherResearch} type="button" sx={{ p: '10px' }} aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
+              <p className={styles.container_checkout_payment_resume_voucher}>Carte cadeau à déduire ? cliquez <span onClick={openVoucherInput}>ici</span></p>
+              <div className={isInputVisible ? styles.container_checkout_payment_resume_voucher_input : `${styles.container_checkout_payment_resume_voucher_input} ${styles.input_active}`}>
+                <Paper
+                  component="form"
+                  sx={{ p: '2px 4px', mb: 2, display: 'flex', alignItems: 'center', width: '100%' }}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Numéro du bon cadeau"
+                    value={voucherInput}
+                    onChange={handleInputChange}
+                    inputProps={{ 'aria-label': 'bon cadeau' }}
+                  />
+                  <IconButton onClick={submitVoucherResearch} type="button" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+              </div>
+              {
+                voucherAmount > 0 &&
+                <Stack  >
+                  <Alert severity="success">
+                    Le montant du bon est de {voucherAmount} !
+                  </Alert>
+                </Stack>
+              }
+              {
+                voucherAmount <= 0 && voucherMessage &&
+                <Stack  >
+                  <Alert severity="warning">
+                    {voucherMessage}
+                  </Alert>
+                </Stack>
+              }
+              {
+                errorMessage &&
+                <Stack  >
+                  <Alert severity="error">
+                    {errorMessage}
+                  </Alert>
+                </Stack>
+              }
             </div>
           </div>
           <div className={styles.container_checkout_payment_resume_button}>

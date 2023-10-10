@@ -67,7 +67,7 @@ class UserDataMapper extends CoreDataMapper {
     console.log('getAllUsersView:', this.view.getAllUsersView);
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
-        text: `SELECT * FROM "${this.view.getAllUsersView}"`
+        text: `SELECT * FROM ${this.view.getAllUsersView}`
       };
 
       const result = await this.client.query(preparedQuery);

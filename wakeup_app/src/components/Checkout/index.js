@@ -14,11 +14,7 @@ import { CustomCalendar } from '../Calendar';
 
 import { getTotal } from '@/src/utils/getCartTotal';
 
-// import TextField from '@mui/material/TextField';
-// import { Autocomplete } from '@mui/material';
-// import Box from '@mui/material/Box';
 import { Alert, Stack, Paper, InputBase, IconButton, Box, Autocomplete, TextField } from '@mui/material';
-
 import SearchIcon from '@mui/icons-material/Search';
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 
@@ -51,7 +47,7 @@ const CheckoutCart = ({ nextPage }) => {
           })
         }
         {
-          getTotal(allCart.cart).totalQuantity === 0 ? <p>Votre panier est vide, commencez vos achats <Link href='/plateau' style={{ textDecoration: 'underline' }}>ici</Link></p>
+          getTotal(allCart.cart).totalQuantity === 0 ? <p>Il ne se passe pas grand chose par là, commencez votre commande <Link href='/plateau' style={{ textDecoration: 'underline' }}>ici</Link></p>
             :
             <>
               <p className={styles.container_checkout_desc}>Nombre d&apos;articles dans votre panier : {getTotal(allCart.cart).totalQuantity}</p>
@@ -219,13 +215,10 @@ const CheckoutPayment = ({ previousPage }) => {
   const allCart = useSelector((state) => state.cart);
   const [voucherInput, setVoucherInput] = useState('');
   const [voucherAmount, setVoucherAmount] = useState('');
-  console.log('voucherAmount:', voucherAmount);
   const [voucherMessage, setVoucherMessage] = useState('');
-  console.log('voucherMessage:', voucherMessage);
   const [errorMessage, setErrorMessage] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [cartAmount, setCartAmount] = useState('')
-  console.log('cartAmount:', cartAmount);
 
   // Dynamic method for store input by type
   const handleInputChange = (e) => {

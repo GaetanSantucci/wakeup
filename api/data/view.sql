@@ -80,10 +80,13 @@ SELECT
     U.phone,
 	U.email,
 	U.address,
-    json_agg(od.booking_date ORDER BY od.booking_date ASC) AS booking_dates
+  jsonb_agg(jsonb_build_object('booking_date', od.booking_date, 'total_amount', od.total) 
+  ORDER BY od.booking_date) AS booking_info
 FROM public.user AS U
 JOIN order_details AS od ON U.id = od.user_id
 GROUP BY U.id, U.lastname, U.firstname, U.email, U.address,U.phone
 ORDER BY U.lastname ASC;
+
+
 
 SELECT * FROM getAllUsers;

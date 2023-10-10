@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   const { logout } = useLogout();
 
-  const [selectedItem, setSelectedItem] = useState('DashboardCalendar');
+  const [selectedItem, setSelectedItem] = useState('calendar');
 
   const userLogout = () => {
     logout();

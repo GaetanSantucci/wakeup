@@ -38,18 +38,18 @@ export const DashboardCalendar = () => {
   const [newDate, setNewDate] = useState();
   const [refresh, setRefresh] = useState(false);
   const [numberOfPlates, setNumberOfPlates] = useState('')
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
-  const [lastname, setLastname] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [line1, setLine1] = useState("");
-  const [line2, setLine2] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  // const [lastname, setLastname] = useState("");
+  // const [firstname, setFirstname] = useState("");
+  // const [line1, setLine1] = useState("");
+  // const [line2, setLine2] = useState("");
+  // const [postcode, setPostcode] = useState("");
+  // const [city, setCity] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [phone, setPhone] = useState("");
 
-  const { register, handleSubmit } = useForm();
+  // const { register, handleSubmit } = useForm();
   // const onSubmit = (data) => console.log("les datas a submit sont ", data)
 
   // Function to fetch data

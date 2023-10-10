@@ -1,10 +1,12 @@
 'use client';
 import { fetchAllUser } from '@/src/libs/getCustomers';
 import { useEffect, useState } from 'react'
+import CollapsibleTable from './createData';
 
 export const DashboardCustomer = () => {
 
-  const [customer, setCustomer] = useState('')
+  const [customer, setCustomer] = useState([])
+  console.log('customer:', customer);
 
   // Function to fetch data
   const fetchData = () => {
@@ -22,15 +24,8 @@ export const DashboardCustomer = () => {
 
   return (
     <div>
-      <h2>Page client</h2>
       <div>
-        {
-          customer.map(elem => {
-            return (
-              <p>{elem.lastname} - {elem.firstname} </p>
-            )
-          })
-        }
+        <CollapsibleTable rows={customer} />
       </div>
     </div>
   )

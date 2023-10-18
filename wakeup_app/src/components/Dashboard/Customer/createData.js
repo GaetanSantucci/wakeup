@@ -11,6 +11,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -105,25 +106,55 @@ function Row(inputData) {
 export default function CollapsibleTable({ rows }) {
   const customers = rows.map(elem => createData(elem.lastname, elem.firstname, elem.email, elem.phone, elem.booking_info))
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Nom</TableCell>
-            <TableCell align="right">Prénom</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Téléphone</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {customers.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper sx={{ width: '100%' }}>
+      <TableContainer component={Paper}>
+        <Table stickyHeader aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Nom</TableCell>
+              <TableCell align="right">Prénom</TableCell>
+              <TableCell align="right">Email</TableCell>
+              <TableCell align="right">Téléphone</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              customers
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <Row key={row.name} row={row} />
+                ))
+            }
+            {/* {customers.map((row) => (
+              <Row key={row.name} row={row} />
+            ))} */}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={customers.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }
 

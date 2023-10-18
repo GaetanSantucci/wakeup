@@ -218,16 +218,18 @@ const CheckoutPayment = ({ previousPage }) => {
   const [voucherMessage, setVoucherMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
+  console.log('isInputVisible:', isInputVisible);
   const [cartAmount, setCartAmount] = useState('')
 
   // Dynamic method for store input by type
   const handleInputChange = (e) => {
-    setVoucherInput(e.target.value)
+    setVoucherInput(formatInput(e.target.value))
+    const newValue = formatInput(e.target.value)
+    console.log('newValue:', newValue);
   };
 
   const submitVoucherResearch = async () => {
     const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
-    console.log('endpoint:', endpoint);
 
     setVoucherMessage('')
     setErrorMessage('')
@@ -266,6 +268,17 @@ const CheckoutPayment = ({ previousPage }) => {
     }
   }
 
+  // Function to format the input value
+  const formatInput = (value) => {
+    // Remove any non-alphanumeric characters
+    const alphanumericValue = value.replace(/[^A-Za-z0-9]/g, '');
+
+    // Use regular expressions to format the value
+    const formattedValue = alphanumericValue.replace(/(\w{3})(\w{3})(\w{3})/, '$1-$2-$3');
+
+    return formattedValue;
+  };
+
   const openVoucherInput = () => {
     setIsInputVisible(!isInputVisible)
   }
@@ -295,7 +308,7 @@ const CheckoutPayment = ({ previousPage }) => {
             <p>Montant {cartAmount ? 'restant après déduction du bon' : 'total'}: {cartAmount ? cartAmount : totalIncludeDelivery} €</p>
             <div className={styles.container_checkout_payment_resume_100}>
               <p className={styles.container_checkout_payment_resume_voucher}>Carte cadeau à déduire ? cliquez <span onClick={openVoucherInput}>ici</span></p>
-              <div className={isInputVisible ? styles.container_checkout_payment_resume_voucher_input : `${styles.container_checkout_payment_resume_voucher_input} ${styles.input_active}`}>
+              <div className={isInputVisible ? `${styles.container_checkout_payment_resume_voucher_input} ${styles.input_active}` : `${styles.container_checkout_payment_resume_voucher_input}`}>
                 <Paper
                   component="form"
                   sx={{ p: '2px 4px', mb: 2, display: 'flex', alignItems: 'center', width: '100%' }}

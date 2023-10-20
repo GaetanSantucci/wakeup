@@ -35,6 +35,11 @@ const getCustomerProfile = async (req, res) => {
     }
 };
 //? ----------------------------------------------------------- CREATE USER
+/**
+ * Handles user sign up requests.
+ * @param req - The request object with email and password.
+ * @returns A JSON response indicating whether the user account was successfully created.
+ */
 const signUp = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -54,8 +59,14 @@ const signUp = async (req, res) => {
     }
 };
 //? ----------------------------------------------------------- LOGIN
+/**
+ * Sign in a user with email and password
+ * @param req - Express Request object with email and password
+ * @param res - Express Response object
+ * @returns Returns a JSON object containing user identity, access token and refresh token
+ */
 const signIn = async (req, res) => {
-    // on recupere mot de passe + email 
+    // on recupere mot de passe + email
     const { email, password } = req.body;
     try {
         const userExist = await User.findUserIdentity(email);
@@ -103,7 +114,7 @@ const updateCustomerProfile = async (req, res) => {
         const userId = req.params.userId;
         console.log('userId:', userId);
         const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        // Check if user exist     
+        // Check if user exist
         if (!uuidRegex.test(userId))
             throw new ErrorApi(`UUID non valide`, req, res, 400);
         const userExist = await User.findOne(userId);
@@ -128,7 +139,7 @@ const updateCustomerProfile = async (req, res) => {
         // send the body to update the user after verification
         const userUpdated = await User.update(req.body);
         if (userUpdated)
-            return res.status(200).json("Utilisateur mis à jour avec succès !");
+            return res.status(200).json('Utilisateur mis à jour avec succès !');
     }
     catch (err) {
         if (err instanceof Error)
@@ -174,4 +185,21 @@ const deleteCustomer = async (req, res) => {
             logger(err.message);
     }
 };
-export { getAllCustomers, signUp, signIn, signOut, getCustomerProfile, updateCustomerProfile, deleteCustomer };
+const updateNewsletterOptin = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const userExist = await User.findUserIdentity(email);
+        if (!userExist)
+            throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
+        const updateUserNewsletterOptin = await User.updateNewsletterOptin(email);
+        if (updateUserNewsletterOptin)
+            return res
+                .status(200)
+                .json(`Vous avez bien été désinscrit de la newsletter !`);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            logger(err.message);
+    }
+};
+export { getAllCustomers, signUp, signIn, signOut, getCustomerProfile, updateCustomerProfile, deleteCustomer, updateNewsletterOptin, };

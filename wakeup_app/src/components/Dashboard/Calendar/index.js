@@ -217,90 +217,6 @@ export const DashboardCalendar = () => {
                 :
                 null
             }
-            {/* {
-              choice === 3 ?
-
-                <form onSubmit={createNewBooking}>
-                  <TextField
-                    label="Email"
-                    onChange={e => setEmail(e.target.value)}
-                    type="email"
-                    sx={{ mb: 2, width: '80%' }}
-                    size='small'
-                    value={email}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Téléphone"
-                    onChange={e => setPhone(e.target.value)}
-                    type="tel"
-                    sx={{ mb: 2, width: '80%' }}
-                    size='small'
-                    value={phone}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Nom"
-                    onChange={e => setLastname(e.target.value)}
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    size='small'
-                    value={lastname}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Prénom"
-                    onChange={e => setFirstname(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={firstname}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Adresse"
-                    onChange={e => setLine1(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={line1}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Complément"
-                    onChange={e => setLine2(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={line2}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Code postal"
-                    onChange={e => setPostcode(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={postcode}
-                    variant='standard'
-
-                  />
-                  <TextField
-                    label="Ville"
-                    id='city'
-                    onChange={e => setCity(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={city}
-                    variant='standard'
-                  />
-                  <button type='submit'>Oui</button>
-                </form>
-
-                :
-                null
-            } */}
             {
               choice === 2 ? <>
                 <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
@@ -331,7 +247,6 @@ export const DashboardCalendar = () => {
             }
           </div>
         </DialogContent>
-
       </Dialog>
     )
   }
@@ -352,7 +267,6 @@ export const DashboardCalendar = () => {
         <div className={styles.modale}>
           <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
           <div className={styles.modale_title}>Commande du {frenchFormattedDate}</div>
-
           <div className={styles.modale_content}>
             <p><span>Nom:</span> {event.user_lastname}</p>
             <p><span>Prénom:</span> {event.user_firstname}</p>
@@ -381,20 +295,19 @@ export const DashboardCalendar = () => {
             <div className={styles.modale_content_price}>
               <p>Montant de la commande: <span>{event.total_amount}€</span></p>
             </div>
-            <span className={styles.modale_content_delete} onClick={onDelete}><DeleteOutlineOutlinedIcon /> Supprimer</span>
+            <span className={styles.modale_content_delete} onClick={onDelete}>
+            <DeleteOutlineOutlinedIcon />
+            Supprimer
+            </span>
           </div>
-
         </div>
-      </DialogContent></Dialog>
-      // <div className={styles.modale}>
-      // </div>
+      </DialogContent>
+      </Dialog>
     );
   };
 
-
   return (
     <>
-
       {
         isModalOpen &&
         <EventModal
@@ -417,7 +330,6 @@ export const DashboardCalendar = () => {
         plugins={[dayGridPlugin, interactionPlugin]}
         timeZone='UTC'
         initialView='dayGridMonth'
-        // themeSystem={'lux'}
         firstDay={1}
         events={allEvents}
         editable={true}
@@ -432,6 +344,7 @@ export const DashboardCalendar = () => {
         }}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
+        // height={'100%'}
       />
     </>
   )

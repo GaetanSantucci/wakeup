@@ -2,7 +2,11 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from "next/navigation";
 
-const UnsubscribePage = () => {
+/**
+ * Renders the Unsubscribe page component.
+ * @returns {JSX.Element} The Unsubscribe page component.
+ */
+export const UnsubscribePage = () => {
         const searchParams = useSearchParams();
         const email = searchParams.get('email');
 

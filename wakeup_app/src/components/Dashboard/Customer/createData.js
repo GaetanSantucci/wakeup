@@ -1,7 +1,5 @@
 'use client';
-import { fetchAllUser } from '@/src/libs/getCustomers';
-import { useEffect, useState } from 'react'
-// import PropTypes from 'prop-types';
+import {  useState } from 'react'
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
 
 function createData(lastname, firstname, email, phone, booking_info) {
   console.log('lastname:', lastname);
@@ -79,18 +76,19 @@ function Row(inputData) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history?.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      {/* <TableCell>{historyRow.customerId}</TableCell> */}
-                      <TableCell align="right">{historyRow.total}</TableCell>
-                      {/* <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell> */}
-                    </TableRow>
-                  ))}
+                  {row.history?.map((historyRow) => {
+                    console.log("historyRow", historyRow);
+
+                    return (
+                      <TableRow key={historyRow.date}>
+                        <TableCell component="th" scope="row">
+                          {historyRow.total && historyRow.date} 
+                        </TableCell>
+                        <TableCell align="right">{historyRow.total}</TableCell>
+                      </TableRow>
+                    )
+                  }
+                    )}
                 </TableBody>
               </Table>
             </Box>

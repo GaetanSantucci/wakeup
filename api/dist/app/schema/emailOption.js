@@ -1,10 +1,19 @@
-const mailSignUp = (email, lastname, firstname, message) => {
+const mailSignUp = (email) => {
     return {
-        from: `"Bienvenu chez Wake up" ${process.env.NODEMAILER_ACCOUNT}`,
+        from: `"Bienvenue chez Wake up" ${process.env.NODEMAILER_ACCOUNT}`,
         to: `${email}`,
-        subject: `Hello ${lastname}`,
-        text: "Hello world?",
-        html: `<b>Hello ${lastname} ${firstname}</b><br>${message}`, // html body
+        subject: `Bienvenue chez WAKE UP`,
+        html: `
+      <div style="background-color: #f2f2f2; padding: 20px;">
+        <div style="background-color: #ffffff; padding: 20px; border-radius: 10px;">
+          <h1 style="color: #0069d9; font-size: 36px; margin-bottom: 20px;">Bienvenue chez WAKE UP!</h1>
+          <p style="font-size: 18px; margin-bottom: 20px;">Nous sommes ravis de vous accueillir chez Wake up. Vous pouvez désormais accéder à votre compte et consulter vos réservations</p>
+          <p style="font-size: 18px; margin-bottom: 20px;">N'hésitez pas à nous contacter si vous avez des questions ou des commentaires. Nous sommes là pour vous aider !</p>
+          <a href="https://www.wakeupclf.fr" style="background-color: #0069d9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 18px;">Découvrir Wake up</a>
+        </div>
+        <p style="font-size: 14px;">Vous pouvez vous désabonner de nos emails en cliquant sur ce lien : <a href="http://${process.env.CLIENT_URL}/unsubscribe">Se désabonner</a></p>
+      </div>
+    `,
     };
 };
 const connectEmail = (data) => {
@@ -12,7 +21,7 @@ const connectEmail = (data) => {
         from: `"Information de connection" ${process.env.NODEMAILER_ACCOUNT}`,
         to: `${data.email}`,
         subject: `Connexion à votre compte Wake up ${data.firstname} ${data.lastname}`,
-        text: "Hello world?",
+        text: 'Hello world?',
         html: '<b>Bonjour, </b><br> Vous venez de vous connecter sur notre plateforme <br> Si toutefois vous n&apos;etes pas a l&apos;origine de cette connection, veuillez nous contacter a cette adresse suivante : <br><a href="mailto:contact@wakeupbox.fr">contact@wakeupbox.fr</a>',
     };
 };
@@ -29,7 +38,7 @@ const emailReceived = (data) => {
     <p>Message : ${data.message}</p>
     <button type="button" value="Repondre" style="background-color: #0069d9; padding: 1.4rem;"><a href="mailto:${data.email}" style="color: white; padding: 1rem; text-align: center; text-decoration: none;" target="blank">Répondre</a></button>
     </div></body>`,
-        replyTo: `${data.email}`
+        replyTo: `${data.email}`,
     };
 };
 const emailResetPassword = (email, token) => {

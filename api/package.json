@@ -35,6 +35,7 @@
     "nodemailer": "^6.9.1",
     "paypal-rest-sdk": "^1.8.1",
     "pg": "^8.8.0",
+    "punycode": "^2.3.0",
     "stripe": "^12.12.0"
   },
   "type": "module",

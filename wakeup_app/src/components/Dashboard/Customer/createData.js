@@ -1,7 +1,5 @@
 'use client';
-import { fetchAllUser } from '@/src/libs/getCustomers';
-import { useEffect, useState } from 'react'
-// import PropTypes from 'prop-types';
+import { useState } from 'react'
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -16,9 +14,13 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 
 function createData(lastname, firstname, email, phone, booking_info) {
+
+
   console.log('lastname:', lastname);
   return {
     lastname,
@@ -38,9 +40,11 @@ function createData(lastname, firstname, email, phone, booking_info) {
   }
 }
 
-function Row(inputData) {
+function Row({row, isMobile}) {
+console.log('row:', row);
+console.log('isMobile:', isMobile);
 
-  const { row } = inputData;
+  // const { row } = row;
   const [open, setOpen] = useState(false);
 
   return (
@@ -58,15 +62,27 @@ function Row(inputData) {
         <TableCell component="th" scope="row">
           {row.lastname}
         </TableCell>
-        <TableCell align="right">{row.firstname}</TableCell>
-        <TableCell align="right">{row.email}</TableCell>
-        <TableCell align="right">{row.phone}</TableCell>
-        {/* <TableCell align="right">{row.protein}</TableCell> */}
+        <TableCell align={isMobile? "left" : "right"}>{row.firstname}</TableCell>
+        {
+          !isMobile && 
+            <> 
+              <TableCell align="right">{row.email}</TableCell>
+              <TableCell align="right">{row.phone}</TableCell>
+            </>
+        }
+        {/* <TableCell align="right">{row.email}</TableCell>
+        <TableCell align="right">{row.phone}</TableCell> */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
+              { isMobile && 
+                  <>
+                    <TableCell align="right">{row.email}</TableCell>
+                    <TableCell align="right">{row.phone}</TableCell>
+                  </>
+              }
               <Typography variant="h6" gutterBottom component="div">
                 History
               </Typography>
@@ -84,11 +100,8 @@ function Row(inputData) {
                       <TableCell component="th" scope="row">
                         {historyRow.date}
                       </TableCell>
-                      {/* <TableCell>{historyRow.customerId}</TableCell> */}
                       <TableCell align="right">{historyRow.total}</TableCell>
-                      {/* <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell> */}
+
                     </TableRow>
                   ))}
                 </TableBody>
@@ -103,7 +116,7 @@ function Row(inputData) {
 
 
 
-export default function CollapsibleTable({ rows }) {
+export default function CollapsibleTable({ rows, isMobile }) {
   const customers = rows.map(elem => createData(elem.lastname, elem.firstname, elem.email, elem.phone, elem.booking_info))
 
   const [page, setPage] = useState(0);
@@ -119,16 +132,23 @@ export default function CollapsibleTable({ rows }) {
   };
 
   return (
-    <Paper sx={{ width: '100%' }}>
-      <TableContainer component={Paper}>
+    <Paper sx={{ width: '100%', m: '0 !important' }}>
+      <TableContainer component={Paper} sx={{ m: '0 !important'}}>
         <Table stickyHeader aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <TableCell />
               <TableCell>Nom</TableCell>
-              <TableCell align="right">Prénom</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Téléphone</TableCell>
+              <TableCell align={isMobile ? "left" : "right"}>Prénom</TableCell>
+              {
+                !isMobile &&
+                <>
+                  <TableCell align="right">Email</TableCell>
+                  <TableCell align="right">Téléphone</TableCell>
+                </>
+              }
+              {/* <TableCell align="right">Email</TableCell>
+              <TableCell align="right">Téléphone</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -136,7 +156,7 @@ export default function CollapsibleTable({ rows }) {
               customers
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
-                  <Row key={row.name} row={row} />
+                  <Row key={row.name} row={row} isMobile={isMobile} />
                 ))
             }
             {/* {customers.map((row) => (

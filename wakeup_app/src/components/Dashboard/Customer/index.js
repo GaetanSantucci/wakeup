@@ -2,8 +2,11 @@
 import { fetchAllUser } from '@/src/libs/getCustomers';
 import { useEffect, useState } from 'react'
 import CollapsibleTable from './createData';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const DashboardCustomer = () => {
+
+  const isMobile = useMediaQuery('(max-width:768px)');
 
   const [customer, setCustomer] = useState([])
   console.log('customer:', customer);
@@ -23,10 +26,6 @@ export const DashboardCustomer = () => {
   }, [])
 
   return (
-    <div>
-      <div>
-        <CollapsibleTable rows={customer} />
-      </div>
-    </div>
+        <CollapsibleTable rows={customer} isMobile={isMobile}/>
   )
 }

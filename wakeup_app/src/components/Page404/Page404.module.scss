@@ -5,7 +5,7 @@
   @include mixins.flex(column);
   width: 100%;
 
-  &_404 {
+  &_pagenotfound {
     font-size: 5rem;
     font-family: var(--fontTitle);
     margin-bottom: 2rem;

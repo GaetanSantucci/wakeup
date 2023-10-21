@@ -3,6 +3,8 @@ import styles from './Dashboard.module.scss';
 
 import { useLogout } from '@/src/hook/useLogout';
 import { useState } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import { DashboardCalendar } from './Calendar';
@@ -12,6 +14,8 @@ import { DashboardBlog } from './Blog';
 
 const Dashboard = () => {
 
+  const isMobile = useMediaQuery('(max-width:768px)');
+  console.log('isMobile:', isMobile);
   const { logout } = useLogout();
 
   const [selectedItem, setSelectedItem] = useState('calendar');
@@ -30,7 +34,7 @@ const Dashboard = () => {
         <div className={styles.container_aside_navbar}>
           <ul>
             <li id='calendar' onClick={() => handleNavigate('calendar')}>
-              Calendriers
+              Calendrier
             </li>
             <li id='customer' onClick={() => handleNavigate('customer')}>
               Clients
@@ -43,10 +47,13 @@ const Dashboard = () => {
             </li>
           </ul>
         </div>
-        <div onClick={userLogout} className={styles.container_dashboard_logout}>
-          <LogoutIcon />
-          <span>Se déconnecter</span>
-        </div>
+        {
+          !isMobile && 
+            <div onClick={userLogout} className={styles.container_dashboard_logout}>
+              <LogoutIcon />
+              <span>Se déconnecter</span>
+            </div>
+        }
       </aside>
       <section>
         {selectedItem === 'calendar' && <DashboardCalendar />}
@@ -54,6 +61,13 @@ const Dashboard = () => {
         {selectedItem === 'product' && <DashboardProduct />}
         {selectedItem === 'blog' && <DashboardBlog />}
       </section>
+      {
+        isMobile &&
+        <div onClick={userLogout} className={styles.container_dashboard_logout}>
+          <LogoutIcon />
+          <span>Se déconnecter</span>
+        </div>
+      }
     </main>
   )
 }

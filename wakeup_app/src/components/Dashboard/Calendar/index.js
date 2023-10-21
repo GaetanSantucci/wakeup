@@ -7,14 +7,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import frLocale from '@fullcalendar/core/locales/fr';
 
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { TextField, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import SmsIcon from '@mui/icons-material/Sms';
 import PhoneIcon from '@mui/icons-material/Phone';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -27,6 +26,8 @@ import Link from 'next/link';
 
 export const DashboardCalendar = () => {
 
+  const isMobile = useMediaQuery('(max-width:768px)');
+
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addEventModal, setAddEventModal] = useState(false);
@@ -38,19 +39,6 @@ export const DashboardCalendar = () => {
   const [newDate, setNewDate] = useState();
   const [refresh, setRefresh] = useState(false);
   const [numberOfPlates, setNumberOfPlates] = useState('')
-  // const [data, setData] = useState([]);
-
-  // const [lastname, setLastname] = useState("");
-  // const [firstname, setFirstname] = useState("");
-  // const [line1, setLine1] = useState("");
-  // const [line2, setLine2] = useState("");
-  // const [postcode, setPostcode] = useState("");
-  // const [city, setCity] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [phone, setPhone] = useState("");
-
-  // const { register, handleSubmit } = useForm();
-  // const onSubmit = (data) => console.log("les datas a submit sont ", data)
 
   // Function to fetch data
   const fetchData = () => {
@@ -122,8 +110,6 @@ export const DashboardCalendar = () => {
     }
   }
 
-
-
   const handleChangeChoice = (event) => {
     setChoice(event.target.value);
 
@@ -146,14 +132,9 @@ export const DashboardCalendar = () => {
       plateQuantity: numberOfPlates,
       closingDay: false
     }
-    // todo Modifier la function pour creer un nouveau jour special
     createSpecialDay(data)
     setRefresh(true);
     setAddEventModal(false)
-  }
-
-  const createNewBooking = () => {
-
   }
 
   const handleChangeNumberOfPlates = (event) => {
@@ -186,11 +167,8 @@ export const DashboardCalendar = () => {
     });
 
     return (
-      // <div className={styles.modale}>
-      //   <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
-      <Dialog open={addEventModal} onClose={onClose} sx={{ p: '2rem' }}>
-        {/* <DialogTitle>Que souhaites-tu faire ?</DialogTitle> */}
-        <DialogContent sx={{ display: 'flex', minWidth: '350px', flexDirection: "column", gap: "0.5rem" }}>
+      <Dialog open={addEventModal} onClose={onClose} sx={isMobile ? { width: '95%', m: '0'} : { p: '2rem' }}>
+        <DialogContent sx={isMobile ? { width: '95%', m: '0'} : { display: 'flex', minWidth: '350px', flexDirection: "column", gap: "0.5rem" }}>
           <p className={styles.modale_close} onClick={onClose}><CloseIcon /></p>
           <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
             <InputLabel id="demo-simple-select-label">Sélectionner une action</InputLabel>
@@ -217,90 +195,6 @@ export const DashboardCalendar = () => {
                 :
                 null
             }
-            {/* {
-              choice === 3 ?
-
-                <form onSubmit={createNewBooking}>
-                  <TextField
-                    label="Email"
-                    onChange={e => setEmail(e.target.value)}
-                    type="email"
-                    sx={{ mb: 2, width: '80%' }}
-                    size='small'
-                    value={email}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Téléphone"
-                    onChange={e => setPhone(e.target.value)}
-                    type="tel"
-                    sx={{ mb: 2, width: '80%' }}
-                    size='small'
-                    value={phone}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Nom"
-                    onChange={e => setLastname(e.target.value)}
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    size='small'
-                    value={lastname}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Prénom"
-                    onChange={e => setFirstname(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={firstname}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Adresse"
-                    onChange={e => setLine1(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={line1}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Complément"
-                    onChange={e => setLine2(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={line2}
-                    variant='standard'
-                  />
-                  <TextField
-                    label="Code postal"
-                    onChange={e => setPostcode(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={postcode}
-                    variant='standard'
-
-                  />
-                  <TextField
-                    label="Ville"
-                    id='city'
-                    onChange={e => setCity(e.target.value)}
-                    size='small'
-                    type="text"
-                    sx={{ mb: 2, width: '80%' }}
-                    value={city}
-                    variant='standard'
-                  />
-                  <button type='submit'>Oui</button>
-                </form>
-
-                :
-                null
-            } */}
             {
               choice === 2 ? <>
                 <FormControl variant="standard" sx={{ mb: 3, width: '100%' }}>
@@ -425,13 +319,20 @@ export const DashboardCalendar = () => {
         eventDisplay='block'
         locale={frLocale}
         fixedWeekCount={false}
-        headerToolbar={{
-          start: 'dayGridMonth,dayGridWeek,dayGridDay',
-          center: 'title',
-          end: 'today prev,next'
-        }}
+        headerToolbar={isMobile ?
+          {
+            start: 'dayGridMonth,dayGridDay',
+						center: 'title',
+            end: 'prev,next'
+          } :
+          {
+            start: 'dayGridMonth,dayGridWeek,dayGridDay',
+            center: 'title',
+            end: 'today prev,next'
+          }}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
+				hiddenDays={isMobile ? [1,2,3,4,5] : []}
       />
     </>
   )

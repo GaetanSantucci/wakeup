@@ -8,15 +8,14 @@ class UserDataMapper extends CoreDataMapper {
     updateFunctionName = 'update_user';
     deleteFunctionName = 'delete_user';
     view = {
-        getAllUsersView: 'getAllUsers'
+        getAllUsersView: 'getAllUsers',
     };
-    // userIdentity = 'user_identity';
     //& Find user by email
     async findUserIdentity(email) {
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
                 text: `SELECT * FROM "${this.tableName}" WHERE email = ($1);`,
-                values: [email]
+                values: [email],
             };
             const result = await this.client.query(preparedQuery);
             if (!result.rows[0])
@@ -31,7 +30,7 @@ class UserDataMapper extends CoreDataMapper {
                 text: `UPDATE "${this.tableName}"
                 SET token = $1, expiration_time = $2
                 WHERE email = $3;`,
-                values: [token, expirationTime, email]
+                values: [token, expirationTime, email],
             };
             const result = await this.client.query(preparedQuery);
             console.log('result:', result);
@@ -46,7 +45,7 @@ class UserDataMapper extends CoreDataMapper {
             const preparedQuery = {
                 text: `SELECT * FROM "${this.tableName}"
                 WHERE token = $1;`,
-                values: [token]
+                values: [token],
             };
             const result = await this.client.query(preparedQuery);
             if (!result.rows[0])
@@ -58,7 +57,7 @@ class UserDataMapper extends CoreDataMapper {
         console.log('getAllUsersView:', this.view.getAllUsersView);
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
-                text: `SELECT * FROM ${this.view.getAllUsersView}`
+                text: `SELECT * FROM ${this.view.getAllUsersView}`,
             };
             const result = await this.client.query(preparedQuery);
             console.log('result.rows:', result.rows);
@@ -67,16 +66,30 @@ class UserDataMapper extends CoreDataMapper {
             return result.rows;
         }
     }
+    async updateNewsletterOptin(email) {
+        if (this.client instanceof pg.Pool) {
+            const preparedQuery = {
+                text: `UPDATE public.${this.tableName}
+        SET newsletter_optin = false
+        WHERE email = $1`,
+                values: [email],
+            };
+            const result = await this.client.query(preparedQuery);
+            console.log('result.rows:', result.rows);
+            if (!result.rows[0])
+                return null;
+            return result.rows[0];
+        }
+    }
     async deleteUser(userId) {
         console.log('id:', userId);
         if (this.client instanceof pg.Pool) {
             const preparedQuery = {
                 text: `SELECT ${this.deleteFunctionName}($1)`,
-                values: [userId]
+                values: [userId],
             };
             const result = await this.client.query(preparedQuery);
-            console.log('result.rows:', result.rows);
-            // if (!result.rows) return null;
+            console.log('result:', result.rows);
             return result.rowCount;
         }
     }

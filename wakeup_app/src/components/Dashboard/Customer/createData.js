@@ -14,8 +14,6 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
 
 
 function createData(lastname, firstname, email, phone, booking_info) {

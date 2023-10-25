@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { use, useState } from 'react';
-import { inputValue, setErrorMessage } from '@/src/store/reducers/User';
+import { inputValue } from '@/src/store/reducers/User';
 import { addDeliveryCost } from '@/src/store/reducers/Cart';
 
 import { AddOrDeleteItems, PayPalButtonComponent } from '../Button';
@@ -17,6 +17,7 @@ import { getTotal } from '@/src/utils/getCartTotal';
 import { Alert, Stack, Paper, InputBase, IconButton, Box, Autocomplete, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
 
@@ -71,11 +72,12 @@ const CheckoutCart = ({ nextPage }) => {
 
 const CheckoutInformation = ({ previousPage, nextPage }) => {
 
+  const isMobile = useMediaQuery('(max-width:768px)');
+
   const data = use(areaFetch);
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user)
-  console.log('user:', user);
 
   // Dynamic method for store input by type
   const handleInputChange = (e) => {
@@ -105,14 +107,14 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
       <div className={styles.container_checkout}>
         <h3 className={styles.container_checkout_title}>Saisie de vos informations</h3>
         <form className={styles.container_checkout_form}>
-          <div className={styles.container_checkout_form_50}>
+          <div className={isMobile ? `${styles.container_checkout_form_50_column}` : `${styles.container_checkout_form_50}`} >
             <TextField id='lastname'
               label='Nom'
               value={user.lastname}
               onChange={handleInputChange}
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: '45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' : '45%' }}
               required />
             <TextField id='firstname'
               label='Prénom'
@@ -120,10 +122,10 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               onChange={handleInputChange}
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: '45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' :'45%' }}
               required />
           </div>
-          <div className={styles.container_checkout_form_50}>
+          <div className={isMobile ? `${styles.container_checkout_form_50_column}` : `${styles.container_checkout_form_50}`}>
             <TextField id='email'
               label='Email'
               value={user.email}
@@ -131,7 +133,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               type='email'
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: '45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' :'45%' }}
               required />
             <TextField id='phone'
               label='Téléphone'
@@ -140,10 +142,10 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               type='tel'
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: '45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' :'45%' }}
               required />
           </div>
-          <div className={styles.container_checkout_form_50}>
+          <div className={isMobile ? `${styles.container_checkout_form_50_column}` : `${styles.container_checkout_form_50}`}>
             <TextField
               id='line1'
               className={styles.container_information_input}
@@ -153,7 +155,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               variant='standard'
               autoComplete='off'
               size='small'
-              sx={{ mb: 2, width: '45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' : '45%' }}
               required />
             <TextField id='line2'
               label='Bât., étage, interphone...'
@@ -161,14 +163,14 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               onChange={handleInputChange}
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: '45%' }} />
+              sx={{ mb: 2, width: isMobile ? '100%' : '45%' }} />
           </div>
 
           <div className={styles.container_checkout_form_100}>
             <Autocomplete
               id="city"
               onChange={handleCity}
-              sx={{ width: '45%' }}
+              sx={{ width: isMobile ? '90%' : '45%' }}
               options={data}
               autoHighlight
               getOptionLabel={(option) => option.city}
@@ -212,13 +214,15 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
 
 
 const CheckoutPayment = ({ previousPage }) => {
+
+  const isMobile = useMediaQuery('(max-width:768px)');
+
   const allCart = useSelector((state) => state.cart);
   const [voucherInput, setVoucherInput] = useState('');
   const [voucherAmount, setVoucherAmount] = useState('');
   const [voucherMessage, setVoucherMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
-  console.log('isInputVisible:', isInputVisible);
   const [cartAmount, setCartAmount] = useState('')
 
   // Dynamic method for store input by type
@@ -311,7 +315,7 @@ const CheckoutPayment = ({ previousPage }) => {
               <div className={isInputVisible ? `${styles.container_checkout_payment_resume_voucher_input} ${styles.input_active}` : `${styles.container_checkout_payment_resume_voucher_input}`}>
                 <Paper
                   component="form"
-                  sx={{ p: '2px 4px', mb: 2, display: 'flex', alignItems: 'center', width: '100%' }}
+                  sx={{ p: '2px 4px', mb: 2, display: 'flex', alignItems: 'center', width: '100%', m: isMobile ? '0 !important' : 2 }}
                 >
                   <InputBase
                     sx={{ ml: 1, flex: 1 }}

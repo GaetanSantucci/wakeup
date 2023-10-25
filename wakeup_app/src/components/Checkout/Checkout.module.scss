@@ -27,6 +27,11 @@
       &_50 {
         width: 100%;
         @include mixins.flex(row, $justify: space-evenly);
+
+        &_column {
+        width: 90%;
+        @include mixins.flex(column);
+        }
       }
       &_100 {
         width: 100%;
@@ -179,7 +184,16 @@
         @include mixins.flex($direction: column);
 
         &_resume {
+          width: 100%;
+          padding: 2rem 1rem;
           margin-bottom: 2rem;
+
+          &_voucher_input {
+            
+            .MuiPaper-root {
+              margin: 0 !important;
+            }
+          }
           & li {
             margin-bottom: 0.4rem;
           }

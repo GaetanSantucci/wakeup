@@ -145,8 +145,6 @@ export default function CollapsibleTable({ rows, isMobile }) {
                   <TableCell align="right">Téléphone</TableCell>
                 </>
               }
-              {/* <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Téléphone</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -157,9 +155,6 @@ export default function CollapsibleTable({ rows, isMobile }) {
                   <Row key={row.name} row={row} isMobile={isMobile} />
                 ))
             }
-            {/* {customers.map((row) => (
-              <Row key={row.name} row={row} />
-            ))} */}
           </TableBody>
         </Table>
       </TableContainer>

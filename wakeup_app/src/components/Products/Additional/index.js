@@ -18,9 +18,15 @@ export default async function Additionnal() {
   // const isSmallScreen = useMedia('(max-width: 768px)', false);
 
   return (
-
     <div className={styles.container}>
-      <AddonCarousel products={products} />
+      <h2 className={styles.container_title} >
+        Pour accompagner vos brunchs
+      </h2>
+      <p>
+        Retrouvez nos accompagnements pour parfaire votre livraison, envie de
+        fraicheur, de chaleur, d'une décoration pour embellir votre plateau{' '}
+      </p>
+      {/* <AddonCarousel products={products} /> */}
       <div className={styles.container_cards}>
         {/* isSmallScreen ?  : */ products.map(elem => {
           if (elem.category === 'boisson' || elem.category === 'decoration') {

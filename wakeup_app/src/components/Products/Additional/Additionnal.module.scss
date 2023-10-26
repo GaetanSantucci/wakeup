@@ -3,62 +3,23 @@
 
 .container {
   position: relative;
-  display: flex;
-  width: 70%;
-
-  & span {
-    font-family: var(--fontTitle);
-    color: vars.$colorTitleLightTheme;
+  width: 100%;
+  @include mixins.flex(column, center, center);
+  margin-top: 2rem;
+  
+  &_title {
+    margin-bottom: 3rem;
+    text-align: center;
   }
-
-  &_options {
-    @include mixins.flex(column, flex-start);
-    width: 40%;
-    height: 30%;
-    padding: 1rem 0.5rem;
-    background-color: #e8e8e8;
-
-    & h3 {
-      font-size: 1.4rem;
-      text-align: start;
-    }
-
-    & span {
-      font-size: 1.2rem;
-    }
-
-    & p {
-      font-size: 0.8rem;
-    }
-
-    &_input {
-      border: 1px solid #f3f3f3;
-      padding: 0.5rem;
-      &_title {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-      }
-      & > * {
-        margin: 0.5rem;
-      }
-      & label {
-        font-size: 0.9rem;
-        padding-right: 1rem;
-      }
-    }
-
-    & > * {
-      margin: 1rem;
-    }
+  & p {
+    text-align: justify;
   }
 
   &_cards {
     @include mixins.flex($direction: row, $justify: space-between);
     flex-wrap: wrap;
     row-gap: 2rem;
-    width: 100%;
+    width: 70%;
     margin: 4rem 0;
 
     &_item {
@@ -66,6 +27,7 @@
       width: 42%;
       height: 280px;
       margin: 0.5rem;
+
       &_details {
         width: 50%;
         height: 100%;
@@ -79,7 +41,7 @@
           font-size: 1.4rem;
         }
 
-        & > * {
+        &>* {
           margin: 0.5rem 0;
         }
 
@@ -88,6 +50,7 @@
           text-align: start;
         }
       }
+
       &_image {
         display: flex;
 
@@ -122,54 +85,47 @@
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
-    margin: 4rem 0 2rem 0;
+    margin: 2rem 0;
     align-items: center;
     width: 80%;
 
-    &_options {
-      width: 100%;
-      margin-top: 2rem;
+    &_title {
+      font-size: calc(1.4rem + 0.6vw);
+      margin: 2rem 0;
+    }
+
       & h3 {
-        font-size: 1.2rem;
         text-align: center;
       }
 
-      &_input {
-        margin: 0.5rem;
-
-        & label {
-          padding-right: 0;
-        }
-
-        & span {
-          font-size: 1.1rem;
-        }
-      }
-    }
-
     &_cards {
       width: 100%;
-      display: none;
+      @include mixins.flex(column, center, center);
 
       &_item {
-        position: relative;
+        @include mixins.flex(column, center, center);
+        height: auto;
 
         &_image {
-          -webkit-filter: brightness(0.5);
-          filter: brightness(0.5);
+          & img {
+            width: 270px;
+            height: auto;
+          }
         }
 
+        &
+
         &_details {
-          width: 60%;
-          height: 90%;
-          position: absolute;
-          margin-left: 0;
-          align-items: center;
-          justify-content: space-between;
-          & h3,
-          span,
+          width: 80%;
+          @include mixins.flex(column, center, center);
+          margin: 1rem 0;
+
           p {
-            color: vars.$backgroundPrimaryLightTheme !important;
+            text-align: justify;
+          }
+
+          & button {
+            width: 160px !important;
           }
         }
       }

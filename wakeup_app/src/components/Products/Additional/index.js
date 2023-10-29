@@ -2,20 +2,15 @@
 import styles from './Additionnal.module.scss';
 
 import Image from 'next/image';
-// import { useMedia } from 'react-use';
 
-import { AddonCarousel } from '@/src/components/Carousel';
+import Spinner from '@/src/components/Spinner';
 import { AddCartButton } from '../../Button';
 import { getProductsData } from '/src/libs/getProductList';
-
-
 
 export default async function Additionnal() {
 
   const products = await getProductsData();
-  // const supplement = products.filter(elem => elem.category === 'boisson' || elem.category === 'decoration');
-
-  // const isSmallScreen = useMedia('(max-width: 768px)', false);
+  if(!products) return <Spinner />;
 
   return (
     <div className={styles.container}>
@@ -26,9 +21,8 @@ export default async function Additionnal() {
         Retrouvez nos accompagnements pour parfaire votre livraison, envie de
         fraicheur, de chaleur, d'une décoration pour embellir votre plateau{' '}
       </p>
-      {/* <AddonCarousel products={products} /> */}
       <div className={styles.container_cards}>
-        {/* isSmallScreen ?  : */ products.map(elem => {
+        { products.map(elem => {
           if (elem.category === 'boisson' || elem.category === 'decoration') {
             const price = elem.price.toString().replace('.', ',');
             return (

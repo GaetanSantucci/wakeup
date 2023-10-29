@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    // outputStandalone: true,
   },
   images: {
     domains: ['153.92.223.190', 'wakeupclf.fr', 'localhost'],

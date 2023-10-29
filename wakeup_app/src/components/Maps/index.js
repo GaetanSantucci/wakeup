@@ -8,12 +8,15 @@ import { use, useState } from 'react';
 
 import map from '/public/images/zone_livraison.png';
 import Image from 'next/image';
+import Spinner from '../Spinner';
+
 
 const areaFetch = getArea();
 
 export default function Maps() {
 
   const data = use(areaFetch);
+  if(!data) return <Spinner />;
 
   const [inputCityValue, setinputCityValue] = useState();
   const [isAvailable, setIsAvailable] = useState();

@@ -9,7 +9,7 @@ const getAllBlogs = async (req, res) => {
         const blogsList = await Blog.findAll();
         // ? If there are no blogs, throw an error
         if (!blogsList)
-            throw new ErrorApi('Impossible d\'obtenir les blogs', req, res, 400);
+            throw new ErrorApi("Impossible d'obtenir les blogs", req, res, 400);
         return res.status(200).json(blogsList);
     }
     catch (err) {

@@ -1,6 +1,7 @@
 'use client';
 import { use, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
+// import Spinner from '../Spinner';
 
 export default function Reviews() {
 

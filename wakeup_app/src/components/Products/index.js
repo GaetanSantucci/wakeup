@@ -5,15 +5,14 @@ import styles from './Product.module.scss';
 
 import { getProductsData } from '/src/libs/getProductList';
 import { AddCartButton } from '../Button';
+import Spinner from '../Spinner';
 
 export default async function Products() {
 
   // ? Retrieve products data asynchronously
   const products = await getProductsData();
+  if(!products) return <Spinner />;
 
-  // todo if product.type = plate mapping dessus
-
-  // ? Render the product section with the fetched data
   return (
     <div className={styles.container}>
       <h2 className={styles.container_title}>DES PLATEAUX GOURMANDS ET ÉLÉGANTS</h2>

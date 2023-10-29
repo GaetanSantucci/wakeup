@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15.0
+    environment:
+      POSTGRES_DB: wakeup
+      POSTGRES_USER: wakeup
+      POSTGRES_PASSWORD: wakeup
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./api/data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '5432:5432'
+    networks:
+      - wakeup-network
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    # environment:
+    #   DATABASE_URL: postgres://postgres:example@db:5432/wakeup
+    ports:
+      - '7777:7777'
+    depends_on:
+      - db
+    networks:
+      - wakeup-network
+
+  frontend:
+    container_name: frontend
+    build: ./wakeup_app
+    restart: always #change if you don't want your container restarting
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    networks:
+      - wakeup-network
+
+networks:
+  wakeup-network:
+    driver: bridge
+
+volumes:
+  pg_data:

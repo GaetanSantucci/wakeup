@@ -21,9 +21,19 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
 const corsOptions = {
     withCredentials: true,
-    origin: ["https://www.wakeupbox.fr", "https://www.wakeupclf.fr", "http://localhost:3000", "http://153.92.223.190"],
-    method: ["GET", "POST", "PATCH", "DELETE"],
-    responseHeader: ["Content-Type", "Origin", "X-Requested-With", "Authorization"],
+    origin: [
+        'https://www.wakeupbox.fr',
+        'https://www.wakeupclf.fr',
+        'http://localhost:3000',
+        'http://153.92.223.190',
+    ],
+    method: ['GET', 'POST', 'PATCH', 'DELETE'],
+    responseHeader: [
+        'Content-Type',
+        'Origin',
+        'X-Requested-With',
+        'Authorization',
+    ],
     optionsSuccessStatus: 200,
     credentials: true,
 };
@@ -40,8 +50,8 @@ app.use(session({
         secure: true,
         maxAge: 1 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: 'none'
-    }
+        sameSite: 'none',
+    },
 }));
 // import ngrok from '@ngrok/ngrok';
 // (async function () {

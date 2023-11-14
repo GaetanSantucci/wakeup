@@ -10,21 +10,29 @@ import disableWeekdays from '@/src/utils/disableWeekDays';
 import { setIsDateIsDisable } from '@/src/store/reducers/Settings';
 
 
+
+/**
+ * CustomCalendar component displays a date picker that allows users to select a booking date.
+ * It fetches availability and closed days data from the server and disables unavailable dates.
+ * @returns {JSX.Element} A date picker component wrapped in a theme provider and localization provider.
+ */
 const CustomCalendar = () => {
 
   const dispatch = useDispatch();
 
+  // State variables for selected date, availability data, and closed days
   const [selectedDate, setSelectedDate] = useState(null);
   const [availabilityData, setAvailability] = useState([]);
   const [closedDays, setClosedDays] = useState([]);
 
+  // Fetch availability and closed days data from the server on component mount
   useEffect(() => {
-    fetch('http://localhost:7777/api/v1/orders/availability') // Fetch availability 
+    fetch('http://localhost:3010/api/v1/orders/availability') // Fetch availability 
       .then(response => response.json())
       .then(data => setAvailability(data))
       .catch(error => console.error(error));
 
-    fetch('http://localhost:7777/api/v1/orders/closed') // Fetch closed days
+    fetch('http://localhost:3010/api/v1/orders/closed') // Fetch closed days
       .then(response => response.json())
       .then(data => {
         setClosedDays(data);
@@ -32,6 +40,7 @@ const CustomCalendar = () => {
       .catch(error => console.error(error));
   }, []);
 
+  // Create a custom theme for the date picker
   const theme = createTheme({
     components: {
       MuiPickersDay: {
@@ -65,15 +74,7 @@ const CustomCalendar = () => {
     }
   });
 
-  // const handleSelectBookingDate = (newValue) => {
-  //   const date = newValue.format(('DD-MM-YYYY'))
-
-  //   //~ je recupere la date entree par le client, 
-  //   //~ je dois comparer la date avec mon disableWeekDays pour voir si true or false  
-  //   console.log('date:', date);
-  //   dispatch(addBookingDate(date))
-  // }
-
+  // Handle the selection of a booking date
   const handleSelectBookingDate = (newValue) => {
     const selectedDate = newValue.toDate(); // Convert newValue to a JavaScript Date object
     const isDateDisabled = disableWeekdays(availabilityData, closedDays)(selectedDate);
@@ -88,6 +89,7 @@ const CustomCalendar = () => {
     }
   };
 
+  // Render the date picker wrapped in a theme provider and localization provider
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterMoment}>

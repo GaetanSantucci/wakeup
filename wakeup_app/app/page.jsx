@@ -17,8 +17,8 @@ export default function Home() {
       <div className={styles.homepage__header__container}>
         <div className={styles.homepage__header__container__image}>
           <Image
-            src={'/images/presentation_dolce_homepage.webp'}
-            alt='Plateau Brunch Dolce Vita avec presentation'
+            src={'/images/presentation_brunch_hiver.webp'}
+            alt='Plateau Brunch'
             width={1920}
             height={1440}
             priority
@@ -26,7 +26,7 @@ export default function Home() {
         </div>
         <div className={styles.homepage__header__container__image_mobile}>
           <Image
-            src={'/images/presentation_dolce_homepage_mobile.webp'}
+            src={'/images/presentation_brunch_mobile.webp'}
             alt='Plateau Brunch Dolce Vita avec presentation'
             width={768}
             height={1300}

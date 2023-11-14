@@ -6,7 +6,6 @@ export default function plates() {
     <>
       <ScrollToTop />
       <Suspense fallback={<Spinner />}>
-
         <Additionnal />
       </Suspense>
     </>

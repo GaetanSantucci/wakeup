@@ -16,7 +16,7 @@ RUN npm install bcrypt
 COPY . .
 
 # Expose port 4010
-EXPOSE 7777
+EXPOSE 3010
 
 # Define the command to start your Node.js API
 CMD ["npm", "start"]

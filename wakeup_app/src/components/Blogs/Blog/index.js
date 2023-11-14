@@ -17,7 +17,7 @@ const Blog = ({ elem, paragraph, index }) => {
     <>
       <div className={index % 2 ? `${styles.container__item__left}` : `${styles.container__item}`}>
         <div className={styles.container__item__description}>
-          <h3>{elem.title}</h3>
+          <h3 className={styles.container__item__description__title}>{elem.title}</h3>
           <div className={styles.container__item__description__text}>
             {
               paragraph.map(para => <p key={para}>{para}</p>)

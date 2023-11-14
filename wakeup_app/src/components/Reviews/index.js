@@ -1,6 +1,7 @@
 'use client';
 import { use, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary.js';
 // import Spinner from '../Spinner';
 
 export default function Reviews() {
@@ -27,25 +28,27 @@ export default function Reviews() {
       // Fetch data only on the client-side
       async function fetchData() {
         try {
-          const response = await fetch('http://localhost:7777/api/v1/reviews');
+          const response = await fetch('http://localhost:3010/api/v1/reviews');
           if (response.ok) {
             const data = await response.json();
             setReviews(data);
           } else {
-            throw new Error('Failed to fetch data');
+            throw new Error('Failed to fetch reviews');
           }
         } catch (error) {
           console.error(error);
         }
       }
-
+      
       fetchData();
     }
   }, []);
-
+  
+  // throw new Error('Failed to fetch data');
   return (
     <>
       <h3>Nos avis clients</h3>
+      <ErrorBoundary fallback={<div>Erreur lors du chargement des avis</div>}>
       <div className={styles.container}>
         {
           isReviews ?
@@ -65,6 +68,7 @@ export default function Reviews() {
             }) : null
         }
       </div>
+      </ErrorBoundary>
     </>
   )
 

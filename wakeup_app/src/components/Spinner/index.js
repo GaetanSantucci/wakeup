@@ -3,8 +3,7 @@ import './Spinner.scss';
 
 const Spinner = () => {
   return (
-    <>
-      <p>Chargement...</p>
+  <div className='spinner'>
    <svg className='loader' xmlns="http://www.w3.org/2000/svg"  width="100px" height="100px" viewBox="0 0 100 100"  > 
    <g transform="rotate(0 50 50)">
   <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#191919">
@@ -56,7 +55,7 @@ const Spinner = () => {
   </rect>
 </g>
 </svg>
-    </>
+    </div>
   );
 }
 

@@ -1,5 +1,4 @@
 const localEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
-console.log('localEndpoint:', localEndpoint);
 // const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 // method to fetch all blogs from wakeup api

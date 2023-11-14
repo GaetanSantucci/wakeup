@@ -10,6 +10,10 @@
     letter-spacing: 2px;
     font-family: var(--fontTitle);
     padding-top: 0.4rem;
+
+    & a {
+      user-select: none;
+    }
   }
 }
 .is_active {

@@ -3,7 +3,7 @@ import { getAuthorizationHeader } from "../utils/getAuthorizationHeader";
 
 export class AuthService {
 
-  APIEndpoint = 'http://localhost:7777/api/v1/customers';
+  APIEndpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST}/customers`;
 
   // method to fetch user and get token to validate access to profile page
   async login(email, password) {

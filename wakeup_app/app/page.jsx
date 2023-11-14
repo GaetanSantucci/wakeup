@@ -1,12 +1,13 @@
 'use client';
 import styles from '/public/styles/Homepage.module.scss';
 // Components
-import { Blogs, Reviews, ScrollToTop, Spinner } from '@/src/components';
+import { Blogs, Footer, Reviews, ScrollToTop, Spinner } from '@/src/components';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary.js';
+import Error from './error.jsx';
 
 import Image from 'next/image';
 
 import { Suspense } from 'react';
-
 
 export default function Home() {
 
@@ -53,12 +54,14 @@ export default function Home() {
           !
         </p>
       </section>
-      <Suspense fallback={<Spinner />}>
-        <Blogs />
-      </Suspense>
-      <Suspense fallback={<Spinner />}>
-        <Reviews />
-      </Suspense>
+      <ErrorBoundary fallback={<Error />}>
+        <Suspense fallback={<Spinner />}>
+          <Blogs />
+        </Suspense>
+        <Suspense fallback={<Spinner />}>
+          <Reviews />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

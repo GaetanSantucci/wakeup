@@ -1,65 +1,10 @@
 .loader {
-  
-  width: 10%;
-}
-.first, .second, .three, .four, .five {
-  fill: transparent;
-  stroke-width: 4;
-  stroke: #191919;
-  stroke-dasharray: 550;
-  stroke-dashoffset: 550;
-  animation-iteration-count: 1;
-  animation: dash 10s linear infinite reverse;
-}
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 800;
-  }
+  width: 70%;
 }
 
-// .second {
-//   fill: transparent;
-//   stroke-width: 4;
-//   stroke: #191919;
-//   stroke-dasharray: 0;
-//   stroke-dashoffset: 550;
-//   // animation: dash 1s linear reverse;
-// }
-
-// .three {
-//   fill: transparent;
-//   stroke-width: 4;
-//   stroke: #191919;
-//   stroke-dasharray: 0;
-//   stroke-dashoffset: 550;
-//   // animation: dash 1s linear infinite reverse;
-// }
-// .four {
-//   fill: transparent;
-//   stroke-width: 4;
-//   stroke: #191919;
-//   stroke-dasharray: 0;
-//   stroke-dashoffset: 550;
-//   // animation: dash 1s linear infinite reverse;
-// }
-
-// .five {
-//   fill: transparent;
-//   stroke-width: 4;
-//   stroke: #191919;
-//   stroke-dasharray: 0;
-//   stroke-dashoffset: 550;
-//   // animation: dash 1s linear infinite reverse;
-// }
-
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 1800;
-  }
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
 }

@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: wakeup
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./api/data/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '5432:5432'
     networks:
@@ -17,27 +17,19 @@ services:
 
   api:
     build:
-      context: ./api
+      context: .
       dockerfile: Dockerfile
-    # environment:
+    environment:
+      PGHOST: ${PGHOST}
+      PGDATABASE: ${PGDATABASE}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGPORT: ${PGPORT}
     #   DATABASE_URL: postgres://postgres:example@db:5432/wakeup
     ports:
-      - '7777:7777'
+      - '3010:3010'
     depends_on:
       - db
-    networks:
-      - wakeup-network
-
-  frontend:
-    container_name: frontend
-    build: ./wakeup_app
-    restart: always #change if you don't want your container restarting
-    environment:
-      - NODE_ENV=production
-    ports:
-      - 3000:3000
-    depends_on:
-      - api
     networks:
       - wakeup-network
 

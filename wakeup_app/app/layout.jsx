@@ -14,6 +14,7 @@ import {
 
 // import my redux
 import { Providers } from './provider';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary.js';
 
 export const metadata = {
   title: {
@@ -64,7 +65,6 @@ export default function RootLayout({ children }) {
       <head />
       <body suppressHydrationWarning={true}>
         <Providers>
-          <ScrollToTop />
           <Header />
           <CartModale />
           <main className={styles.main}>{children}</main>

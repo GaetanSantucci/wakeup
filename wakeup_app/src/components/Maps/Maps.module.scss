@@ -3,8 +3,11 @@
 
 .container {
   @include mixins.flex($direction: column);
+  width: 80%;
+  margin-bottom: 3rem;
 
   &_delivery {
+    width: 100%;
     overflow: hidden;
     display: flex;
     flex-direction: column;

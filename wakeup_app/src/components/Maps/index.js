@@ -6,7 +6,7 @@ import styles from './Maps.module.scss';
 import { getArea } from '/src/libs/getDeliveryArea.js';
 import { use, useState } from 'react';
 
-import map from '/public/images/zone_livraison.png';
+import map from '/public/images/zone_livraison.webp';
 import Image from 'next/image';
 import Spinner from '../Spinner';
 
@@ -69,9 +69,10 @@ export default function Maps() {
           </>
         }
         <div className={styles.container_delivery_image}>
-          <Image src={map} alt='carte de la zone de livraison' style={{ width: '100%', height: '100%' }} />
+        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1nuWuEZaNSH18DzwGsZPGH4pjSflwA7U&ehbc=2E312F&noprof=1" width="100%" height="600"></iframe>
+          {/* <Image src={map} alt='carte de la zone de livraison' style={{ width: '100%', height: '100%' }} /> */}
         </div>
-        <div className={styles.container_delivery_information}>
+        {/* <div className={styles.container_delivery_information}>
           <div className={styles.container_delivery_information_area}>
             <div style={{ backgroundColor: '#d9ffe2', padding: '0.5rem 1rem' }}>Livraison à 3,50 €</div>
             <ul>
@@ -92,7 +93,7 @@ export default function Maps() {
               }
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

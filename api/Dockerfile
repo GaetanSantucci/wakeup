@@ -20,3 +20,4 @@ EXPOSE 3010
 
 # Define the command to start your Node.js API
 CMD ["npm", "start"]
+

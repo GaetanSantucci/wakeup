@@ -17,4 +17,19 @@ const getOneVoucher = async (req, res) => {
             logger(err.message);
     }
 };
-export { getOneVoucher };
+const createVoucher = async (req, res) => {
+    const { voucher_id, initial_amount, expiration_date } = req.body;
+    try {
+        const result = await Voucher.create({
+            voucher_id,
+            initial_amount,
+            expiration_date,
+        });
+        return res.status(200).json(result);
+    }
+    catch (err) {
+        if (err instanceof Error)
+            logger(err.message);
+    }
+};
+export { getOneVoucher, createVoucher };

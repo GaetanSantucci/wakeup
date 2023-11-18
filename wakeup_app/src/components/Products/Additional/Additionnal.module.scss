@@ -13,6 +13,10 @@
   }
   & p {
     text-align: justify;
+    margin-bottom: 1rem;
+    & :nth-child(2){
+      text-align: center;
+    }
   }
 
   &_cards {
@@ -34,10 +38,8 @@
         margin-left: 2rem;
         @include mixins.flex(column, flex-start, space-between);
         border-top: 1px solid #1c1c1c;
-        // border-bottom: 1px solid #1c1c1c;
-        // border-right: 1px solid #1c1c1c;
-
         & span {
+        font-family: var(--fontTitle);
           font-size: 1.4rem;
         }
 
@@ -113,14 +115,13 @@
           }
         }
 
-        &
-
         &_details {
           width: 80%;
           @include mixins.flex(column, center, center);
           margin: 1rem 0;
 
           p {
+
             text-align: justify;
           }
 

@@ -1,4 +1,4 @@
-import pg from 'pg'
+\import pg from 'pg'
 import { client } from '../services/dbClient.js'
 import { CoreDataMapper } from './coreDatamapper.js'
 import { UUID } from '../type/user.js'

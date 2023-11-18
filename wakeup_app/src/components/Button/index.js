@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST;
-// const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
+// const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 const AddCartButton = ({ items }) => {
 
@@ -112,6 +112,7 @@ const PayPalButtonComponent = () => {
     color: 'gold',
     tagline: 'false'
   }
+  
   const handleCreateOrder = async (data, actions) => {
     // Call your backend API to create the order
     const response = await fetch(`${endpoint}/payment/create-paypal-order`, {
@@ -125,6 +126,7 @@ const PayPalButtonComponent = () => {
     const order = await response.json();
     return order.id;
   };
+
   const handleApproveOrder = useCallback(async (data, actions) => {
 
     // Call your backend API to capture the order

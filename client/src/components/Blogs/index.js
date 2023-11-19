@@ -17,7 +17,6 @@ const Blogs = () => {
     try {
       setIsLoading(true)
       const response = await blogsFetch;
-      console.log('response:', response);
       if(response) setBlogs(response)
 
     } catch (error) {

@@ -451,11 +451,11 @@ ALTER FUNCTION update_user(jsonb) OWNER TO wakeup;
 
 
 INSERT INTO public.product(name, subtitle, description, image, price, is_new, slug, dimension, category, weight)
-	VALUES ('plateau bed and breakfast', 'Conseillé pour 3-4 personnes', 'Brioche moelleuse artisanale\n
+	VALUES ('plateau bed & breakfast', 'Conseillé pour 2-3 personnes', 'Brioche moelleuse artisanale\n
 			Brioche aux pépites de chocolat artisanale\n Mini crêpes vanillées (fait-maison)\n Madeleines vanillées (fait-maison)\n Cake marbré (fait-maison)\n Fruits frais\n Pain artisanal tranché\n Pâte à tartiner et confiture (Alain Milliat).', 
 			'plateau_bed_and_breakfast',
 			34.90, true, 'bed-and-breakfast', '45 x 25 x 6','plateau', 1.8),
-			('plateau brunch d''hiver', 'Conseillé pour 3-4 personnes', 
+			('plateau brunch d''hiver', 'Conseillé pour 2-3 personnes', 
 			'Brioche moelleuse artisanale\n Pancakes vanillés (fait-maison)\n Mini crêpes vanillées (fait-maison)\n Madeleines vanillées (fait-maison)\n Cake marbré (fait-maison)\n Fourme d''Ambert\n Cream cheese à l''huile d''olive et basilic frais\n Jambon Serrano affinage 12 mois\n Cantal entre deux AOP (lait cru)\n 
 			Fruits frais, légumes croquants\n Pain artisanal tranché\n Pâte à tartiner et confiture (Alain Milliat).', 
 			'plateau_brunch_d_hiver', 

@@ -1,7 +1,7 @@
 'use client';
 import styles from '/public/styles/Homepage.module.scss';
 // Components
-import { Blogs, Footer, Reviews, ScrollToTop, Spinner } from '@/src/components';
+import { Blogs, Reviews, ScrollToTop, Spinner } from '@/src/components';
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary.js';
 import Error from './error.jsx';
 

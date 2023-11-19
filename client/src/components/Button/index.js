@@ -24,12 +24,12 @@ const AddCartButton = ({ items }) => {
 
   const [added, setAdded] = useState(false);
 
-  const { id, name, price, img } = items;
+  const { id, name, price, img, category } = items;
 
   const dispatch = useDispatch();
 
   const handleChangeCartItem = () => {
-    dispatch(addToCart({ id, name, price, img }))
+    dispatch(addToCart({ id, name, price, img, category }))
     // for animate button on click event
     setAdded(true);
     // reset animation state

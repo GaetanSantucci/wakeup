@@ -58,7 +58,7 @@ export default function Products() {
                     </div>
                     <div className={styles.container_section_card_information}>
                       <Link href={`/plateau/${product.slug}/${product.id}`} className={styles.container_section_card_information_link}>En savoir plus</Link>
-                      < AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
+                      < AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image, category: product.category }} />
                     </div>
                   </div>
                 </div>

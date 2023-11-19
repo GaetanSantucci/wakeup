@@ -4,8 +4,8 @@ const router = Router();
 router.get('/', (req, res) => {
     return res.json('Welcome to the WAKE UP API');
 });
-import { router as PlateRouter } from './plate.js';
-router.use(PlateRouter);
+import { router as ProductRouter } from './product.js';
+router.use(ProductRouter);
 import { router as BlogRouter } from './blog.js';
 router.use(BlogRouter);
 import { router as DeliveryRouter } from './delivery.js';

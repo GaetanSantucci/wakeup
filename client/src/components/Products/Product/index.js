@@ -50,7 +50,7 @@ export default async function Product({ id }) {
                   </div>
                   <div className={styles.productId_container_card_details_order}>
                     <div>
-                      <AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image }} />
+                      <AddCartButton items={{ id: product.id, name: product.name, price: product.price, img: product.image,category: product.category }} />
                     </div>
                   </div>
                 </div>

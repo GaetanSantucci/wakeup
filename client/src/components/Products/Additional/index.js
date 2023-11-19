@@ -21,7 +21,7 @@ export default async function Additionnal() {
         Retrouvez nos accompagnements pour parfaire votre livraison, envie de
         fraicheur, de chaleur, d'une décoration pour embellir votre plateau
       </p>
-        <p>Ces produits ne peuvent être vendu sans commande d&apos;un plateau</p>
+        <p>Ces produits ne peuvent être vendus sans commande d&apos;un plateau</p>
       <div className={styles.container_cards}>
         { products.map(elem => {
           if (elem.category === 'boisson' || elem.category === 'decoration') {
@@ -37,7 +37,7 @@ export default async function Additionnal() {
                     <p>{elem.description}</p>
                     <p><span>{price} €</span></p>
                   </div>
-                  <AddCartButton items={{ id: elem.id, name: elem.name, price: elem.price, img: elem.image }} key={elem.price} />
+                  <AddCartButton items={{ id: elem.id, name: elem.name, price: elem.price, img: elem.image, category: elem.category}} key={elem.price} />
                 </div>
               </div>
             )

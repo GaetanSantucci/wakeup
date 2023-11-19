@@ -21,11 +21,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { getArea } from '/src/libs/getDeliveryArea.js';
 
-
 const areaFetch = getArea(); // fetch to database for delivery area
 
 const CheckoutCart = ({ nextPage }) => {
   const allCart = useSelector((state) => state.cart)
+
+  // check that there is at least one tray in the cart
+  const hasPlateauItem = allCart.cart.some(elem => elem.category === 'plateau');
+
   const { isDateDisable } = useSelector((state) => state.settings)
 
   return (
@@ -54,13 +57,20 @@ const CheckoutCart = ({ nextPage }) => {
               <p className={styles.container_checkout_desc}>Nombre d&apos;articles dans votre panier : {getTotal(allCart.cart).totalQuantity}</p>
               <p className={styles.container_checkout_desc}>Montant du panier : {getTotal(allCart.cart).totalPrice.toFixed(2)}<span>€</span></p>
               <div className={styles.container_calendar}>
-                <CustomCalendar />
+                {
+                  hasPlateauItem ? <CustomCalendar /> : 
+                  <Alert severity="warning" sx={{ mt: 2 }}>Votre commande doit contenir au minimum un plateau, les suppléments ne peuvent être vendus seuls, continuez vos achats <Link href='/plateau' style={{ textDecoration: 'underline' }}>
+                  ici
+                </Link></Alert>
+                
+                }
               </div>
             </>
         }
       </div>
       {isDateDisable && <Alert severity="error" sx={{ m: 2 }}>Date non valide, merci de choisir une date disponible dans le calendrier</Alert>}
       <div className={styles.checkout_button}>
+
         {allCart.bookingDate && !isDateDisable ? <button onClick={nextPage}>Validez</button> : null}
 
       </div>
@@ -122,7 +132,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               onChange={handleInputChange}
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: isMobile ? '100%' :'45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' : '45%' }}
               required />
           </div>
           <div className={isMobile ? `${styles.container_checkout_form_50_column}` : `${styles.container_checkout_form_50}`}>
@@ -133,7 +143,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               type='email'
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: isMobile ? '100%' :'45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' : '45%' }}
               required />
             <TextField id='phone'
               label='Téléphone'
@@ -142,7 +152,7 @@ const CheckoutInformation = ({ previousPage, nextPage }) => {
               type='tel'
               variant='standard'
               size='small'
-              sx={{ mb: 2, width: isMobile ? '100%' :'45%' }}
+              sx={{ mb: 2, width: isMobile ? '100%' : '45%' }}
               required />
           </div>
           <div className={isMobile ? `${styles.container_checkout_form_50_column}` : `${styles.container_checkout_form_50}`}>

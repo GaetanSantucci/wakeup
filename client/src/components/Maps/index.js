@@ -18,7 +18,7 @@ export default function Maps() {
   const data = use(areaFetch);
   if(!data) return <Spinner />;
 
-  const [inputCityValue, setinputCityValue] = useState();
+  const [inputCityValue, setinputCityValue] = useState('');
   const [isAvailable, setIsAvailable] = useState();
   const [notInOurZone, setNotInOurZone] = useState();
 

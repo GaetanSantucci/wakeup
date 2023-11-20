@@ -70,8 +70,7 @@ const UserLogin = () => {
         if (errorMessage) return dispatch(setErrorMessage(errorMessage))
 
         const response = await setUser(id)
-        console.log('response:', response);
-        console.log('response:', response.role);
+
         if (response.id === id) {
           dispatch(toggleLoginModale())
           dispatch(toggleShowNavbar())
@@ -149,7 +148,7 @@ const UserLogin = () => {
       }),
     }
 
-    const response = await fetch('http://localhost:7777/api/v1/send_email_reset', options)
+    const response = await fetch('http://localhost:3010/api/v2/send_email_reset', options)
 
     if (response.ok) {
       setSenduserEmail(true)

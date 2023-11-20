@@ -10,8 +10,7 @@ const getEmail = (req, res) => {
     try {
         const data = req.body;
         // const mailOptions = contactForm(req.body.lastname, req.body.message);
-        const emailSent = sendEmail(emailReceived(data));
-        console.log('emailSent: ', emailSent);
+        sendEmail(emailReceived(data));
         res.json('Demande faite');
     }
     catch (err) {

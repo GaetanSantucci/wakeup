@@ -9,7 +9,6 @@ export const DashboardCustomer = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
 
   const [customer, setCustomer] = useState([])
-  console.log('customer:', customer);
 
   // Function to fetch data
   const fetchData = () => {

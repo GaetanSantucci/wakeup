@@ -49,8 +49,12 @@
       font-size: calc(1.4rem + 0.6vw);
     }
     &_form {
-      & input {
-        width: 100% !important;
+    width: 90%;
+
+      // padding: 1.4rem 0.8rem;
+      &_50 {
+        width: 100%;
+        @include mixins.flex(column);
       }
       & button {
         width: 90%;

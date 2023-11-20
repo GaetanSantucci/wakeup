@@ -15,7 +15,6 @@ import { DashboardBlog } from './Blog';
 const Dashboard = () => {
 
   const isMobile = useMediaQuery('(max-width:768px)');
-  console.log('isMobile:', isMobile);
   const { logout } = useLogout();
 
   const [selectedItem, setSelectedItem] = useState('calendar');

@@ -1,12 +1,11 @@
 import { getAuthorizationHeader } from "../utils/getAuthorizationHeader";
 
 const localEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
-// const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
+// const localEndoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 export class UserService {
 
-  APIEndpoint = `${localEndpoint}customers`;
-  // APIEndpoint = `${prodEndpoint}customers`;
+  APIEndpoint = `${localEndpoint}/customers`;
 
   async create(email, password) {
 

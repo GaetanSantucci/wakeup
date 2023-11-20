@@ -19,7 +19,6 @@ const closedDays = async (req, res) => {
 const getAllOrdersForCalendar = async (req, res) => {
     try {
         const allOrders = await Order.getAllOrdersByDate();
-        // if (!allOrders) throw new ErrorApi('Impossible d\'obtenir les commandes', req, res, 400);
         return res.status(200).json(allOrders);
     }
     catch (err) {
@@ -40,7 +39,7 @@ const getAllOrders = async (req, res) => {
 const getAllOrdersByUser = async (req, res) => {
     const userId = req.params.userId;
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    // Check if user exist     
+    // Check if user exist
     if (!uuidRegex.test(userId))
         throw new ErrorApi(`UUID non valide`, req, res, 400);
     try {
@@ -63,9 +62,11 @@ const createOrderFromData = async (orderBody) => {
             status: orderBody.payment_status,
             payment_mode: orderBody.payment_method,
             payment_id: orderBody.payment_id,
-            payment_date: orderBody.payment_date
+            payment_date: orderBody.payment_date,
         });
-        const user_id = isExist ? isExist.id : (await User.create(orderBody.user)).create_user;
+        const user_id = isExist
+            ? isExist.id
+            : (await User.create(orderBody.user)).create_user;
         const order_details = await Order.create({
             user_id,
             total: orderBody.amount,
@@ -76,7 +77,7 @@ const createOrderFromData = async (orderBody) => {
             await OrderItems.create({
                 order_id: order_details.insert_order_details,
                 product_id: item.id,
-                quantity: item.quantity
+                quantity: item.quantity,
             });
         }
     }
@@ -86,7 +87,6 @@ const createOrderFromData = async (orderBody) => {
     }
 };
 const createOrderWithStripe = async (data, req, res) => {
-    console.log('data:', data);
     const orderBody = {
         booking_date: data.metadata.bookingDate,
         payment_status: data.payment_status,
@@ -105,16 +105,18 @@ const createOrderWithStripe = async (data, req, res) => {
                 line2: data.customer_details.address.line2,
                 city: data.customer_details.address.city,
                 postcode: data.customer_details.address.postcode,
-            }
-        }
+            },
+        },
     };
     await createOrderFromData(orderBody);
-    return res.json("Order successfully created");
+    return res.json('Order successfully created');
 };
 const createOrderWithPaypal = async (data, req) => {
     const { user, cart, bookingDate, deliveryCost } = req.body;
     //  ? Calculate the total amount of the order based on the cart items
-    const totalAmount = cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
+    const totalAmount = cart
+        .reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0)
+        .toFixed(2);
     const dateObject = new Date();
     const unixTimestamp = Math.floor(dateObject.getTime() / 1000);
     const totalAmountIncludeShippingCost = parseFloat(totalAmount) + parseFloat(deliveryCost);
@@ -135,10 +137,10 @@ const createOrderWithPaypal = async (data, req) => {
                 line2: user.address.line2,
                 city: user.address.city,
                 postcode: user.address.postcode,
-            }
-        }
+            },
+        },
     };
     await createOrderFromData(orderBody);
-    console.log("Order successfully created");
+    console.log('Order successfully created');
 };
-export { closedDays, getAllOrdersForCalendar, getAllOrders, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal };
+export { closedDays, getAllOrdersForCalendar, getAllOrders, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal, };

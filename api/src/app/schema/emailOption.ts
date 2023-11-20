@@ -1,5 +1,6 @@
 // ~ DEBUG CONFIG ~ //
 import { ContactForm } from '../type/contact'
+import { OrderBody } from '../type/order'
 
 const mailSignUp = (email: string) => {
   return {
@@ -9,12 +10,11 @@ const mailSignUp = (email: string) => {
     html: `
       <div style="background-color: #f2f2f2; padding: 20px;">
         <div style="background-color: #ffffff; padding: 20px; border-radius: 10px;">
-          <h1 style="color: #0069d9; font-size: 36px; margin-bottom: 20px;">Bienvenue chez WAKE UP!</h1>
-          <p style="font-size: 18px; margin-bottom: 20px;">Nous sommes ravis de vous accueillir chez Wake up. Vous pouvez désormais accéder à votre compte et consulter vos réservations</p>
-          <p style="font-size: 18px; margin-bottom: 20px;">N'hésitez pas à nous contacter si vous avez des questions ou des commentaires. Nous sommes là pour vous aider !</p>
-          <a href="https://www.wakeupclf.fr" style="background-color: #0069d9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 18px;">Découvrir Wake up</a>
+          <p style="font-size: 16px; margin-bottom: 20px;">Nous sommes ravis de vous accueillir chez Wake up. Vous pouvez désormais accéder à votre compte et consulter vos réservations</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">N'hésitez pas à nous contacter si vous avez des questions ou des commentaires. Nous sommes là pour vous aider !</p>
+          <a href="https://www.wakeupclf.fr" style="background-color: #0069d9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 16px;">Découvrir Wake up</a>
         </div>
-        <p style="font-size: 14px;">Vous pouvez vous désabonner de nos emails en cliquant sur ce lien : <a href="http://${process.env.CLIENT_URL}/unsubscribe">Se désabonner</a></p>
+        <p style="font-size: 8px;">Vous pouvez vous désabonner de nos emails en cliquant sur ce lien : <a href="http://${process.env.CLIENT_URL}/unsubscribe">Se désabonner</a></p>
       </div>
     `,
   }
@@ -64,4 +64,33 @@ const emailResetPassword = (email: string, token: string) => {
   }
 }
 
-export { mailSignUp, connectEmail, emailReceived, emailResetPassword }
+const confirmOrder = (data: OrderBody) => {
+  const address = data.user.address // Get the address details from the user object
+
+  return {
+    from: `"Bienvenue chez Wake up" ${process.env.NODEMAILER_ACCOUNT}`, // sender address
+    to: `${data.user.email}`, // list of receivers
+    subject: `Confirmation de votre commande WAKE UP !`, // Subject line
+    html: `
+      <div style="background-color: #f2f2f2; padding: 20px;">
+        <div style="background-color: #ffffff; padding: 20px; border-radius: 10px;">
+          <h1 style="color: #0069d9; font-size: 36px; margin-bottom: 20px;">Merci pour votre commande</h1>
+          <p style="font-size: 18px; margin-bottom: 20px;">Nous avons bien pris en compte votre commande pour le ${data.booking_date} à livrer à l'adresse suivante:</p>
+          <p style="font-size: 18px; margin-bottom: 20px;">${address.line1}</p>
+          <p style="font-size: 18px; margin-bottom: 20px;">${address.postcode}, ${address.city}</p>
+          <p style="font-size: 18px; margin-bottom: 20px;">N'hésitez pas à nous contacter si vous avez des questions, nous sommes là pour vous aider !</p>
+          <a href="https://www.wakeupclf.fr" style="background-color: #0069d9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 18px;">Découvrir Wake up</a>
+        </div>
+        <p style="font-size: 8px;">Vous pouvez vous désabonner de nos emails en cliquant sur ce lien : <a href="http://${process.env.CLIENT_URL}/unsubscribe">Se désabonner</a></p>
+      </div>
+    `,
+  }
+}
+
+export {
+  mailSignUp,
+  connectEmail,
+  emailReceived,
+  emailResetPassword,
+  confirmOrder,
+}

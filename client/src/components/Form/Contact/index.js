@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import TextField from '@mui/material/TextField';
 import CheckIcon from '@mui/icons-material/Check';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { inputValue } from '@/src/store/reducers/User';
 
@@ -12,9 +13,10 @@ import { inputValue } from '@/src/store/reducers/User';
 export default function Contact() {
 
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery('(max-width:768px)');
+
 
   const { user } = useSelector((state) => state.user);
-  console.log('user:', user.email);
 
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
@@ -60,8 +62,8 @@ export default function Contact() {
 
     const JSONdata = JSON.stringify(data)
 
-    // const endpoint = 'https://wakeupclf.fr/api/v1/contact'
-    const endpoint = 'http://localhost:7777/api/v1/contact'
+    // const endpoint = 'https://wakeupclf.fr/api/v2/contact'
+    const endpoint = 'http://localhost:3010/api/v2/contact'
 
     const options = {
       method: 'POST',
@@ -102,7 +104,7 @@ export default function Contact() {
             onChange={handleInputChange}
             variant='standard'
             size='small'
-            sx={{ mb: 2, width: '47%' }}
+            sx={isMobile ? {width:'100%', mb: 1.4} : {mb: 2, width: '47%'}}
             error={errorName}
             helperText={errorName ? 'Merci de saisir votre nom' : ''}
             required />
@@ -112,7 +114,7 @@ export default function Contact() {
             onChange={handleInputChange}
             variant='standard'
             size='small'
-            sx={{ mb: 2, width: '47%' }}
+            sx={isMobile ? {width:'100%', mb: 1.4} : {mb: 2, width: '47%'}}
             required />
         </div>
         <div className={styles.container_contact_form_50}>
@@ -123,7 +125,7 @@ export default function Contact() {
             onChange={handleInputChange}
             variant='standard'
             size='small'
-            sx={{ mb: 2, width: '47%' }}
+            sx={isMobile ? {width:'100%', mb: 1.4} : {mb: 2, width: '47%'}}
             error={errorEmail}
             helperText={errorEmail ? 'Email manquant ou invalide' : ''} required />
           <TextField id='phone'
@@ -133,7 +135,7 @@ export default function Contact() {
             type='tel'
             variant='standard'
             size='small'
-            sx={{ mb: 2, width: '47%' }}
+            sx={isMobile ? {width:'100%', mb: 1.4} : {mb: 2, width: '47%'}}
             required
           />
         </div>

@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 import paypal from 'paypal-rest-sdk';
 // Configure the PayPal SDK
 paypal.configure({
-    mode: 'sandbox',
+    mode: 'live',
     client_id: process.env.PAYPAL_CLIENT_ID,
     client_secret: process.env.PAYPAL_SECRET_KEY,
 });
@@ -59,7 +59,6 @@ const stripeWebhook = async (req, res) => {
 // ? creates a PayPal order for processing a payment
 const createPaypalSession = async (req, res) => {
     const order = await createPaypalOrder(req, res);
-    console.log('order:', order);
     await createOrderWithPaypal(order, req);
     res.json(order);
 };

@@ -18,8 +18,6 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 function createData(lastname, firstname, email, phone, booking_info) {
 
-
-  console.log('lastname:', lastname);
   return {
     lastname,
     firstname,
@@ -39,10 +37,7 @@ function createData(lastname, firstname, email, phone, booking_info) {
 }
 
 function Row({row, isMobile}) {
-console.log('row:', row);
-console.log('isMobile:', isMobile);
 
-  // const { row } = row;
   const [open, setOpen] = useState(false);
 
   return (
@@ -68,8 +63,6 @@ console.log('isMobile:', isMobile);
               <TableCell align="right">{row.phone}</TableCell>
             </>
         }
-        {/* <TableCell align="right">{row.email}</TableCell>
-        <TableCell align="right">{row.phone}</TableCell> */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

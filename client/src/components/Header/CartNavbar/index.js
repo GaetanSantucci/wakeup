@@ -34,11 +34,9 @@ const CartNavbar = ({ toggleMenu }) => {
   }
 
   const closeMenu = () => {
-    // console.log('isBreakpoint:', isBreakpoint);
-    // if (isBreakpoint) { 
-    //   setTimeout(() => toggleMenu(), 400)
-    // }
+    
     if (isLogged) {
+      if(user.role === 'admin') return router.push(`/admin/dashboard`)
       router.push(`/user/profile/${user.id}`)
     } else {
       dispatch(toggleLoginModale())

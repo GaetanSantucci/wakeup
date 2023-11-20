@@ -1,6 +1,8 @@
 import { ErrorApi } from '../services/errorHandler.js';
 import { User } from '../datamapper/user.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
+import { mailSignUp } from '../schema/emailOption.js';
+import { sendEmail } from '../services/nodemailer.js';
 import debug from 'debug';
 const logger = debug('Controller');
 import bcrypt from 'bcrypt';
@@ -26,7 +28,6 @@ const getCustomerProfile = async (req, res) => {
         if (!uuidRegex.test(userId))
             throw new ErrorApi(`UUID non valide`, req, res, 400);
         const user = await User.findOne(userId);
-        console.log('user:', user);
         return res.status(200).json(user);
     }
     catch (err) {
@@ -50,8 +51,10 @@ const signUp = async (req, res) => {
         req.body.password = await bcrypt.hash(password, 10);
         const response = await User.create(req.body);
         const isCreatedUser = response.create_user;
-        if (isCreatedUser)
+        if (isCreatedUser) {
+            sendEmail(mailSignUp(email));
             return res.status(201).json(`Votre compte a bien été créé !`);
+        }
     }
     catch (err) {
         if (err instanceof Error)

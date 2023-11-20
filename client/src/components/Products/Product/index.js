@@ -28,7 +28,6 @@ export default async function Product({ id }) {
         <div className={styles.productId_container_effect_border}></div>
         {
           plate.map(product => {
-            console.log('product:', product);
             const price = product.price.toString().replace('.', ',');
             const text = product.description.split('\\n')
             return (
@@ -59,9 +58,6 @@ export default async function Product({ id }) {
           })
         }
       </div>
-        <Suspense fallback={<Spinner />}>
-        {/* <Additionnal /> */}
-      </Suspense>
     </>
   );
 }

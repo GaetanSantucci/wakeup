@@ -27,12 +27,12 @@ const CustomCalendar = () => {
 
   // Fetch availability and closed days data from the server on component mount
   useEffect(() => {
-    fetch('http://localhost:3010/api/v1/orders/availability') // Fetch availability 
+    fetch('http://localhost:3010/api/v2/orders/availability') // Fetch availability 
       .then(response => response.json())
       .then(data => setAvailability(data))
       .catch(error => console.error(error));
 
-    fetch('http://localhost:3010/api/v1/orders/closed') // Fetch closed days
+    fetch('http://localhost:3010/api/v2/orders/closed') // Fetch closed days
       .then(response => response.json())
       .then(data => {
         setClosedDays(data);

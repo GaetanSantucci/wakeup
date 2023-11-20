@@ -28,7 +28,7 @@ export default function Reviews() {
       // Fetch data only on the client-side
       async function fetchData() {
         try {
-          const response = await fetch('http://localhost:3010/api/v1/reviews');
+          const response = await fetch('http://localhost:3010/api/v2/reviews');
           if (response.ok) {
             const data = await response.json();
             setReviews(data);

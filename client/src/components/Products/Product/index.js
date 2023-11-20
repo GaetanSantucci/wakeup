@@ -19,7 +19,6 @@ export default async function Product({ id }) {
   }
 
   plate.push(fetchProduct);
-  console.log('plate:', plate);
 
   return (
     <>

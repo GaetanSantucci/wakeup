@@ -29,7 +29,6 @@ const getBlogById = async (req: Request, res: Response) => {
 
     // ? Find the blog with the given ID in the database
     const blog = await Blog.findOne(blogId)
-    console.log('blog: ', blog)
 
     // ? If the blog is not found, throw an error
     if (!blog) throw new ErrorApi('Blog non trouvé', req, res, 400)

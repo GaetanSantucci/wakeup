@@ -1,45 +1,43 @@
-import pg from 'pg';
-import { UUID } from '../type/user.js';
+import pg from 'pg'
+import { UUID } from '../type/user.js'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface CoreDataMapper {
-  client: object;
-  tableName: string;
-  columns: string;
+  client: object
+  tableName: string
+  columns: string
 
-  createFunctionName: string;
-  updateFunctionName: string;
+  createFunctionName: string
+  updateFunctionName: string
 
-  allProjectsWithCategories: string;
-  userIdentity: string;
-  articlesByUser: string;
-  articleByUser: string;
-  goldenBookTicketByUser: string;
+  allProjectsWithCategories: string
+  userIdentity: string
+  articlesByUser: string
+  articleByUser: string
+  goldenBookTicketByUser: string
 
-  projectsByUser: string;
-  projectByUser: string;
+  projectsByUser: string
+  projectByUser: string
 
-  createWithCategoriesFunctionName: string;
-  updateWithCategoriesFunctionName: string;
+  createWithCategoriesFunctionName: string
+  updateWithCategoriesFunctionName: string
 }
 
 class CoreDataMapper {
   constructor(client: object) {
-    this.client = client;
+    this.client = client
   }
 
   //& Create
   async create(inputData: object) {
-    console.log('inputData:', inputData);
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
         text: `SELECT ${this.createFunctionName}($1);`,
-        values: [inputData]
-      };
+        values: [inputData],
+      }
 
-      const result = await this.client.query(preparedQuery);
-      console.log('result: ', result.rows[0].create_user);
-      return result.rows[0];
+      const result = await this.client.query(preparedQuery)
+      return result.rows[0]
     }
   }
   //& FindAll
@@ -49,10 +47,10 @@ class CoreDataMapper {
         text: `
                     SELECT ${this.columns}
                     FROM "${this.tableName}"
-                    ORDER BY "id";`
-      };
-      const result = await this.client.query(preparedQuery);
-      return result.rows;
+                    ORDER BY "id";`,
+      }
+      const result = await this.client.query(preparedQuery)
+      return result.rows
     }
   }
 
@@ -65,28 +63,27 @@ class CoreDataMapper {
                     FROM "${this.tableName}"
                     WHERE "id" = $1;
                     `,
-        values: [id]
-      };
+        values: [id],
+      }
 
-      const result = await this.client.query(preparedQuery);
+      const result = await this.client.query(preparedQuery)
 
-      if (!result.rows[0]) return null;
+      if (!result.rows[0]) return null
 
-      return result.rows[0];
+      return result.rows[0]
     }
   }
 
   //& Update
   async update(inputData: object) {
-    console.log('inputData:', inputData);
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
         text: `SELECT * FROM ${this.updateFunctionName}($1);`,
-        values: [inputData]
-      };
-      const result = await this.client.query(preparedQuery);
+        values: [inputData],
+      }
+      const result = await this.client.query(preparedQuery)
 
-      return result.rowCount;
+      return result.rowCount
     }
   }
 
@@ -96,14 +93,14 @@ class CoreDataMapper {
       const preparedQuery = {
         text: `DELETE FROM "${this.tableName}"
                WHERE "id" = $1;`,
-        values: [id]
-      };
+        values: [id],
+      }
 
-      const result = await this.client.query(preparedQuery);
+      const result = await this.client.query(preparedQuery)
 
-      return result.rowCount;
+      return result.rowCount
     }
   }
 }
 
-export { CoreDataMapper };
+export { CoreDataMapper }

@@ -18,6 +18,7 @@ import { setIsDateIsDisable } from '@/src/store/reducers/Settings';
  */
 const CustomCalendar = () => {
 
+  const endpoint = process.env.NEXT_PUBLIC_ENDPOINT;
   const dispatch = useDispatch();
 
   // State variables for selected date, availability data, and closed days
@@ -27,12 +28,12 @@ const CustomCalendar = () => {
 
   // Fetch availability and closed days data from the server on component mount
   useEffect(() => {
-    fetch('http://localhost:3010/api/v2/orders/availability') // Fetch availability 
+    fetch(`${endpoint}/orders/availability`) // Fetch availability 
       .then(response => response.json())
       .then(data => setAvailability(data))
       .catch(error => console.error(error));
 
-    fetch('http://localhost:3010/api/v2/orders/closed') // Fetch closed days
+    fetch(`${endpoint}/orders/closed`) // Fetch closed days
       .then(response => response.json())
       .then(data => {
         setClosedDays(data);

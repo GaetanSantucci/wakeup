@@ -141,6 +141,5 @@ const createOrderWithPaypal = async (data, req) => {
         },
     };
     await createOrderFromData(orderBody);
-    console.log('Order successfully created');
 };
 export { closedDays, getAllOrdersForCalendar, getAllOrders, getAllOrdersByUser, createOrderWithStripe, createOrderWithPaypal, };

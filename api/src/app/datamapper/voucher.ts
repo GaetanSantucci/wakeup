@@ -9,7 +9,6 @@ class VoucherDatamapper extends CoreDataMapper {
   createFunctionName = 'create_voucher'
 
   async findVoucherByNumber(voucher_id: string) {
-    console.log('voucher_id:', voucher_id)
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
         text: `SELECT * FROM "${this.tableName}" WHERE voucher_id = ($1);`,
@@ -17,7 +16,6 @@ class VoucherDatamapper extends CoreDataMapper {
       }
 
       const result = await this.client.query(preparedQuery)
-      console.log('result:', result)
       if (!result.rows[0]) return null
       return result.rows[0]
     }

@@ -19,7 +19,7 @@ app.use(
     res: express.Response,
     next: express.NextFunction
   ): void => {
-    if (req.originalUrl === '/api/v1/payment/stripe/webhook') {
+    if (req.originalUrl === '/api/v2/payment/stripe/webhook') {
       next()
     } else {
       express.json()(req, res, next)

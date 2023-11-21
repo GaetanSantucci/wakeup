@@ -1,10 +1,7 @@
-import nodemailer from 'nodemailer';
-import { Options } from 'nodemailer/lib/mailer';
-
+import nodemailer from 'nodemailer'
+import { Options } from 'nodemailer/lib/mailer'
 
 const sendEmail = (mailOptions: Options) => {
-  console.log('mailOptions: ', mailOptions);
-
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
     // host: 'smtp.ionos.fr', // hostname
@@ -19,21 +16,19 @@ const sendEmail = (mailOptions: Options) => {
       ciphers: 'SSLv3',
     },
     auth: {
-
       user: process.env.NODEMAILER_ACCOUNT,
-      pass: process.env.NODEMAILER_PASSWORD
+      pass: process.env.NODEMAILER_PASSWORD,
     },
-  });
+  })
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function (error, info) {
     if (error instanceof Error) {
-      return console.log(`Erreur lors de la distribution du mail`, error);
+      return console.log(`Erreur lors de la distribution du mail`, error)
     } else {
-      console.log('Message sent: ' + info.response);
+      console.log('Message sent: ' + info.response)
       return
     }
-
-  });
+  })
 }
 
 export { sendEmail }

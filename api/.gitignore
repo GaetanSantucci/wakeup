@@ -24,11 +24,11 @@ package-lock.json
 *.gz
 
 #logs
-logs/
-**/*.log
-**/*.logs
-#logs/
-**/*.logs.*
+# logs/
+# **/*.log
+# **/*.logs
+# #logs/
+# **/*.logs.*
 
 
 #vscode

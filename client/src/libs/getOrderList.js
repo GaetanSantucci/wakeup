@@ -1,15 +1,15 @@
-const localEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+const endpoint = process.env.NEXT_PUBLIC_ENDPOINT
 // const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 const fetchAllOrder = async () => {
-  const res = await fetch(`${localEndpoint}/orders`)
+  const res = await fetch(`${endpoint}/orders`)
   if (!res.ok) return undefined;
   return res.json();
 }
 
 const fetchOrderByUser = async (userId) => {
 
-  const response = await fetch(`${localEndpoint}/orders/${userId}`, { method: 'POST' });
+  const response = await fetch(`${endpoint}/orders/${userId}`, { method: 'POST' });
 
   if (!response.ok) {
     throw new Error('Récupération des données liées à vos commandes');
@@ -18,7 +18,7 @@ const fetchOrderByUser = async (userId) => {
 };
 
 const fetchClosedDays = async () => {
-  const response = await fetch(`${localEndpoint}/orders/closed`);
+  const response = await fetch(`${endpoint}/orders/closed`);
 
   if (!response.ok) {
     throw new Error('Récupération des données liées aux jours fermés impossible');
@@ -28,7 +28,7 @@ const fetchClosedDays = async () => {
 };
 
 const fetchAvailability = async () => {
-  const response = await fetch(`${localEndpoint}/orders/availability`);
+  const response = await fetch(`${endpoint}/orders/availability`);
 
   if (!response.ok) {
     throw new Error('Récupération des données liées aux disponibilités');
@@ -38,7 +38,6 @@ const fetchAvailability = async () => {
 };
 
 const createSpecialDay = async (inputData) => {
-  console.log('inputData:', inputData);
   const options = {
     method: 'POST',
     headers: {
@@ -51,7 +50,7 @@ const createSpecialDay = async (inputData) => {
     }),
   }
 
-  const res = await fetch(`${localEndpoint}/orders/closed/create`, options)
+  const res = await fetch(`${endpoint}/orders/closed/create`, options)
 
   if (!res.ok) return undefined;
 

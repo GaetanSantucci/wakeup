@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 import debug from 'debug';
 const logger = debug('Controller');
 const sendEmailResetPassword = async (req, res) => {
-    // on recupere mot de passe + email 
+    // on recupere mot de passe + email
     const { email } = req.body;
     try {
         const userExist = await User.findUserIdentity(email);
@@ -16,13 +16,13 @@ const sendEmailResetPassword = async (req, res) => {
             throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
         // todo envoi email via nodemailer
         if (userExist) {
-            const token = randomBytes(32).toString("hex");
+            const token = randomBytes(32).toString('hex');
             const expirationTime = new Date();
             expirationTime.setHours(expirationTime.getHours() + 1);
             const result = await User.createResetToken(token, expirationTime, email);
             if (result) {
                 sendEmail(emailResetPassword(email, token));
-                return res.json("email envoyé");
+                return res.json('email envoyé');
             }
         }
     }
@@ -40,19 +40,21 @@ const resetPassword = async (req, res) => {
         const currentTime = new Date();
         if (currentTime > isTokenExist.expiration_date)
             throw new ErrorApi(`Le token a expiré`, req, res, 400);
-        console.log('currentTime > isTokenExist.expiration_date:', currentTime > isTokenExist.expiration_date);
         const userExist = await User.findUserIdentity(email);
         if (!userExist)
             throw new ErrorApi(`Utilisateur non trouvé`, req, res, 401);
         req.body.newPassword = await bcrypt.hash(req.body.newPassword, 10);
-        const userUpdated = await User.update({ id: userExist.id, password: req.body.newPassword });
+        const userUpdated = await User.update({
+            id: userExist.id,
+            password: req.body.newPassword,
+        });
         if (userUpdated)
-            return res.status(200).json("Mot de passe mis à jour avec succès !");
+            return res.status(200).json('Mot de passe mis à jour avec succès !');
     }
     catch (err) {
         if (err instanceof Error)
             logger(err.message);
-        return res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
 export { sendEmailResetPassword, resetPassword };

@@ -48,7 +48,7 @@ export default function Products() {
                   {product.is_new ? <div className={styles.container_section_card_new}>Nouveau</div> : null}
                   <Link href={`/plateau/${product.slug}/${product.id}`} >
                     <div className={styles.container_section_card_image}>
-                      <Image src={`/images/${product.image}.webp`} alt={product.name} width={300} height={430} />
+                      <Image src={`/images/${product.image}.webp`} alt={product.name} width={300} height={430} priority/>
                     </div>
                   </Link>
                   <div className={styles.container_section_card_desc}>

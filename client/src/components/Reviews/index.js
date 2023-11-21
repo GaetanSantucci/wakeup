@@ -6,6 +6,8 @@ import { ErrorBoundary } from 'next/dist/client/components/error-boundary.js';
 
 export default function Reviews() {
 
+  const endpoint = process.env.NEXT_PUBLIC_ENDPOINT;
+
   const [isReviews, setReviews] = useState([]);
   const [selectedElement, setSelectedElement] = useState();
 
@@ -28,7 +30,7 @@ export default function Reviews() {
       // Fetch data only on the client-side
       async function fetchData() {
         try {
-          const response = await fetch('http://localhost:3010/api/v2/reviews');
+          const response = await fetch(`${endpoint}/reviews`);
           if (response.ok) {
             const data = await response.json();
             setReviews(data);

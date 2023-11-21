@@ -17,8 +17,7 @@ import { useRouter } from 'next/navigation';
 
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST;
-// const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
+const endpoint = process.env.NEXT_PUBLIC_ENDPOINT;
 
 const AddCartButton = ({ items }) => {
 

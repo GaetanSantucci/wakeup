@@ -10,7 +10,7 @@ const app = express();
 app.use(helmet());
 // Use JSON parser for all non-webhook routes
 app.use((req, res, next) => {
-    if (req.originalUrl === '/api/v1/payment/stripe/webhook') {
+    if (req.originalUrl === '/api/v2/payment/stripe/webhook') {
         next();
     }
     else {

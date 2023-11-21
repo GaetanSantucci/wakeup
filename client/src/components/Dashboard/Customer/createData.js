@@ -24,7 +24,6 @@ function createData(lastname, firstname, email, phone, booking_info) {
     email,
     phone,
     history: booking_info?.map((elem => {
-      console.log('elem:', elem);
       const date = new Date(elem.booking_date);
       const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
       const formattedDate = date.toLocaleDateString('fr-FR', options);

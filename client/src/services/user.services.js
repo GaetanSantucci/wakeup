@@ -1,11 +1,11 @@
 import { getAuthorizationHeader } from "../utils/getAuthorizationHeader";
 
-const localEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+const endpoint = process.env.NEXT_PUBLIC_ENDPOINT
 // const localEndoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 export class UserService {
 
-  APIEndpoint = `${localEndpoint}/customers`;
+  APIEndpoint = `${endpoint}/customers`;
 
   async create(email, password) {
 
@@ -44,11 +44,9 @@ export class UserService {
       headers: getAuthorizationHeader(),
       body: JSON.stringify(userData)
     };
-    console.log('requestOptions:', requestOptions);
 
     try {
       const response = await fetch(`${this.APIEndpoint}/profile/${userData.id}`, requestOptions)
-      console.log('response:', response);
 
       if (!response.ok) {
         const data = await response.json();
@@ -57,7 +55,6 @@ export class UserService {
         return errorMessage;
       }
       const data = await response.json();
-      console.log('data:', data);
       return data;
 
     } catch (err) {
@@ -73,7 +70,7 @@ export class UserService {
     };
     try {
       const response = await fetch(`${this.APIEndpoint}/profile/${userData.id}`, requestOptions)
-      console.log('response:', response);
+      ('response:', response);
 
       if (!response.ok) {
         const data = await response.json();
@@ -100,7 +97,6 @@ export class UserService {
     }
     try {
       const response = await fetch(`${this.APIEndpoint}/profile/reset/${userData.id}`, requestOptions)
-      console.log('response:', response);
 
       if (!response.ok) {
         const data = await response.json();
@@ -109,7 +105,6 @@ export class UserService {
         return errorMessage;
       }
       const data = await response.json();
-      console.log('data:', data);
       return data;
 
     } catch (err) {

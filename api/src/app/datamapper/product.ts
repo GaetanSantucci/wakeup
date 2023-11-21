@@ -1,6 +1,5 @@
 import { client } from '../services/dbClient.js'
 import { CoreDataMapper } from './coreDatamapper.js'
-import pg from 'pg'
 
 // import debug from 'debug';
 // const logger = debug('Datamapper');

@@ -19,7 +19,7 @@ import Stack from '@mui/material/Stack';
 
 import { PasswordChecker } from '@/src/utils/passwordChecker';
 
-const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+const endpoint = process.env.NEXT_PUBLIC_ENDPOINT
 // const prodEndpoint = process.env.NEXT_PUBLIC_ENDPOINT_PRODUCTION
 
 export const ResetPassword = () => {

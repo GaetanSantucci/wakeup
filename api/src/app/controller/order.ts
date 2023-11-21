@@ -167,7 +167,6 @@ const createOrderWithPaypal = async (data: DataPaypal, req: Request) => {
   }
 
   await createOrderFromData(orderBody)
-  console.log('Order successfully created')
 }
 
 export {

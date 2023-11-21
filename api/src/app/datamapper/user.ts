@@ -1,4 +1,4 @@
-\import pg from 'pg'
+import pg from 'pg'
 import { client } from '../services/dbClient.js'
 import { CoreDataMapper } from './coreDatamapper.js'
 import { UUID } from '../type/user.js'
@@ -40,7 +40,6 @@ class UserDataMapper extends CoreDataMapper {
       }
 
       const result = await this.client.query(preparedQuery)
-      console.log('result:', result)
       if (!result.rowCount) return null
       return result.rowCount
     }
@@ -61,14 +60,12 @@ class UserDataMapper extends CoreDataMapper {
   }
 
   async getAllUsers() {
-    console.log('getAllUsersView:', this.view.getAllUsersView)
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
         text: `SELECT * FROM ${this.view.getAllUsersView}`,
       }
 
       const result = await this.client.query(preparedQuery)
-      console.log('result.rows:', result.rows)
       if (!result.rows) return null
       return result.rows
     }
@@ -83,14 +80,12 @@ class UserDataMapper extends CoreDataMapper {
         values: [email],
       }
       const result = await this.client.query(preparedQuery)
-      console.log('result.rows:', result.rows)
       if (!result.rows[0]) return null
       return result.rows[0]
     }
   }
 
   async deleteUser(userId: number | UUID) {
-    console.log('id:', userId)
     if (this.client instanceof pg.Pool) {
       const preparedQuery = {
         text: `SELECT ${this.deleteFunctionName}($1)`,
@@ -98,7 +93,7 @@ class UserDataMapper extends CoreDataMapper {
       }
 
       const result = await this.client.query(preparedQuery)
-      console.log('result:', result.rows)
+      consolelog('result:', result.rows)
       return result.rowCount
     }
   }

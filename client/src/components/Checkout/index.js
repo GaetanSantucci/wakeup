@@ -239,11 +239,10 @@ const CheckoutPayment = ({ previousPage }) => {
   const handleInputChange = (e) => {
     setVoucherInput(formatInput(e.target.value))
     const newValue = formatInput(e.target.value)
-    console.log('newValue:', newValue);
   };
 
   const submitVoucherResearch = async () => {
-    const endpoint = process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST
+    const endpoint = process.env.NEXT_PUBLIC_ENDPOINT
 
     setVoucherMessage('')
     setErrorMessage('')

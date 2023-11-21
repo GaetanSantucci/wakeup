@@ -9,7 +9,7 @@ export default function UnsubscribePage () {
       const email = searchParams.get('email');
       if (email) {
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT_LOCAL_TEST}/customers/newsletter`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/customers/newsletter`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json'

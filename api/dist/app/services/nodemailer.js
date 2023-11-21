@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer';
 const sendEmail = (mailOptions) => {
-    console.log('mailOptions: ', mailOptions);
     // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
         // host: 'smtp.ionos.fr', // hostname
@@ -16,7 +15,7 @@ const sendEmail = (mailOptions) => {
         },
         auth: {
             user: process.env.NODEMAILER_ACCOUNT,
-            pass: process.env.NODEMAILER_PASSWORD
+            pass: process.env.NODEMAILER_PASSWORD,
         },
     });
     // send mail with defined transport object

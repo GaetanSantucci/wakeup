@@ -9,10 +9,7 @@ import { useEffect, useState } from 'react';
 import { useMediaQuery } from '@/src/hook/useMediaQuery';
 
 import { TextField } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 import IconButton from '@mui/material/IconButton';
@@ -20,7 +17,7 @@ import Checkbox from '@mui/material/Checkbox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { Dialog, DialogContent } from '@mui/material';
 
 
 import { useSetupUser } from '@/src/hook/useSetUser';
@@ -59,23 +56,27 @@ const UserProfile = () => {
   const [errorEmail, setErrorEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [openDeleteConfirmationModale, setOpenDeleteConfirmation] = useState(false);
-  const [addEventModal, setAddEventModal] = useState(false);
 
-  console.log('openDeleteConfirmationModale:', openDeleteConfirmationModale);
+  const fetchOrder = async () => {
+    try {
+      const response = await fetchOrderByUser(user.id);
+      setOrders(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (!isLogged) {
+        push('/');
+      } else {
+        await fetchOrder();
+      }
+    };
 
-    if (!isLogged) {
-      push('/')
-    } else (
-
-      // fetch(`http://localhost:7777/api/v1/orders/${user.id}`, { method: 'POST' })
-      fetchOrderByUser(user.id)
-        .then(response => {
-          setOrders(response)
-        })
-    )
-  }, [isLogged])
+    fetchData();
+  }, [isLogged]);
 
   const userLogout = () => {
     logout();
@@ -157,7 +158,6 @@ const UserProfile = () => {
 
       try {
         const deleteUser = await deleted(data)
-        console.log('deleteUser:', deleteUser);
         if (response.status === 403) {
           console.log(
             "message :", deleteUser.message

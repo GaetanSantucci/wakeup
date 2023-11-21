@@ -7,7 +7,7 @@ const Custom = () => {
     <div className={styles.container}>
       <section className={styles.container_details}>
         <div className={styles.container_details_background}>
-          <Image src={'/images/personnalisation.webp'} alt='mini plateau avec décoration eucalyptus et noeud' width={500} height={700} />
+          <Image src={'/images/ruban.webp'} alt='mini plateau avec décoration eucalyptus et noeud' width={500} height={700} />
         </div>
         <div className={styles.container_details_card}>
           <h3>Personnalisez vos plateaux</h3>

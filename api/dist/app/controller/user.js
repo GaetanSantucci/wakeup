@@ -10,7 +10,6 @@ import bcrypt from 'bcrypt';
 const getAllCustomers = async (req, res) => {
     try {
         const userList = await User.getAllUsers();
-        console.log('userList:', userList);
         if (!userList)
             throw new ErrorApi('No users found', req, res, 400);
         return res.status(200).json(userList);
@@ -45,7 +44,6 @@ const signUp = async (req, res) => {
     const { email, password } = req.body;
     try {
         const isExist = await User.findUserIdentity(email);
-        console.log('isExist:', isExist);
         if (isExist)
             throw new ErrorApi(`Le mail ${isExist.email} existe déjà !`, req, res, 401);
         req.body.password = await bcrypt.hash(password, 10);
@@ -111,8 +109,6 @@ const signOut = async (req, res) => {
 };
 //? ----------------------------------------------------------- UPDATE USER
 const updateCustomerProfile = async (req, res) => {
-    const { email } = req.body;
-    console.log('email:', email);
     try {
         const userId = req.params.userId;
         console.log('userId:', userId);
@@ -121,7 +117,6 @@ const updateCustomerProfile = async (req, res) => {
         if (!uuidRegex.test(userId))
             throw new ErrorApi(`UUID non valide`, req, res, 400);
         const userExist = await User.findOne(userId);
-        console.log('userExist: ', userExist.email);
         if (!userExist)
             throw new ErrorApi(`Utilisateur non trouvé !`, req, res, 401);
         // Check email if not exist
@@ -131,7 +126,6 @@ const updateCustomerProfile = async (req, res) => {
                 throw new ErrorApi(`L'email que vous avez saisi est identique à celui déjà enregistré, saisissez-en un nouveau !`, req, res, 401);
             // ? if different, I check the new email doesnt exist in database
             const isExist = await User.findUserIdentity(req.body.email);
-            console.log('isExist:', isExist);
             if (isExist)
                 throw new ErrorApi(`L'email ${isExist.email} existe déjà, saisissez-en un nouveau !`, req, res, 401);
         }
@@ -154,7 +148,6 @@ const deleteCustomer = async (req, res) => {
     try {
         const userId = req.params.userId;
         const { password, email } = req.body;
-        console.log('password:', password);
         const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         if (!uuidRegex.test(userId))
             throw new ErrorApi(`UUID non valide`, req, res, 400);
@@ -162,16 +155,13 @@ const deleteCustomer = async (req, res) => {
         if (req.user?.id === userId || req.user?.role === 'admin') {
             // const user = await User.findOne(userId);
             const user = await User.findUserIdentity(email);
-            console.log('user:', user);
             if (!user)
                 throw new ErrorApi(`L'utilisateur n'existe pas`, req, res, 400);
             const isUser = req.user?.id;
             if (isUser === userId || req.user?.role === 'admin') {
                 const validPassword = await bcrypt.compare(password, user.password);
-                console.log('validPassword:', validPassword);
                 if (!validPassword)
                     throw new ErrorApi(`Mot de passe incorrect`, req, res, 403);
-                // todo checker si mot de passe identique
                 const userDeleted = await User.deleteUser(userId);
                 if (userDeleted)
                     return res.status(200).json(`L'utilisateur a été supprimé !`);

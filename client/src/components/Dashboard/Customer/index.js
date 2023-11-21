@@ -14,7 +14,6 @@ export const DashboardCustomer = () => {
   const fetchData = () => {
     fetchAllUser()
       .then((data) => {
-        console.log('data:', data);
         setCustomer(data);
       })
       .catch(error => console.error(error));

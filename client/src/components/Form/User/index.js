@@ -35,6 +35,8 @@ const UserLogin = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
   // Hook to log and register user
   const { setUser } = useCurrentUser();
   const { login } = useLogin();
@@ -148,7 +150,7 @@ const UserLogin = () => {
       }),
     }
 
-    const response = await fetch('http://localhost:3010/api/v2/send_email_reset', options)
+    const response = await fetch(`${endpoint}/send_email_reset`, options)
 
     if (response.ok) {
       setSenduserEmail(true)
@@ -183,14 +185,12 @@ const UserLogin = () => {
               id="password"
               onChange={handleInputChange}
               defaultValue={user.password}
-              // onFocus={handleFocusInput}
               type={showPassword ? 'text' : 'password'}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
-                    // onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -227,14 +227,12 @@ const UserLogin = () => {
                 id="confirmPwd"
                 onChange={handleInputChange}
                 defaultValue={user.confirmPwd}
-                // onFocus={handleFocusInput}
                 type={showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -273,7 +271,6 @@ const UserLogin = () => {
           isSenduserEmail &&
           <Stack sx={{ m: 2 }} >
             <Alert severity="success">
-              {/* <AlertTitle>Succès</AlertTitle> */}
               Email envoyé, vérifiez votre messagerie
             </Alert>
           </Stack>
